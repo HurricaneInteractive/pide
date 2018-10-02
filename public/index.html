@@ -4,9 +4,45 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <title>Homepage</title>
     </head>
     <body>
-        Hello
+        <a href="/login">Login with Spotify</a>
+
+        <!-- Add your scripts before this one -->
+        <script type="text/javascript">
+            (function() {
+                /**
+                 * Obtains parameters from the hash of the URL
+                 * @return Object
+                 */
+                function getHashParams() {
+                    var hashParams = {};
+                    var e, r = /([^&;=]+)=?([^&;]*)/g,
+                        q = window.location.hash.substring(1);
+                    while ( e = r.exec(q)) {
+                        hashParams[e[1]] = decodeURIComponent(e[2]);
+                    }
+                    return hashParams;
+                }
+
+                var params = getHashParams();
+                console.log(params);
+                
+                if (params !== {}) {
+                    var access_token = params.access_token,
+                    refresh_token = params.refresh_token,
+                    error = params.error;
+
+                    if (error) {
+                        alert('There was an error processing your request, please try again')
+                    }
+                    else {
+                        window.sessionStorage.setItem('access_token', access_token);
+                        window.sessionStorage.setItem('refresh_token', refresh_token);
+                    }
+                }
+            })();
+        </script>
     </body>
 </html>
