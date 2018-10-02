@@ -1,0 +1,49 @@
+$colours: (
+    'white': #FFFFFF,
+    'black': #191414,
+    'green': #1DB954,
+    'content': #222326,
+    'grey': #757575,
+    'light-grey': #f6f6f6
+);
+
+$font-family: 'Cabin',Helvetica,Arial,sans-serif;
+$base-font-size: 16px;
+$button-size: 14px;
+$blockquote-size: 18px;
+$headings: (
+    'h1': 40px,
+    'h2': 32px,
+    'h3': 24px,
+    'h4': 18px,
+    'h5': 16px,
+    'h6': 14px
+);
+
+$header-size: 120px;
+$subheader-size: 80px;
+
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$sizings: (
+    '0': 0px,
+    '2': 2px,
+    '5': 5px,
+    '10': 10px,
+    '15': 15px,
+    '20': 20px,
+    '25': 25px,
+    '30': 30px,
+    '35': 35px
+);
+
+// top, bottom, left, right
+$directions: (
+    't': top, 
+    'b': bottom, 
+    'l': left, 
+    'r': right
+);
+
+$props: ('p': padding, 'm': margin);

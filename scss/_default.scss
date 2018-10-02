@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: $base-font-size;
+    font-family: $font-family;
+    color: get-colour('content');
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+@each $key, $size in $headings {
+    #{$key},
+    .#{$key} {
+        @include heading($key);
+    }
+}
+
+strong {
+    font-weight: $font-weight-bold;
+}
+
+a, .a, .link {
+    color: get-colour('green');
+    text-decoration: none;
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+    }
+}
+
+blockquote {
+    font-size: calc-em($blockquote-size, $base-font-size);
+    margin: em(40px) 0;
+    padding: 0;
+    font-weight: $font-weight-bold;
+    color: get-colour('black');
+    > *:first-child {
+        margin-top: 0;
+    }
+    > *:last-child {
+        margin-bottom: 0;
+    }
+    * {
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+    }
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

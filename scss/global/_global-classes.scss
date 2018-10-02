@@ -1,0 +1,78 @@
+.clearfix, .cf {
+    @include clearfix();
+}
+
+.hide-element {
+    @include hide-element();
+}
+
+.hide-text {
+    @include hide-text();
+}
+
+@each $name, $val in $colours {
+    .c-#{$name} {
+        color: $val;
+    }
+    .bg-#{$name} {
+        background-color: $val;
+    }
+}
+
+@each $className, $property in $props {
+    @each $name, $val in $sizings {
+        .#{$className}-#{$name} {
+            #{$property}: calc-em($val, $base-font-size);
+        }
+        .#{$className}-h-#{$name} {
+            #{$property}-right: calc-em($val, $base-font-size);
+            #{$property}-left: calc-em($val, $base-font-size);
+        }
+        .#{$className}-v-#{$name} {
+            #{$property}-top: calc-em($val, $base-font-size);
+            #{$property}-bottom: calc-em($val, $base-font-size);
+        }
+        @each $dir, $prop in $directions {
+            .#{$className}-#{$dir}-#{$name} {
+                #{$property}-#{$prop}: calc-em($val, $base-font-size);
+            }
+        }
+    }
+}
+
+.header-text {
+    font-size: calc-em($header-size, $base-font-size);
+    margin-top: calc-em(30px, $header-size);
+    margin-bottom: calc-em(20px, $header-size);
+}
+
+.sub-header-text {
+    font-size: calc-em($subheader-size, $base-font-size);
+    margin-top: calc-em(30px, $subheader-size);
+    margin-bottom: calc-em(20px, $subheader-size);
+}
+
+.header-text,
+.sub-header-text {
+    color: get-colour('black');
+    line-height: 1.2;
+    font-weight: $font-weight-bold;
+}
+
+.text {
+    &--bold {
+        font-weight: $font-weight-bold;
+    }
+    &--normal {
+        font-weight: $font-weight-normal;
+    }
+    &--center {
+        text-align: center;
+    }
+    &--left {
+        text-align: left;
+    }
+    &--right {
+        text-align: right;
+    }
+}

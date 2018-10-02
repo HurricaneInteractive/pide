@@ -1,0 +1,32 @@
+@mixin clearfix() {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin hide-element() {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+}
+
+@mixin hide-text() {
+    overflow: hidden;
+    text-indent: -99999px;
+    font-size: 1px;
+    color: transparent;
+    position: absolute;
+}
+
+@mixin heading($type, $colour: 'black', $margin-top: 30px, $margin-bottom: 20px) {
+    font-size: calc-em(get-heading-size($type), $base-font-size);
+    color: get-colour($colour);
+    margin-top: calc-em($margin-top, get-heading-size($type));
+    margin-bottom: calc-em($margin-bottom, get-heading-size($type));
+    line-height: 1.2;
+    font-weight: $font-weight-bold;
+}
