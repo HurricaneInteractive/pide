@@ -74,6 +74,7 @@ textarea {
     padding: 0;
     border-bottom: 1px solid get-colour('white');
     display: block;
+    width: 100%;
 }
 
 input {
@@ -82,4 +83,23 @@ input {
 
 textarea {
     resize: vertical;
+}
+
+button,
+.btn {
+    font-size: $base-font-size;
+    padding: em(19px) em(56px) em(21px);
+    margin: 0;
+    line-height: 1;
+    border-radius: 500px;
+    background: get-colour('green');
+    color: get-colour('white');
+    text-decoration: none;
+    border: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
 }
