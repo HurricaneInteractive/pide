@@ -125,5 +125,10 @@
       }
     }
   },
-  "defaultProject": "cumin"
+  "defaultProject": "cumin",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
