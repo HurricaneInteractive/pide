@@ -1,5 +1,14 @@
 <app-navigation></app-navigation>
 <div class="container">
-    <p>Cool content incoming</p>
-    <input type="text" name="a" id="a">
+    <div class="wrapper">
+        <div class="versus-grid">
+            <div class="user-column">
+                <app-user-profile [user]="current_user"></app-user-profile>
+            </div>
+            <div class="user-column" [ngSwitch]="opponent">
+                <app-user-search *ngSwitchCase="null" (searched)="onSearch($event)"></app-user-search>
+                <app-user-profile *ngSwitchDefault [user]="opponent"></app-user-profile>
+            </div>
+        </div>
+    </div>
 </div>
