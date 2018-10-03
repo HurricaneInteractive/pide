@@ -3,13 +3,15 @@ body {
     padding: 0;
     font-size: $base-font-size;
     font-family: $font-family;
-    color: get-colour('content');
+    color: get-colour('white');
+    background-color: get-colour('black');
 }
 
 *,
 *:before,
 *:after {
     box-sizing: border-box;
+    outline: none;
 }
 
 @each $key, $size in $headings {
@@ -37,7 +39,7 @@ blockquote {
     margin: em(40px) 0;
     padding: 0;
     font-weight: $font-weight-bold;
-    color: get-colour('black');
+    color: get-colour('white');
     > *:first-child {
         margin-top: 0;
     }
@@ -55,4 +57,29 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+input,
+textarea {
+    font-size: calc-em($base-font-size, $base-font-size);
+    font-family: $font-family;
+    font-weight: $font-weight-normal;
+    color: get-colour('white');
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid get-colour('white');
+    display: block;
+}
+
+input {
+    line-height: 1;
+}
+
+textarea {
+    resize: vertical;
 }

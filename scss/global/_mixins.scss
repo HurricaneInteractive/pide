@@ -22,11 +22,33 @@
     position: absolute;
 }
 
-@mixin heading($type, $colour: 'black', $margin-top: 30px, $margin-bottom: 20px) {
+@mixin heading($type, $colour: 'white', $margin-top: 30px, $margin-bottom: 20px) {
     font-size: calc-em(get-heading-size($type), $base-font-size);
     color: get-colour($colour);
     margin-top: calc-em($margin-top, get-heading-size($type));
     margin-bottom: calc-em($margin-bottom, get-heading-size($type));
     line-height: 1.2;
     font-weight: $font-weight-bold;
+}
+
+@mixin grid($justify: 'flex-start', $align: 'middle') {
+    display: grid;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin grid-column($cols: 2, $gap: $grid-padding) {
+    grid-template-columns: repeat($cols, 1fr);
+    grid-column-gap: calc-em($gap, $base-font-size);
+}
+
+@mixin grid-row($rows: auto, $gap: $grid-padding) {
+    grid-template-rows: $rows;
+    grid-row-gap: calc-em($gap, $base-font-size);
+}
+
+@mixin breakpoint($size: small) {
+    @media screen and (min-width: #{map-get($breakpoints, $size)}) {
+        @content;
+    }
 }

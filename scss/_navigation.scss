@@ -1,0 +1,29 @@
+.main-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .logo {
+        display: inline-block;
+    }
+    .menu {
+        list-style: none;
+        li {
+            float: left;
+            margin: 0 em(10px);
+            @include breakpoint(medium) {
+                margin: 0 em(20px);
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+            a {
+                text-transform: uppercase;
+                font-size: em($nav-link-size);
+                color: get-colour('black');
+                &:hover {
+                    color: get-colour('green');
+                }
+            }
+        }
+    }
+}

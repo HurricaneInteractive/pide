@@ -1,13 +1,13 @@
 $colours: (
     'white': #FFFFFF,
-    'black': #191414,
+    'black': #000000,
     'green': #1DB954,
     'content': #222326,
     'grey': #757575,
     'light-grey': #f6f6f6
 );
 
-$font-family: 'Cabin',Helvetica,Arial,sans-serif;
+$font-family: 'Mukta',Helvetica,Arial,sans-serif;
 $base-font-size: 16px;
 $button-size: 14px;
 $blockquote-size: 18px;
@@ -23,8 +23,10 @@ $headings: (
 $header-size: 120px;
 $subheader-size: 80px;
 
+$nav-link-size: 14px;
+
 $font-weight-normal: 400;
-$font-weight-bold: 700;
+$font-weight-bold: 800;
 
 $sizings: (
     '0': 0px,
@@ -47,3 +49,14 @@ $directions: (
 );
 
 $props: ('p': padding, 'm': margin);
+
+$grid-width: 1366px;
+$grid-padding: 20px;
+
+$breakpoints: (
+    small: 321px,
+    medium: 768px,
+    large: 1024px,
+    xlarge: 120px,
+    xxlarge: $grid-width
+);

@@ -54,7 +54,7 @@
 
 .header-text,
 .sub-header-text {
-    color: get-colour('black');
+    color: get-colour('white');
     line-height: 1.2;
     font-weight: $font-weight-bold;
 }
@@ -75,4 +75,12 @@
     &--right {
         text-align: right;
     }
+}
+
+.container {
+    max-width: calc(#{$grid-width} - (#{$grid-padding} * 2));
+    padding-right: $grid-padding;
+    padding-left: $grid-padding;
+    margin-right: auto;
+    margin-left: auto;
 }
