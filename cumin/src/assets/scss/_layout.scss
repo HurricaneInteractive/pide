@@ -1,0 +1,4 @@
+.versus-grid {
+    @include grid();
+    @include grid-column();
+}
