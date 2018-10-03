@@ -1,0 +1,13 @@
+// Super Globals
+@import "../../../../scss/global/index";
+
+.user-profile {
+    text-align: center;
+    .profile-image {
+        img {
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 5px solid get-colour('green');
+        }
+    }
+}
