@@ -6,7 +6,7 @@
                 <app-user-profile [user]="current_user"></app-user-profile>
             </div>
             <div class="user-column" [ngSwitch]="opponent">
-                <app-user-search *ngSwitchCase="null" (searched)="onSearch($event)"></app-user-search>
+                <app-user-search *ngSwitchCase="null" (searched)="onArtistSearch($event)"></app-user-search>
                 <app-user-profile *ngSwitchDefault [user]="opponent"></app-user-profile>
             </div>
         </div>
