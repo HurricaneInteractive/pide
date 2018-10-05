@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import './App.css';
+import './App.scss';
 
 // https://countryflags.io/ could be used to get user location flag
 
@@ -17,7 +17,9 @@ class App extends Component {
       user_loading: true,
       playlists: null,
       playlists_20: null,
-      playlist_loading: true
+      playlist_loading: true,
+      current: null,
+      current_loading: true,
     }
   }
 
@@ -40,6 +42,22 @@ class App extends Component {
 
     axios({
       method: 'get',
+      url: 'https://api.spotify.com/v1/me/player/currently-playing',
+      headers: {
+        Authorization: "Bearer " + AUTH_TOKEN
+      }
+    }).then(res => {
+      console.log("res.data => ", res.data)
+      const current_data = res.data;
+      console.log("axios current => ", current_data)
+      this.setState({
+        current: current_data,
+        current_loading: false
+      });
+    });
+
+    axios({
+      method: 'get',
       url: 'https://api.spotify.com/v1/me/playlists',
       params: {
         offset: 0
@@ -49,7 +67,6 @@ class App extends Component {
       }
     }).then(res => {
       const playlists = res.data;
-      console.log("axios playlists => ", playlists)
       this.setState({
         playlists: playlists,
         // loading: false
@@ -74,11 +91,8 @@ class App extends Component {
   }
 
   mapPlaylistCovers() {
-    console.log("this.state.playlists => ", this.state.playlists);
     let data = this.state.playlists;
     let data_20 = this.state.playlists_20;
-    console.log("data => ", data);
-    console.log("data.items => ", data.items);
     let keys = Object.keys(data.items);
     let keys_20 = Object.keys(data_20.items);
 
@@ -109,33 +123,44 @@ class App extends Component {
     if (this.state.loading === true) {
       return <p>loading</p>
     }
+
+    console.log("this.state.current => ", this.state.current)
     console.log("AUTH_TOKEN => ", AUTH_TOKEN)
     console.log("REFRESH_TOKEN => ", REFRESH_TOKEN)
     return (
       <div className="App">
-        <header class="bg-white">
-          <nav class="main-menu p-v-10 container">
-            <a class="logo" href="/" title="Go Home"><h1 class="m-0 c-black"><span class="hide-text">Pide</span>Pide</h1></a>
-            <ul class="menu p-0 m-0 cf">
+        <header className="bg-white">
+          <nav className="main-menu p-v-10 container">
+            <a className="logo" href="/" title="Go Home"><h1 className="m-0 c-black"><span className="hide-text">Pide</span>Pide</h1></a>
+            <ul className="menu p-0 m-0 cf">
               <li><a href="/cumin">Cumin</a></li>
               <li><a href="/masala">Masala</a></li>
               <li><a href="/paprika">Paprika</a></li>
             </ul>
           </nav>
         </header>
-        <header className="App-header">
+        <section className="p-header">
           {this.state.user_loading ? 
-            <h1>loading user data</h1>
+            <h5>loading user data</h5>
             :
             <>
-              <img src={this.state.user.images[0].url} alt="logo" />
-              <h1 style={{textAlign: "center"}}>{this.state.user.display_name}</h1>
+              <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
+              <h2 style={{textAlign: "center"}}>{this.state.user.display_name}</h2>
             </>
           }
-        </header>
+          {this.state.current_loading ?
+            <h5>loading current track</h5>
+            :
+            <div>
+              hola
+              {this.state.current.item.album.name}
+            </div>
+
+          }
+        </section>
         <div>
           {this.state.playlist_loading ? 
-            <h1>loading</h1>
+            <h5>loading</h5>
             : 
             this.mapPlaylistCovers()
           }
