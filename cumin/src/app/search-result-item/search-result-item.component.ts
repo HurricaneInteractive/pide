@@ -26,6 +26,9 @@ export class SearchResultItemComponent {
     if (item.images.length > 0) {
       this._resultItem.image = item.images[2].url || item.images[1].url || item.images[0].url
     }
+    else {
+      this._resultItem.image = 'http://www.gravatar.com/avatar/?d=identicon'
+    }
   }
 
   get item() {

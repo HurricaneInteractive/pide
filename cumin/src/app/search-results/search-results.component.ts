@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-search-results',
@@ -6,7 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./search-results.component.scss']
 })
 
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent {
   @Output() selectedArtist = new EventEmitter<object>()
   private _searchResults: Array<object>|null
 
@@ -21,10 +21,4 @@ export class SearchResultsComponent implements OnInit {
   selectArtist(artist: object) {
     this.selectedArtist.emit(artist)
   }
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }
