@@ -1,0 +1,20 @@
+// Super Globals
+@import "../../../../scss/global/index";
+
+.playlist-stats {
+    @include grid();
+    @include grid-column(3);
+    .stat {
+        text-align: center;
+        border: 1px solid get-colour('grey');
+        padding: em(30px) em(20px);
+        border-radius: 5px;
+        span, p {
+            display: block;
+            line-height: 1;
+        }
+        span {
+            font-size: em(14px);
+        }
+    }
+}
