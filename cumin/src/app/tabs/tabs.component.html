@@ -1,0 +1,4 @@
+<ul *ngIf="tabs" class="m-0 m-t-30 p-0">
+    <li *ngFor="let tab of tabs" (click)="onChangeTab(tab)" [ngClass]="active_tab == tab ? 'active' : ''">{{tab}}</li>
+</ul>
+<ng-content></ng-content>
