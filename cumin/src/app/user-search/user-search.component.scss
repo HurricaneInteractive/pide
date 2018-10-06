@@ -1,3 +1,15 @@
-input {
-    margin-bottom: 20px;
+// Super Globals
+@import "../../../../scss/global/index";
+
+div {
+    display: flex;
+    button {
+        border-radius: 0;
+        padding: em(6px);
+        background: transparent;
+        border-bottom: 1px solid get-colour('white');
+        svg {
+            display: block;
+        }
+    }
 }
