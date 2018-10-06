@@ -4,11 +4,14 @@
 .user-profile {
     text-align: center;
     .profile-image {
-        img {
-            width: 200px;
-            margin: 0 auto;
-            border-radius: 50%;
-            border: 5px solid get-colour('green');
-        }
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        border-radius: 50%;
+        border: 5px solid get-colour('green');
+        display: block;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
     }
 }
