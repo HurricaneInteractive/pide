@@ -1,0 +1,19 @@
+// Super Globals
+@import "../../../../scss/global/index";
+
+.search-results {
+    max-height: 500px;
+    overflow-y: auto;
+    li {
+        list-style: none;
+        padding: 20px;
+        transition: background-color 300ms ease-in-out;
+        cursor: pointer;
+        &:not(:first-child) {
+            border-top: 1px solid get-colour('grey');
+        }
+        &:hover {
+            background-color: rgba(get-colour('grey'), 0.2);
+        }
+    }
+}

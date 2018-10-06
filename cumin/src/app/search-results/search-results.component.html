@@ -1,0 +1,11 @@
+<div class="search-results p-t-25" *ngIf="results">
+  <h3 *ngIf="results.length === 0" class="m-0">No results Found</h3>
+  <div class="results" *ngIf="results.length > 0">
+    <h4 class="m-t-0 m-b-20">Showing {{results.length}} artists</h4>
+    <ul class="p-0 m-0">
+      <li *ngFor="let item of results" class="m-0">
+        <app-search-result-item [item]="item" (click)="selectArtist(item)"></app-search-result-item>
+      </li>
+    </ul>
+  </div>
+</div>
