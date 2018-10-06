@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconSearch } from 'angular-feather';
+import { IconSearch, IconX } from 'angular-feather';
 
 const icons = [
-  IconSearch
+  IconSearch,
+  IconX
 ]
 
 @NgModule({
