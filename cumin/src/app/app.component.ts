@@ -6,9 +6,9 @@ interface AuthHeader {
 }
 
 interface CurrentUserData {
-	playlists: object,
-	albums: object,
-	tracks: object
+	playlists: Array<object>,
+	albums: Array<object>,
+	tracks: Array<object>
 }
 
 @Component({
@@ -28,6 +28,7 @@ export class AppComponent {
 	opponent: object|null = JSON.parse(window.sessionStorage.getItem('opponent')) || null
 	searchResults: Array<object>|null = null
 	current_user_data: CurrentUserData = null
+	all_playlist_tracks: Array<object>
 	tabs = ['playlist', 'albums', 'tracks']
 	active_tab = 'playlist'
 
@@ -50,6 +51,16 @@ export class AppComponent {
 					albums: res[1].data.items,
 					tracks: res[2].data.items
 				}
+			})
+			.then(() => {
+				let promises = this.current_user_data.playlists.map((playlist: any) => {
+					return axios.get(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, this.getAuthHeaders());
+				})
+
+				Promise.all(promises)
+					.then((data) => {
+						this.all_playlist_tracks = data.map(item => item.data.items)
+					})
 			})
 	}
 
