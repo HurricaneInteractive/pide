@@ -14,6 +14,7 @@ import { CuPlaylistDataComponent } from './cu-playlist-data/cu-playlist-data.com
 import { TabsComponent } from './tabs/tabs.component';
 import { CuAlbumsDataComponent } from './cu-albums-data/cu-albums-data.component';
 import { CuTracksDataComponent } from './cu-tracks-data/cu-tracks-data.component';
+import { BubbleChartComponent } from './bubble-chart/bubble-chart.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CuTracksDataComponent } from './cu-tracks-data/cu-tracks-data.component
     CuPlaylistDataComponent,
     TabsComponent,
     CuAlbumsDataComponent,
-    CuTracksDataComponent
+    CuTracksDataComponent,
+    BubbleChartComponent
   ],
   imports: [
     BrowserModule,

@@ -14,3 +14,7 @@
     <span class="text--uppercase">Average no. tracks</span>
   </div>
 </div>
+
+<div *ngIf="playlist_tracks_data" >
+  <app-bubble-chart [chartData]="playlist_tracks_data"></app-bubble-chart>
+</div>
