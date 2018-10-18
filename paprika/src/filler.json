@@ -1,0 +1,649 @@
+{
+  "href" : "https://api.spotify.com/v1/users/12162909955/playlists?offset=20&limit=20",
+  "items" : [ {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/35ya0tE4lf9zpc753D307Q"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/35ya0tE4lf9zpc753D307Q",
+    "id" : "35ya0tE4lf9zpc753D307Q",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/97671634f6245eb02a5b6cc2582d38e6e5610436",
+      "width" : null
+    } ],
+    "name" : "Revealed Community Releases",
+    "owner" : {
+      "display_name" : "Revealed Recordings",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/revealedrec"
+      },
+      "href" : "https://api.spotify.com/v1/users/revealedrec",
+      "id" : "revealedrec",
+      "type" : "user",
+      "uri" : "spotify:user:revealedrec"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTMwLDk0MWYzMjRlYzEyNzkwZTY1YmRkZTA4NjI3YzAzYjI1YTQ0ODJiOGU=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/35ya0tE4lf9zpc753D307Q/tracks",
+      "total" : 82
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:revealedrec:playlist:35ya0tE4lf9zpc753D307Q"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/1N476S6f5SwL5nSMQ7QCPa"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/1N476S6f5SwL5nSMQ7QCPa",
+    "id" : "1N476S6f5SwL5nSMQ7QCPa",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/04857f8b60260459d376111f4b816a29df0f1102",
+      "width" : null
+    } ],
+    "name" : "Bourne Recordings Top 50",
+    "owner" : {
+      "display_name" : "Lucky Ent",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/luckyent"
+      },
+      "href" : "https://api.spotify.com/v1/users/luckyent",
+      "id" : "luckyent",
+      "type" : "user",
+      "uri" : "spotify:user:luckyent"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "Njc3LDNmMmE2MWJiOGZhNDQ3NTg2YmVjZDM2ZTliNTYyNmU5NWU5NjU1MWU=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/1N476S6f5SwL5nSMQ7QCPa/tracks",
+      "total" : 87
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:luckyent:playlist:1N476S6f5SwL5nSMQ7QCPa"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/5FuSBoolvor9fgR28WUNWq"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/5FuSBoolvor9fgR28WUNWq",
+    "id" : "5FuSBoolvor9fgR28WUNWq",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/cfe552e6fc7b8cb047bdb1c508a87e7d5ebd3a02",
+      "width" : null
+    } ],
+    "name" : "NoCopyrightSounds",
+    "owner" : {
+      "display_name" : "NCS",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/nocopyrightsounds"
+      },
+      "href" : "https://api.spotify.com/v1/users/nocopyrightsounds",
+      "id" : "nocopyrightsounds",
+      "type" : "user",
+      "uri" : "spotify:user:nocopyrightsounds"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "OTQ4LDkwNzFmNTQ3YmRkMWRiYzMxYzkyMjRlOTgxZjg5MWE0NzFhMGVjM2U=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/5FuSBoolvor9fgR28WUNWq/tracks",
+      "total" : 51
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:nocopyrightsounds:playlist:5FuSBoolvor9fgR28WUNWq"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/7sZbq8QGyMnhKPcLJvCUFD"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/7sZbq8QGyMnhKPcLJvCUFD",
+    "id" : "7sZbq8QGyMnhKPcLJvCUFD",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/df88298c1891c4b3a109bad4d51d85200dd59c45",
+      "width" : null
+    } ],
+    "name" : "Music Without Limitations",
+    "owner" : {
+      "display_name" : "NCS",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/nocopyrightsounds"
+      },
+      "href" : "https://api.spotify.com/v1/users/nocopyrightsounds",
+      "id" : "nocopyrightsounds",
+      "type" : "user",
+      "uri" : "spotify:user:nocopyrightsounds"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTU1OCxjNTc4NWI3YjI3MjExMzNkNDA3MGEzNGU1MDEyMDIwZTZiZTU4ZGVj",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/7sZbq8QGyMnhKPcLJvCUFD/tracks",
+      "total" : 61
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:nocopyrightsounds:playlist:7sZbq8QGyMnhKPcLJvCUFD"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/1kfiar5MqLrQv8uTEsccaz"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/1kfiar5MqLrQv8uTEsccaz",
+    "id" : "1kfiar5MqLrQv8uTEsccaz",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/14a3b8f3a671546490a8314208fe9f2a4bf15caa",
+      "width" : null
+    } ],
+    "name" : "FUTURISM RECORDS",
+    "owner" : {
+      "display_name" : "FUTURISM",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/futurismrecs"
+      },
+      "href" : "https://api.spotify.com/v1/users/futurismrecs",
+      "id" : "futurismrecs",
+      "type" : "user",
+      "uri" : "spotify:user:futurismrecs"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "NjYsYTcxNzg4YTA0ZjJmOTc5NTEzZDgyZDE4OGE2NmI2Y2FkOWY2MTU1YQ==",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/1kfiar5MqLrQv8uTEsccaz/tracks",
+      "total" : 31
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:futurismrecs:playlist:1kfiar5MqLrQv8uTEsccaz"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/4i7n4ug7lLir1kl1RW9Pho"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/4i7n4ug7lLir1kl1RW9Pho",
+    "id" : "4i7n4ug7lLir1kl1RW9Pho",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/de46277743ffac78b2697364d35b57fdb32d99ed",
+      "width" : null
+    } ],
+    "name" : "Tackle Records - All Releases",
+    "owner" : {
+      "display_name" : "tacklerecords",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/tacklerecords"
+      },
+      "href" : "https://api.spotify.com/v1/users/tacklerecords",
+      "id" : "tacklerecords",
+      "type" : "user",
+      "uri" : "spotify:user:tacklerecords"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTA5LGUxOGU4NmNhOWFiYzllZmJhY2YxNDk3NmU3ZDI3ZGMwYjY1Y2VjOGE=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/4i7n4ug7lLir1kl1RW9Pho/tracks",
+      "total" : 46
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:tacklerecords:playlist:4i7n4ug7lLir1kl1RW9Pho"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/01kXEiaDiKWiO1ULjFt5te"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/01kXEiaDiKWiO1ULjFt5te",
+    "id" : "01kXEiaDiKWiO1ULjFt5te",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/c892203fdf1bedc9f05e62ed6308f4ca3e77f791",
+      "width" : null
+    } ],
+    "name" : "The Latest",
+    "owner" : {
+      "display_name" : "reflectionmusicgroup",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/reflectionmusicgroup"
+      },
+      "href" : "https://api.spotify.com/v1/users/reflectionmusicgroup",
+      "id" : "reflectionmusicgroup",
+      "type" : "user",
+      "uri" : "spotify:user:reflectionmusicgroup"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTc5LGMzY2YwZGM1NGRmZjBkMzJmMDJhYTg0OTY5YzIyMGE0MjRhMGRhNzU=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/01kXEiaDiKWiO1ULjFt5te/tracks",
+      "total" : 36
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:reflectionmusicgroup:playlist:01kXEiaDiKWiO1ULjFt5te"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/17MNUzpBEF3ba4u5GTpCx6"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/17MNUzpBEF3ba4u5GTpCx6",
+    "id" : "17MNUzpBEF3ba4u5GTpCx6",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/f65487b328d794d0818485a4b29a853f126841b9",
+      "width" : null
+    } ],
+    "name" : "Lithuania HQ",
+    "owner" : {
+      "display_name" : "lithuaniahq",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/lithuaniahq"
+      },
+      "href" : "https://api.spotify.com/v1/users/lithuaniahq",
+      "id" : "lithuaniahq",
+      "type" : "user",
+      "uri" : "spotify:user:lithuaniahq"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTU1MCwyYzg0OThkNDQ4ODIxYzQ5YjcwNDAxN2E4MzQ3OWM5MzEwMjJjY2Uy",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/17MNUzpBEF3ba4u5GTpCx6/tracks",
+      "total" : 244
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:lithuaniahq:playlist:17MNUzpBEF3ba4u5GTpCx6"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/145saJwyflcTSdJ55AKDGe"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/145saJwyflcTSdJ55AKDGe",
+    "id" : "145saJwyflcTSdJ55AKDGe",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/3f466fbe5482449311ee65f6d4806043abb754e6",
+      "width" : null
+    } ],
+    "name" : "Enter the Rave",
+    "owner" : {
+      "display_name" : "SubSoul",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/subsoulmusic"
+      },
+      "href" : "https://api.spotify.com/v1/users/subsoulmusic",
+      "id" : "subsoulmusic",
+      "type" : "user",
+      "uri" : "spotify:user:subsoulmusic"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "Mjk5MixmZDgxNTAxMzE4NDk5MGEyOTU4MDk4ODU3NDFjYTk2MTJkYzQ3ZTJj",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/145saJwyflcTSdJ55AKDGe/tracks",
+      "total" : 46
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:subsoulmusic:playlist:145saJwyflcTSdJ55AKDGe"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/7decFjydGtpXAv83D1OQeR"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/7decFjydGtpXAv83D1OQeR",
+    "id" : "7decFjydGtpXAv83D1OQeR",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/504ad3f41a33d3d1c9542d7765e3b1636ee9507d",
+      "width" : null
+    } ],
+    "name" : "TNC Music Releases",
+    "owner" : {
+      "display_name" : "tncrecordings",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/tncrecordings"
+      },
+      "href" : "https://api.spotify.com/v1/users/tncrecordings",
+      "id" : "tncrecordings",
+      "type" : "user",
+      "uri" : "spotify:user:tncrecordings"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTA2LDdmOTI0ZTEzYWZkOWI4OTkzMmRhMTQ5NTQwYzJmNzUyZWEzNjg3M2Y=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/7decFjydGtpXAv83D1OQeR/tracks",
+      "total" : 30
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:tncrecordings:playlist:7decFjydGtpXAv83D1OQeR"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/2IGrWmUThLyCXkkapVGhGs"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/2IGrWmUThLyCXkkapVGhGs",
+    "id" : "2IGrWmUThLyCXkkapVGhGs",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/6c3b0491b83f121dcd12d4f2b67107f10c36cdcf",
+      "width" : null
+    } ],
+    "name" : "Panda Funk",
+    "owner" : {
+      "display_name" : "Deorro",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/deorroofficial"
+      },
+      "href" : "https://api.spotify.com/v1/users/deorroofficial",
+      "id" : "deorroofficial",
+      "type" : "user",
+      "uri" : "spotify:user:deorroofficial"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTI4LDY4NGYyY2E3ZTgzMjEzY2FlZTFmYzAwZjE3YTgxZmE5ZjViOTllNDc=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/2IGrWmUThLyCXkkapVGhGs/tracks",
+      "total" : 52
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:deorroofficial:playlist:2IGrWmUThLyCXkkapVGhGs"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/0hgQnSJTwCEBRCzYWgcVot"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/0hgQnSJTwCEBRCzYWgcVot",
+    "id" : "0hgQnSJTwCEBRCzYWgcVot",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/b2c927d377a5ece6c7efd1c68e02b07bb7859ac2",
+      "width" : null
+    } ],
+    "name" : "Protocol Releases",
+    "owner" : {
+      "display_name" : "Protocol Recordings",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/protocolrecordings"
+      },
+      "href" : "https://api.spotify.com/v1/users/protocolrecordings",
+      "id" : "protocolrecordings",
+      "type" : "user",
+      "uri" : "spotify:user:protocolrecordings"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "NDgyLGJlMzYxYmFhYjQ2MWJkMjRhZDZmYjA2NTZjYTBjMzM2NGVjNjc1MGY=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/0hgQnSJTwCEBRCzYWgcVot/tracks",
+      "total" : 311
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:protocolrecordings:playlist:0hgQnSJTwCEBRCzYWgcVot"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/6TYvcDsJYxPpfosagSdVar"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/6TYvcDsJYxPpfosagSdVar",
+    "id" : "6TYvcDsJYxPpfosagSdVar",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/c619b6b879350476bf5532510d87cb5fc1704723",
+      "width" : null
+    } ],
+    "name" : "Bourne Recordings Hard 50 - Hardstyle & Bass/Trap/Dubstep",
+    "owner" : {
+      "display_name" : "Lucky Ent",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/luckyent"
+      },
+      "href" : "https://api.spotify.com/v1/users/luckyent",
+      "id" : "luckyent",
+      "type" : "user",
+      "uri" : "spotify:user:luckyent"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTgxLDQ3ODkzYzliM2M1MmVkYmE1YmY5YmMzMzAwNDg1ZjE3NGM1MDdlNWM=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/6TYvcDsJYxPpfosagSdVar/tracks",
+      "total" : 49
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:luckyent:playlist:6TYvcDsJYxPpfosagSdVar"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/6rqoe6h7ptTOVIODskSgEZ"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/6rqoe6h7ptTOVIODskSgEZ",
+    "id" : "6rqoe6h7ptTOVIODskSgEZ",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/49af75ab10b3451b3bb8251df2997c50292e5889",
+      "width" : null
+    } ],
+    "name" : "Teamwrk Records New Releases",
+    "owner" : {
+      "display_name" : "Lucky Ent",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/luckyent"
+      },
+      "href" : "https://api.spotify.com/v1/users/luckyent",
+      "id" : "luckyent",
+      "type" : "user",
+      "uri" : "spotify:user:luckyent"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTcyLGIxNTRmNWU1OGViNmE3YzdmMjA0ZWViZDUzNzYxMGJjZDIxYWQ4YmE=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/6rqoe6h7ptTOVIODskSgEZ/tracks",
+      "total" : 70
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:luckyent:playlist:6rqoe6h7ptTOVIODskSgEZ"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/5yukQNUdlkAILE0PgGtKDH"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/5yukQNUdlkAILE0PgGtKDH",
+    "id" : "5yukQNUdlkAILE0PgGtKDH",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/5b3d582cdaaab8779986fea75f064550b8ce5f9a",
+      "width" : null
+    } ],
+    "name" : "Oliver Heldens - Best Of Heldeep Radio",
+    "owner" : {
+      "display_name" : "Oliver Heldens",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/oliverheldens"
+      },
+      "href" : "https://api.spotify.com/v1/users/oliverheldens",
+      "id" : "oliverheldens",
+      "type" : "user",
+      "uri" : "spotify:user:oliverheldens"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MjQzNyw0ZTBlMzkyOTQ3MTM4NTc4ZTQ3MzNhYzJkYjIzMzNjOThhNTUzODdk",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/5yukQNUdlkAILE0PgGtKDH/tracks",
+      "total" : 160
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:oliverheldens:playlist:5yukQNUdlkAILE0PgGtKDH"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/6FHKBR88RdNN0t3JpT5Ofu"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/6FHKBR88RdNN0t3JpT5Ofu",
+    "id" : "6FHKBR88RdNN0t3JpT5Ofu",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/b2951723213911384807b7754b79ce37effbad33",
+      "width" : null
+    } ],
+    "name" : "Chill Vibes",
+    "owner" : {
+      "display_name" : "Selected.",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/selectedbase"
+      },
+      "href" : "https://api.spotify.com/v1/users/selectedbase",
+      "id" : "selectedbase",
+      "type" : "user",
+      "uri" : "spotify:user:selectedbase"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MzU4LDc1NDRiZGFhZDYxNzg2OGE0ZmIwODM5ZTEwNjFlZTQ5M2NhN2M1MDA=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/6FHKBR88RdNN0t3JpT5Ofu/tracks",
+      "total" : 186
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:selectedbase:playlist:6FHKBR88RdNN0t3JpT5Ofu"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/3kNzPQk9PmVh2hlOw33UxO"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/3kNzPQk9PmVh2hlOw33UxO",
+    "id" : "3kNzPQk9PmVh2hlOw33UxO",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/02129114ab2a47ff6407d99ccb25e663a96bfb36",
+      "width" : null
+    } ],
+    "name" : "Selected. - All Uploads",
+    "owner" : {
+      "display_name" : "Selected.",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/selectedbase"
+      },
+      "href" : "https://api.spotify.com/v1/users/selectedbase",
+      "id" : "selectedbase",
+      "type" : "user",
+      "uri" : "spotify:user:selectedbase"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "Mzc3LGRhMDMwZWVkOGM5ODMzMjE2MmZhOGI3OTJhNzM1ZGYyMWMwYWRkYzE=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/3kNzPQk9PmVh2hlOw33UxO/tracks",
+      "total" : 670
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:selectedbase:playlist:3kNzPQk9PmVh2hlOw33UxO"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/2S1XRUsK2mp3RXQWiZs3JP"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/2S1XRUsK2mp3RXQWiZs3JP",
+    "id" : "2S1XRUsK2mp3RXQWiZs3JP",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/f0547a1221a896231cfce99d705dda451f3fe3ff",
+      "width" : null
+    } ],
+    "name" : "Underground Dance Music",
+    "owner" : {
+      "display_name" : "Selected.",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/selectedbase"
+      },
+      "href" : "https://api.spotify.com/v1/users/selectedbase",
+      "id" : "selectedbase",
+      "type" : "user",
+      "uri" : "spotify:user:selectedbase"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MzQxLGQ3ODMxNWU3ZWZjZWFiZmM1MTNkODljMmEzZmQzMzFlNGFhZDE1MzE=",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/2S1XRUsK2mp3RXQWiZs3JP/tracks",
+      "total" : 90
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:selectedbase:playlist:2S1XRUsK2mp3RXQWiZs3JP"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/62bReXvmroQzQfEUuTNe3Y"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/62bReXvmroQzQfEUuTNe3Y",
+    "id" : "62bReXvmroQzQfEUuTNe3Y",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/48b70537903823396debd2367ffdd919a6a7a121",
+      "width" : null
+    } ],
+    "name" : "Selected. House",
+    "owner" : {
+      "display_name" : "Selected.",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/selectedbase"
+      },
+      "href" : "https://api.spotify.com/v1/users/selectedbase",
+      "id" : "selectedbase",
+      "type" : "user",
+      "uri" : "spotify:user:selectedbase"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "MTkwNiw0MDJlYWY0ODhjZjc4NjY3YTA3YzBmOTViYWJiM2U0ZTBhNzllZDBj",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/62bReXvmroQzQfEUuTNe3Y/tracks",
+      "total" : 76
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:selectedbase:playlist:62bReXvmroQzQfEUuTNe3Y"
+  }, {
+    "collaborative" : false,
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/playlist/6kUNlc6UpBpU04ecja8Wu6"
+    },
+    "href" : "https://api.spotify.com/v1/playlists/6kUNlc6UpBpU04ecja8Wu6",
+    "id" : "6kUNlc6UpBpU04ecja8Wu6",
+    "images" : [ {
+      "height" : null,
+      "url" : "https://pl.scdn.co/images/pl/default/19828a33cace4a803e6d4456cd837870daf8fe45",
+      "width" : null
+    } ],
+    "name" : "FUTURISM Official Playlist",
+    "owner" : {
+      "display_name" : "FUTURISM",
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/user/futurismrecs"
+      },
+      "href" : "https://api.spotify.com/v1/users/futurismrecs",
+      "id" : "futurismrecs",
+      "type" : "user",
+      "uri" : "spotify:user:futurismrecs"
+    },
+    "primary_color" : null,
+    "public" : false,
+    "snapshot_id" : "NzIsOTdjNDE2MzJiNWQ0Zjk5ODU1NzA0MTc3NjY2Mjg3NWJhZjcyYTAyNA==",
+    "tracks" : {
+      "href" : "https://api.spotify.com/v1/playlists/6kUNlc6UpBpU04ecja8Wu6/tracks",
+      "total" : 135
+    },
+    "type" : "playlist",
+    "uri" : "spotify:user:futurismrecs:playlist:6kUNlc6UpBpU04ecja8Wu6"
+  } ],
+  "limit" : 20,
+  "next" : "https://api.spotify.com/v1/users/12162909955/playlists?offset=40&limit=20",
+  "offset" : 20,
+  "previous" : "https://api.spotify.com/v1/users/12162909955/playlists?offset=0&limit=20",
+  "total" : 225
+}
