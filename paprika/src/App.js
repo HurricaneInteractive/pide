@@ -144,7 +144,18 @@ class App extends Component {
         return null
       }
       return (
-        <img style={{width: "100%"}} src={playlist_image.url} key={key} alt={key}/>
+        <div className="playlist_single_container">
+          <div className="playlist_image">
+            <img style={{width: "100%"}} src={playlist_image.url} key={key} alt={key}/>
+            <div className="playlist_image_overlay">INFO</div>
+          </div>
+          <div className="playlist_title">
+            <h4>{data[key].name}</h4>
+            <h6>{data[key].owner.display_name}</h6>
+          </div>
+
+        </div>
+
       )
     });
 
@@ -165,42 +176,46 @@ class App extends Component {
     // console.log("AUTH_TOKEN => ", AUTH_TOKEN)
     // console.log("REFRESH_TOKEN => ", REFRESH_TOKEN)
     return (
-      <div className="App">
-        <header className="bg-white">
-          <nav className="main-menu p-v-10 container">
-            <a className="logo" href="/" title="Go Home"><h1 className="m-0 c-black"><span className="hide-text">Pide</span>Pide</h1></a>
-            <ul className="menu p-0 m-0 cf">
-              <li><a href="/cumin">Cumin</a></li>
-              <li><a href="/masala">Masala</a></li>
-              <li><a href="/paprika">Paprika</a></li>
-            </ul>
-          </nav>
-        </header>
-        <section className="p-header">
-          {this.state.user_loading ? 
-            <h5>loading user data</h5>
-            :
-            <>
-              <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
-              <h2 style={{textAlign: "center"}}>{this.state.user.display_name}</h2>
-            </>
-          }
-          {this.state.current_loading ?
-            <h5>loading current track</h5>
-            :
-            <div>
-              hola
-              {this.state.current.item.album.name}
-            </div>
+      <div className="app">
+        <div className="absolute-background"/>
 
-          }
-        </section>
-        <div>
-          {this.state.playlist_loading ? 
-            <h5>loading</h5>
-            : 
-            this.mapPlaylistCovers()
-          }
+        <div className="app-container">
+          <header className="bg-white">
+            <nav className="main-menu p-v-10 container">
+              <a className="logo" href="/" title="Go Home"><h1 className="m-0 c-black"><span className="hide-text">Pide</span>Pide</h1></a>
+              <ul className="menu p-0 m-0 cf">
+                <li><a href="/cumin">Cumin</a></li>
+                <li><a href="/masala">Masala</a></li>
+                <li><a href="/paprika">Paprika</a></li>
+              </ul>
+            </nav>
+          </header>
+          <section className="user-header">
+            {this.state.user_loading ? 
+              <h5>loading user data</h5>
+              :
+              <>
+                <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
+                <h2 style={{textAlign: "center"}}>{this.state.user.display_name}</h2>
+              </>
+            }
+            {this.state.current_loading ?
+              <h5>loading current track</h5>
+              :
+              <div>
+                hola
+                {this.state.current.item.album.name}
+              </div>
+
+            }
+          </section>
+          <div className="playlist_container">
+            {this.state.playlist_loading ? 
+              <h5>loading</h5>
+              : 
+              this.mapPlaylistCovers()
+            }
+          </div>
         </div>
       </div>
     );

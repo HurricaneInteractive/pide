@@ -1,6 +1,32 @@
-.p-header {
-  background: linear-gradient(145deg, get-colour('content'), get-colour('black'));
+.absolute-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 100vh;
+  width: 100vw;
+
+  z-index: 0;
+
+  background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
+}
+
+.app {
+  position: relative;
+  text-align: center;
+  background-color: #3B3738;
+  
+}
+
+.app-container {
+  position: relative;
+}
+
+.user-header {
   // background-color: get-colour('black');
+  // background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
   min-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -14,9 +40,7 @@
   width: 200px;
   height: 200px;
 }
-.App {
-  text-align: center;
-}
+
 
 .App-logo {
   height: 20vmin;
@@ -24,4 +48,50 @@
 
 .App-link {
   color: #1e3264;
+}
+
+// playlists
+.playlist_container {
+  padding: 0 32px;
+}
+.playlist_single_container {
+  padding: 0 8px;
+  .playlist_image {
+    background-color: #282828;
+    position: relative;
+    &:hover {
+      .playlist_image_overlay {
+        opacity: 1;
+        transition: .2s;
+      }
+    }
+    .playlist_image_overlay, .playlist_image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .playlist_image_overlay {
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      opacity: 0;
+      transition: .2s;
+      
+      background-color: rgba(0,0,0,.3);
+    }
+  }
+  .playlist_title {
+    padding-bottom: 2.5rem;
+    h4 {
+      font-weight: 500;
+      margin: 12px 0 4px;
+    }
+    h6 {
+      margin: 0 auto;
+      font-weight: 400;
+      color: hsla(0,0%,100%,.6);
+    }
+  }
 }
