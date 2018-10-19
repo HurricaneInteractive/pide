@@ -24,6 +24,7 @@ class App extends Component {
       user_loading: true,
       playlists: [],
       playlists_total: 0,
+      playlist_grid: 4,
       playlist_loading: true,
       playlist_view: false,
       current_playlist: null,
@@ -110,6 +111,25 @@ class App extends Component {
     })
   }
 
+  getGridSize(number) {
+    let grid = '1fr '.repeat(number);
+    console.log('grid => ', grid)
+    return grid
+  }
+
+  changeGridAmount(val) {
+    if (val === 'down') {
+      this.setState({
+        playlist_grid: this.state.playlist_grid - 1 
+      })
+    } else {
+      this.setState({
+        playlist_grid: this.state.playlist_grid + 1 
+      })
+    }
+    this.getGridSize(this.state.playlist_grid);
+  }
+
   mapPlaylistCovers() {
     let data = this.state.playlists;
     let keys = Object.keys(data);
@@ -136,7 +156,7 @@ class App extends Component {
     });
 
     return (
-      <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr"}}>
+      <div style={{display: "grid", gridTemplateColumns: this.getGridSize(this.state.playlist_grid)}} >
         {allPlaylistCovers}
       </div>
     )
@@ -202,6 +222,18 @@ class App extends Component {
             }
           </section>
           <div className="playlist_container">
+            <div>
+              {this.state.playlist_grid >= 7 ?
+                <p>grid MAXED</p>
+                :
+                <p onClick={() => this.changeGridAmount('up')}>grid up</p>
+              }
+              {this.state.playlist_grid <= 3 ?
+                <p>grid LOWEST</p>
+                :
+                <p onClick={() => this.changeGridAmount('down')}>grid down</p>
+              }
+            </div>
             {this.state.playlist_loading ? 
               <h5>loading</h5>
               : 
