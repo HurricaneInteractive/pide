@@ -36,7 +36,8 @@ class PlaylistInvididual extends Component {
       {
         key: 'id',
         name: 'ID',
-        width: 80
+        sortable: true,
+        width: 40
       },
       {
         key: 'title',
@@ -60,13 +61,15 @@ class PlaylistInvididual extends Component {
         key: 'length',
         name: 'Length',
         filterable: true,
-        sortable: true
+        sortable: true,
+        width: 120
       },
       {
         key: 'key',
         name: 'Key',
         filterable: true,
-        sortable: true
+        sortable: true,
+        width: 80
       }
     ];
   }
