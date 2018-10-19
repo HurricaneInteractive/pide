@@ -179,3 +179,67 @@
     }
   }
 }
+
+
+.react-grid-Canvas, .react-grid-Cell, .react-grid-Row, .react-grid-HeaderCell, .react-grid-HeaderRow, .react-grid-Header, .react-grid-Grid, .react-grid-Main, .react-grid-Toolbar, .react-grid-Grid, .react-grid-Container {
+  background-color: none !important;
+  background: none !important;
+  color: hsla(0,0%,100%,.6) !important;
+  text-align: left;
+  border: none;
+  outline: none !important;
+  box-shadow: none !important;
+}
+.react-grid-Cell, .react-grid-HeaderCell {
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  height: 100% !important;
+}
+.react-grid-Cell {
+  transition: .5s;
+  &:hover {
+    transition: .5s;
+    width: auto !important;
+    background-color: #282828 !important;
+    z-index: 9999999;
+    div {
+      div {
+        span {
+          div {
+            transition: .5s;
+            color: hsla(0,0%,100%,1) !important;
+          }
+        }
+      }
+    }
+  }
+  div {
+    div {
+      span {
+        div {
+          transition: .5s;
+          color: hsla(0,0%,100%,.6) !important;
+          z-index: 9999999;
+        }
+      }
+    }
+  }
+}
+.react-grid-Row {
+  height: 48px !important;
+  border-bottom: 1px solid hsla(0,0%,100%,.3);
+}
+.react-grid-Grid {
+  border: none !important;
+}
+.react-grid-Toolbar {
+  border: solid transparent 0px;
+  border-width: 0px !important;
+  .tools {
+    button {
+      background: transparent;
+      color: white;
+    }
+  }
+}

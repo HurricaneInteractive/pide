@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import axios from 'axios'
+import musicKey from '../content/musicKey'
 import paprikaImg from '../content/paprika.jpg'
 
 const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
@@ -17,6 +18,7 @@ class PlaylistInvididual extends Component {
     this.state = {
       playlist_data: null,
       all_tracks_data: [],
+      allExtraTrackData: null,
       tracks_data: null,
       tracks_ids: [],
       danceability: 0,
@@ -57,6 +59,12 @@ class PlaylistInvididual extends Component {
       {
         key: 'length',
         name: 'Length',
+        filterable: true,
+        sortable: true
+      },
+      {
+        key: 'key',
+        name: 'Key',
         filterable: true,
         sortable: true
       }
@@ -103,17 +111,22 @@ class PlaylistInvididual extends Component {
     let rows = [];
     let numberOfRows = this.state.all_tracks_data.length;
     for (let i = 0; i < numberOfRows; i++) {
-      let seconds = (this.state.all_tracks_data[i].duration_ms) / 1000;
+      let seconds = (this.state.all_tracks_data[i].track.duration_ms) / 1000;
       let minutes = seconds/60;
-
       let timeString = Math.floor(minutes);
-      console.log('this.state.all_tracks_data[i] => ', this.state.all_tracks_data[i])
-      console.log('this.state.all_tracks_data[i].track => ', this.state.all_tracks_data[i].track)
+      let keyNumber = 'null';
+      if (this.state.allExtraTrackData[i] !== null) {
+        keyNumber = musicKey[this.state.allExtraTrackData[i].key];
+      }
+      console.log('allExtraTrackData => ', this.state.allExtraTrackData)
+      // console.log('allExtraTrackData => ', this.state.allExtraTrackData[i])
       rows.push({
         id: i + 1,
         title: this.state.all_tracks_data[i].track.name,
         artist: this.state.all_tracks_data[i].track.artists[0].name,
+        album: this.state.all_tracks_data[i].track.album.name,
         length: timeString + ':' + seconds,
+        key: keyNumber,
       });
     }
     return rows;
@@ -166,6 +179,9 @@ class PlaylistInvididual extends Component {
     }).then(res => {
       console.warn("res.data => ", res.data)
       let trackData = res.data.audio_features;
+      this.setState({
+        allExtraTrackData: trackData
+      });
       let danceability = 0;
       let energy = 0;
       let liveness = 0;
@@ -183,18 +199,9 @@ class PlaylistInvididual extends Component {
         console.log('trackLength => ', trackLength)
       }
 
-      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> danceability', danceability);
-      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> energy', energy);
-      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> liveness', liveness);
-
-
       danceability = Math.round((danceability / trackData.length) * 100);
       energy = Math.round((energy / trackData.length) * 100);
       liveness = Math.round((liveness / trackData.length) * 100);
-      
-      console.log('danceability => ', danceability)
-      console.log('energy => ', energy)
-      console.log('liveness => ', liveness)
 
       this.setState({
         danceability: danceability,
