@@ -1,25 +1,123 @@
 import React, { Component } from 'react';
+import ReactDataGrid from 'react-data-grid';
 import axios from 'axios'
-
 import paprikaImg from '../content/paprika.jpg'
+
+const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
 const AUTH_TOKEN = window.sessionStorage.access_token
 const REFRESH_TOKEN = window.sessionStorage.refresh_token
 
+
 class PlaylistInvididual extends Component {
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
 
     this.state = {
       playlist_data: null,
+      all_tracks_data: [],
       tracks_data: null,
       tracks_ids: [],
       danceability: 0,
       energy: 0,
       liveness: 0,
+      data_loading: true,
+
+      rows: null,
+      filters: {},
+      sortColumn: null,
+      sortDirection: null
     }
+
+    this._columns = [
+      {
+        key: 'id',
+        name: 'ID',
+        width: 80
+      },
+      {
+        key: 'title',
+        name: 'Title',
+        filterable: true,
+        sortable: true
+      },
+      {
+        key: 'artist',
+        name: 'Artist',
+        filterable: true,
+        sortable: true
+      },
+      {
+        key: 'album',
+        name: 'Album',
+        filterable: true,
+        sortable: true
+      },
+      {
+        key: 'length',
+        name: 'Length',
+        filterable: true,
+        sortable: true
+      }
+    ];
   }
+
+  getRandomDate = (start, end) => {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
+  };
+
+  getRows = () => {
+    return Selectors.getRows(this.state);
+  };
+
+  getSize = () => {
+    return this.getRows().length;
+  };
+
+  rowGetter = (rowIdx) => {
+    const rows = this.getRows();
+    return rows[rowIdx];
+  };
+
+  handleGridSort = (sortColumn, sortDirection) => {
+    this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
+  };
+
+  handleFilterChange = (filter) => {
+    let newFilters = Object.assign({}, this.state.filters);
+    if (filter.filterTerm) {
+      newFilters[filter.column.key] = filter;
+    } else {
+      delete newFilters[filter.column.key];
+    }
+
+    this.setState({ filters: newFilters });
+  };
+
+  onClearFilters = () => {
+    this.setState({ filters: {} });
+  };
+
+  createRows = () => {
+    let rows = [];
+    let numberOfRows = this.state.all_tracks_data.length;
+    for (let i = 0; i < numberOfRows; i++) {
+      let seconds = (this.state.all_tracks_data[i].duration_ms) / 1000;
+      let minutes = seconds/60;
+
+      let timeString = Math.floor(minutes);
+      console.log('this.state.all_tracks_data[i] => ', this.state.all_tracks_data[i])
+      console.log('this.state.all_tracks_data[i].track => ', this.state.all_tracks_data[i].track)
+      rows.push({
+        id: i + 1,
+        title: this.state.all_tracks_data[i].track.name,
+        artist: this.state.all_tracks_data[i].track.artists[0].name,
+        length: timeString + ':' + seconds,
+      });
+    }
+    return rows;
+  };
 
   componentDidMount() {
     console.log('this.props.data (componentDidMount) => ', this.props.data)
@@ -43,6 +141,7 @@ class PlaylistInvididual extends Component {
 
       this.setState({
         tracks_ids: tracks_ids,
+        all_tracks_data: res.data.items,
         playlists_total: res.data.total
       });
 
@@ -100,7 +199,9 @@ class PlaylistInvididual extends Component {
       this.setState({
         danceability: danceability,
         energy: energy,
-        liveness: liveness
+        liveness: liveness,
+        data_loading: false,
+        rows: this.createRows(1000)
       });
 
 
@@ -155,7 +256,23 @@ class PlaylistInvididual extends Component {
                 Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
               </p>
               <div className="all_tracks">
+              {this.state.data_loading ?
+                'loading'
+                :
+                <ReactDataGrid
+                  onGridSort={this.handleGridSort}
+                  enableCellSelect={true}
+                  columns={this._columns}
+                  rowGetter={this.rowGetter}
+                  rowsCount={this.getSize()}
+                  minHeight={500}
+                  toolbar={<Toolbar enableFilter={true}/>}
+                  onAddFilter={this.handleFilterChange}
+                  onClearFilters={this.onClearFilters}
+                />
                 
+              }
+              
               </div>
             </div>
           </div>
