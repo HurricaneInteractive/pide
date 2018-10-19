@@ -118,8 +118,6 @@ class PlaylistInvididual extends Component {
       if (this.state.allExtraTrackData[i] !== null) {
         keyNumber = musicKey[this.state.allExtraTrackData[i].key];
       }
-      console.log('allExtraTrackData => ', this.state.allExtraTrackData)
-      // console.log('allExtraTrackData => ', this.state.allExtraTrackData[i])
       rows.push({
         id: i + 1,
         title: this.state.all_tracks_data[i].track.name,
@@ -147,12 +145,16 @@ class PlaylistInvididual extends Component {
     }).then(res => {
       console.warn("res.data => ", res.data)
       let tracks_ids = [];
+      let total_time = 0;
       for (let i = 0, len = res.data.items.length; i < len; i++) {
         const addId = res.data.items[i].track.id;
+        const addDuration = res.data.items[i].track.duration_ms;
         tracks_ids.push(addId);
+        total_time += addDuration;
       }
 
       this.setState({
+        playlist_duration: total_time,
         tracks_ids: tracks_ids,
         all_tracks_data: res.data.items,
         playlists_total: res.data.total
@@ -224,6 +226,15 @@ class PlaylistInvididual extends Component {
       imageURL = playlist_image.url;
     }
 
+    let playlist_ms = this.state.playlist_duration;
+    let playlist_seconds = playlist_ms / 1000;
+    let playlist_mins = playlist_seconds / 60;
+    console.log('TCL: PlaylistInvididual -> render -> playlist_mins', playlist_mins);
+    let playlist_hrs = playlist_mins / 60;
+    console.log('TCL: PlaylistInvididual -> render -> playlist_hrs', playlist_hrs);
+    let playlist_days = playlist_hrs / 24;
+    console.log('TCL: PlaylistInvididual -> render -> playlist_days', playlist_days);
+
 
     return (
       <>
@@ -235,7 +246,9 @@ class PlaylistInvididual extends Component {
               <img src={imageURL} alt="playlist artwork"/>
               <div className="meta_box">
                 <h1>{this.props.data.name}</h1>
-                <h3>Created by <span>{this.props.data.owner.display_name}</span></h3>
+                <h3>Created by <span>{this.props.data.owner.display_name}</span>
+                  {this.state.data_loading ? null : <p>{playlist_hrs}</p>}
+                </h3>
                 <div className="playlist_stats">
 
                   <div>
