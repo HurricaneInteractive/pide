@@ -66,10 +66,10 @@
 }
 
 .playlist_overlay {
-  position: fixed;
+  position: absolute;
   width: 80%;
-  margin: 10% 10% 0;
-  height: 100%;
+  margin: 10% 10%;
+  // height: 100%;
   top: 0;
   left: 0;
   right: 0;
@@ -124,7 +124,7 @@
       }
     }
     .playlist_content {
-      padding: 24px;
+      padding: 24px 24px 48px;
     }
   }
 }

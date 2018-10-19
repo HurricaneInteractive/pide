@@ -17,7 +17,7 @@ class PlaylistInvididual extends Component {
       tracks_ids: [],
       danceability: 0,
       energy: 0,
-      liveness: 0
+      liveness: 0,
     }
   }
 
@@ -72,16 +72,27 @@ class PlaylistInvididual extends Component {
       let liveness = 0;
       // let tracks_ids = [];
       console.log('trackData => ', trackData);
+      let trackLength = trackData.length;
       for (let i = 0, len = trackData.length; i < len; i++) {
-        danceability += trackData[i].danceability;
-        energy += trackData[i].energy;
-        liveness += trackData[i].liveness;
+        if (trackData[i] !== null) {
+          danceability += trackData[i].danceability;
+          energy += trackData[i].energy;
+          liveness += trackData[i].liveness;
+        } else {
+          trackLength = trackLength - 1;
+        }
+        console.log('trackLength => ', trackLength)
       }
+
+      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> danceability', danceability);
+      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> energy', energy);
+      console.log('TCL: PlaylistInvididual -> getExtensiveTracksData -> liveness', liveness);
+
 
       danceability = Math.round((danceability / trackData.length) * 100);
       energy = Math.round((energy / trackData.length) * 100);
       liveness = Math.round((liveness / trackData.length) * 100);
-
+      
       console.log('danceability => ', danceability)
       console.log('energy => ', energy)
       console.log('liveness => ', liveness)
@@ -105,9 +116,6 @@ class PlaylistInvididual extends Component {
       imageURL = playlist_image.url;
     }
 
-    // this.getExtensiveTracksData(this.state.tracks_data);
-
-    // this.getTracksData();
 
     return (
       <>
@@ -146,6 +154,9 @@ class PlaylistInvididual extends Component {
                 <br></br>
                 Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
               </p>
+              <div className="all_tracks">
+                
+              </div>
             </div>
           </div>
         </section>
