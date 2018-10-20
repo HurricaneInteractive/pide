@@ -1,0 +1,8 @@
+<h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Favourite Genres</h2>
+<p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">Displaying data based on the first {{genres.length}} saved tracks.</p>
+<ul class="popular-genres">
+  <li *ngFor="let genre of top_ten" [ngsReveal]="{reset:true}">
+    <p class="h6 text--bold m-0 m-b-5 text--uppercase text--center">{{genre.genre}}&nbsp;<span class="c-grey">({{genre.count}} songs)</span></p>
+    <div class="percentage bg-content"><div class="bar bg-green" [ngStyle]="{'width.%': genre.percentage}"></div></div>
+  </li>
+</ul>
