@@ -10,6 +10,7 @@
     "react-data-grid": "^4.0.8",
     "react-data-grid-addons": "^4.0.8",
     "react-dom": "^16.5.2",
+    "react-helmet": "^5.2.0",
     "react-scripts": "2.0.4"
   },
   "scripts": {
