@@ -1,4 +1,5 @@
 .versus-grid {
-    @include grid();
-    @include grid-column();
+    @include grid(center);
+    // @include grid-column(75%, 0px);
+    grid-template-columns: 75%;
 }
