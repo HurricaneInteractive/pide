@@ -1,7 +1,34 @@
-<div class="wrapper" *ngIf="tracks" [ngsReveal]="{reset:true}">
+<div class="wrapper" *ngIf="tracks && trackStatistics" [ngsReveal]="{reset:true}">
   <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Popularity</h2>
   <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">Do you good taste in music?</p>
-  <app-line-chart [data]="tracks"></app-line-chart>
+  <app-line-chart
+    [data]="tracks"
+    [type]="'bar'"
+    [labelkey]="'name'"
+    [datakey]="'popularity'"
+  ></app-line-chart>
+
+  <p class="h1 text--center m-b-20" [ngsReveal]="{reset:true}">Your saved tracks has a <span class="c-green">{{ trackStatistics.popularity }}</span> average rating.</p>
+  
+  <div class="popular-showcase" *ngIf="trackStatistics" [ngsReveal]="{reset:true}">
+    <div class="most-popular">
+        <div class="feature" [style.backgroundImage]="'url(' + trackStatistics.mostPopularSong.album.images[1].url + ')'">
+          <div class="content">
+            <span class="name">{{ trackStatistics.mostPopularSong.name }}</span>
+            <span class="pop h1">{{ trackStatistics.mostPopularSong.popularity }}</span>
+          </div>
+        </div>
+    </div>
+    <div class="least-popular">
+        <div class="feature" [style.backgroundImage]="'url(' + trackStatistics.leastPopularSong.album.images[1].url + ')'">
+          <div class="content">
+            <span class="name">{{ trackStatistics.leastPopularSong.name }}</span>
+            <span class="pop h1">{{ trackStatistics.leastPopularSong.popularity }}</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="wrapper" *ngIf="trackStatistics">
@@ -36,6 +63,27 @@
   <app-popular-genres
     [genres]="genreComputed"
   ></app-popular-genres>
+</div>
+
+<div class="wrapper" *ngIf="tracks" [ngsReveal]="{reset:true}">
+  <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Duration</h2>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How long does your songs go for?</p>
+  <app-line-chart
+    [data]="tracks"
+    [type]="'line'"
+    [labelkey]="'name'"
+    [datakey]="'duration_ms'"
+  ></app-line-chart>
+  <div class="time-stats" *ngIf="trackStatistics">
+    <p class="text--center m-t-0 h1">The "Time" line</p>
+    <ul class="timeline">
+      <li><span>{{ trackStatistics.totalMs }} milliseconds</span></li>
+      <li><span>{{ trackStatistics.timing.seconds }} seconds</span></li>
+      <li><span>{{ trackStatistics.timing.minutes }} minutes</span></li>
+      <li><span>{{ trackStatistics.timing.hours }} hours</span></li>
+      <li><span>{{ trackStatistics.timing.days }} days</span></li>
+    </ul>
+  </div>
 </div>
 
 <div class="wrapper" *ngIf="trackStatistics">
