@@ -16,8 +16,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: calc(#{$pc-size} - #{$pc-ring-size});
-        height: calc(#{$pc-size} - #{$pc-ring-size});
+        width: calc(100% - #{$pc-ring-size});
+        height: calc(100% - #{$pc-ring-size});
         border-radius: 50%;
         background: get-colour('white');
         color: get-colour('content');
@@ -35,7 +35,7 @@
     @for $i from 0 through $pc-loops {
         &[data-progress='#{$i * $pc-step}']:after {
             @if $i < $pc-half {
-                $next-deg: 90deg + $pc-increment + $i;
+                $next-deg: 90deg + $pc-increment * $i;
                 background-image: linear-gradient(90deg, get-colour($pc-bg-colour) 50%, transparent 50%, transparent), linear-gradient($next-deg, get-colour($pc-status-colour) 50%, get-colour($pc-bg-colour) 50%, get-colour($pc-bg-colour));
             }
             @else {
