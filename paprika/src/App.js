@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import {Helmet} from "react-helmet";
+// eslint-disable-next-line
 import axios from 'axios'
 import Parser from 'html-react-parser';
 import './App.scss';
 import paprikaImg from './content/paprika.jpg'
 // import filler from './filler.json'
 
-import { getUserData, getAllUserPlaylists, getAllTracksInPlaylists } from './getSpotifyData'
+import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks } from './getSpotifyData'
 
+// eslint-disable-next-line
 import PlaylistInvididual from './components/playlistIndividual'
 
 // https://countryflags.io/ could be used to get user location flag
 
+// eslint-disable-next-line
 const AUTH_TOKEN = window.sessionStorage.access_token
 // const REFRESH_TOKEN = window.sessionStorage.refresh_token
 
@@ -83,7 +86,7 @@ class App extends Component {
   componentDidMount() {
     console.log('before getUserData')
     getUserData().then(res => {
-      console.log('cheese => ', res.data);
+      // console.log('cheese => ', res.data);
       this.setState({
         user: res.data,
         user_loading: false
@@ -91,39 +94,25 @@ class App extends Component {
     });
 
     getAllUserPlaylists().then(res => {
-      console.log('getAllUserPlaylists() res.data => ', res.data)
-      // this.setState({
-      //   playlists: res.data.playlists
-      // });
-    });
-    
-    // console.log('getAllTracksInPlaylists() => ', getAllTracksInPlaylists())
+      console.warn('COMPONENT getAllUserPlaylists() res.data => ', res.data)
+      this.setState({
+        playlists: res.data
+      });
+      console.log('%c COMPONENT AFTER getAllUserPlaylists() => ', p)
 
-    // playlist requests
-    // axios({
-    //   method: 'get',
-    //   url: 'https://api.spotify.com/v1/me/playlists',
-    //   params: {
-    //     limit: 50,
-    //     offset: 0
-    //   },
-    //   headers: {
-    //     Authorization: "Bearer " + AUTH_TOKEN
-    //   }
-    // }).then(res => {
-    //   const current = this.state.playlists;
-    //   for (let i = 0, len = res.data.items.length; i < len; i++) {
-    //     const addThisPlaylist = res.data.items[i];
-    //     current.push(addThisPlaylist);
-    //   }
-
-    //   this.setState({
-    //     playlists: current,
-    //     playlists_total: res.data.total
-    //   });
+      // pass in all playlist data as variable
+      const p = ["background: rgb(11, 11, 13)", "color: rgb(217, 178, 98)", "border: 1px solid rgb(217, 178, 98)", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
       
-    //   this.getNumberOfTimesPlaylistsNeedsToBeRun(res.data.total);
-    // })
+      // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
+      // returns about 2000k songs - more than enough to play with
+      getFirstFiftyPlaylistTracks(res.data).then(res => {
+        console.log('%c COMPONENT getFirstFiftyPlaylistTracks() => ', p)
+        console.warn('COMPONENT getFirstFiftyPlaylistTracks() => ', res.data)
+        this.setState({
+          tracks: res.data
+        });
+      })
+    });
   }
 
   getGridSize(number) {
@@ -131,7 +120,6 @@ class App extends Component {
     console.log('grid => ', grid)
     return grid
   }
-
   
   changeGridAmount(val) {
     if (val === 'down') {

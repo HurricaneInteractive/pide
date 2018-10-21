@@ -7,6 +7,9 @@ let allPlaylists = [];
 let allTracks = [];
 let allTracksExtensive = [];
 
+const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
+
+
 export function getUserData(val){
   return axios({
     method: 'get',
@@ -33,7 +36,7 @@ export function getAllUserPlaylists() {
     transformResponse: [function (data) {
       // Do whatever you want to transform the data
       let res = JSON.parse(data);
-      console.log('res => ', res)
+      console.warn('getAllUserPlaylists => ', res)
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];
         allPlaylists.push(addThisPlaylist);
@@ -46,52 +49,12 @@ export function getAllUserPlaylists() {
   function getNumberOfTimesPlaylistsNeedsToBeRun(total) {
     console.log('we running getNumberOfTimesPlaylistsNeedsToBeRun(total) =>', total)
     let runThisManyTimes = (Math.ceil(total / 50)) + 1;
+    // let runThisManyTimes = 5;
 
     for (let i = 1; i < runThisManyTimes; i++) {
       let nextNumber = i * 50;
       getPlaylistsRequest(nextNumber)
     }
-  }
-
-  // get default track data by track_id
-  function trackReqRegular(url) {
-    axios({
-      method: 'get',
-      url: url,
-      // url: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50',
-      headers: {
-        Authorization: "Bearer " + AUTH_TOKEN
-      },
-      transformResponse: [function (data) {
-        // Do whatever you want to transform the data
-        let res = JSON.parse(data);
-        for (let i = 0, len = res.items.length; i < len; i++) {
-          const addPlaylistSongs = res.items[i];
-          const track_id = res.items[i].track.id;
-          allTracks.push(addPlaylistSongs);
-          trackReqExtensive(track_id);
-        }
-        console.log('allTracks => ', allTracks)
-      }],
-    });
-  }
-
-  // audio feature by track_id
-  function trackReqExtensive(track_id) {
-    axios({
-      method: 'get',
-      url: 'https://api.spotify.com/v1/audio-features/' + track_id,
-      headers: {
-        Authorization: "Bearer " + AUTH_TOKEN
-      },
-      transformResponse: [function (data) {
-        // Do whatever you want to transform the data
-        let res = JSON.parse(data);
-        console.log('res => ', res)
-        const addPlaylistSongs = res;
-        allTracksExtensive.push(addPlaylistSongs);
-      }],
-    });
   }
 
   // get all users playlists
@@ -107,27 +70,116 @@ export function getAllUserPlaylists() {
         Authorization: "Bearer " + AUTH_TOKEN
       }
     }).then(res => {
+      console.log('getPlaylistsRequest() res.data => ', res.data)
 
       for (let i = 0, len = res.data.items.length; i < len; i++) {
         const addThisPlaylist = res.data.items[i];
         allPlaylists.push(addThisPlaylist);
-        // run get tracks function
-        setInterval(() => {
-          console.log('running on setInterval 2000ms')
-        }, 2000);
-        setTimeout(() => {
-          console.log('running on setTimeout 2000ms')
-        }, 2000);
-        setTimeout(() => {
-          console.log('running on setTimeout 5000ms')
-        }, 5000);
-        setTimeout(() => {
-          console.log('running on setTimeout 7000ms')
-        }, 7000);
-        // setTimeout(() => {
-        //   trackReqRegular(addThisPlaylist.tracks.href)
-        // }, 5000);
       }
     });
   }
 }
+
+// --------------------------------------------------------------
+
+export function getFirstFiftyPlaylistTracks(playlist_data) {
+  // set limit of songs to call
+  let maxTrackCall = 50;
+  return axios({
+    method: 'get',
+    url: playlist_data[0].tracks.href,
+    params: {
+      limit: maxTrackCall
+    },
+    headers: {
+      Authorization: "Bearer " + AUTH_TOKEN
+    },
+    transformResponse: [function (data) {
+      
+      // Do whatever you want to transform the data
+      let res = JSON.parse(data);
+      console.warn('res => ', res)
+      console.log('res => ', res)
+      console.log('res => ', res)
+      console.log('res => ', res)
+      let playlistLength = 0;
+      if (data === undefined) {
+        console.error('data undefined -_-')
+      }
+
+      if (res.items !== undefined || null) {
+        playlistLength = res.items.length
+      } else {
+        console.log('length undefined', res)
+      }
+      for (let i = 0, len = playlistLength; i < len; i++) {
+        let addPlaylistSongs = res.items[i];
+
+        if (res.items[i] !== null) {
+          allTracks.push(addPlaylistSongs);
+        } else {
+          console.log('null track => ', res.items[i])
+        }
+      }
+      getTheRestPlaylists();
+      return allTracks;
+    }],
+  });
+
+  // get default track data by track_id
+  function getTheRestPlaylists() {
+    // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
+    console.log('%c BEFORE for loop (logPlaylists) => ', p)
+    // set max playlists to query
+    let totalPlaylistsQueried = 50;
+    for (let i = 1; i < totalPlaylistsQueried; i++) {
+      getOtherPlaylistsData(playlist_data[i].tracks.href);
+    }
+    console.log('%c AFTER for loop (logPlaylists) => ', p)
+  }
+
+  function getOtherPlaylistsData(url) {
+    console.log('getOtherPlaylistsData(url) => ', url)
+    // sets total tracks to query from playlist
+    const totalTracksQueried = 50;
+    axios({
+      method: 'get',
+      url: url,
+      params: {
+        limit: totalTracksQueried
+      },
+      headers: {
+        Authorization: "Bearer " + AUTH_TOKEN
+      },
+      transformResponse: [function (data) {
+        
+        // parses the RAW string data into a JSON object
+        let res = JSON.parse(data);
+        let playlistLength = 0;
+        if (data === undefined) {
+          console.error('data undefined -_-')
+        }
+  
+        if (res.items !== undefined || null) {
+          playlistLength = res.items.length
+        } else {
+          console.log('length undefined', res)
+        }
+        for (let i = 0, len = playlistLength; i < len; i++) {
+          let addPlaylistSongs = res.items[i];
+  
+          if (res.items[i] !== null) {
+            allTracks.push(addPlaylistSongs);
+          } else {
+            console.log('null track => ', res.items[i])
+          }
+        }
+          
+        console.log('%c END of (getOtherPlaylistsData) => ', p)
+        return allTracks;
+      }],
+    });
+  }
+}
+
+// --------------------------------------------------------------
