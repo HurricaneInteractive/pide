@@ -6,11 +6,17 @@ import Parser from 'html-react-parser';
 import './App.scss';
 import paprikaImg from './content/paprika.jpg'
 // import filler from './filler.json'
-
-import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks } from './getSpotifyData'
+import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks, getAllPlaylistDataById } from './getSpotifyData'
 
 // eslint-disable-next-line
 import PlaylistInvididual from './components/playlistIndividual'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTh, faThLarge } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faTh, faThLarge)
+
 
 // https://countryflags.io/ could be used to get user location flag
 
@@ -96,7 +102,8 @@ class App extends Component {
     getAllUserPlaylists().then(res => {
       console.warn('COMPONENT getAllUserPlaylists() res.data => ', res.data)
       this.setState({
-        playlists: res.data
+        playlists: res.data,
+        playlist_loading: false
       });
       console.log('%c COMPONENT AFTER getAllUserPlaylists() => ', p)
 
@@ -141,19 +148,23 @@ class App extends Component {
     let allPlaylistCovers = keys.map(key => {
       const playlist_image = data[key].images[0] || null;
       let imageURL = paprikaImg;
+      let display_name = 'user';
 
       if (playlist_image !== null) {
         imageURL = playlist_image.url;
       }
+      if (data[key].owner.display_name !== null) {
+        display_name = data[key].owner.display_name
+      }
       return (
-        <div className="playlist_single_container" key={key}>
+        <div className="playlist_single_container" key={key} >
           <div onClick={() => this.openPlaylist(data[key])} className="playlist_image">
             <img src={imageURL} key={key} alt={key}/>
             <div className="playlist_image_overlay">{Parser(music_icon)}</div>
           </div>
           <div className="playlist_title">
             <h4 onClick={() => this.openPlaylist(data[key])}>{data[key].name}</h4>
-            <h6>{data[key].owner.display_name}</h6>
+            <h6>{display_name}</h6>
           </div>
         </div>
       )
@@ -168,6 +179,7 @@ class App extends Component {
 
 
   openPlaylist(val) {
+    getAllPlaylistDataById(val.id)
     console.log('open playlist (val) => ', val)
     this.setState({ playlist_view: true, current_playlist: val });
   }
@@ -199,7 +211,7 @@ class App extends Component {
 
           <div className="absolute-background"/>
 
-          {/* {this.state.playlist_view ?
+          {this.state.playlist_view ?
             <PlaylistInvididual
               show={this.state.playlist_view}
               hidePlaylistView={this.hidePlaylistView}
@@ -207,7 +219,7 @@ class App extends Component {
             />
             :
             null
-          } */}
+          }
 
           <div className="app-container">
             <header className="bg-white">
@@ -237,25 +249,28 @@ class App extends Component {
                 </>
               }
             </section>
-            {/* <div className="playlist_container">
-              <div>
-                {this.state.playlist_grid >= 7 ?
-                  <p>grid MAXED</p>
-                  :
-                  <p onClick={() => this.changeGridAmount('up')}>grid up</p>
-                }
-                {this.state.playlist_grid <= 3 ?
-                  <p>grid LOWEST</p>
-                  :
-                  <p onClick={() => this.changeGridAmount('down')}>grid down</p>
-                }
+            <div className="playlist_container">
+              <div className="playlist_header">
+                <h2>User Playlists</h2>
+                <div className="layout_size">
+                  {this.state.playlist_grid >= 7 ?
+                    <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
+                    :
+                    <div className="button enabled" onClick={() => this.changeGridAmount('up')}><FontAwesomeIcon icon="th"/></div>
+                  }
+                  {this.state.playlist_grid <= 3 ?
+                    <div className="button disabled"><FontAwesomeIcon icon="th-large" /></div>
+                    :
+                    <div className="button enabled" onClick={() => this.changeGridAmount('down')}><FontAwesomeIcon icon="th-large" /></div>
+                  }
+                </div>
               </div>
               {this.state.playlist_loading ? 
                 <h5>loading playlist data</h5>
                 : 
                 this.mapPlaylistCovers()
               }
-            </div> */}
+            </div>
           </div>
         </div>
       </>

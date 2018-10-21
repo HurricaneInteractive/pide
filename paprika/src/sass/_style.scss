@@ -152,10 +152,65 @@
 
 
 // playlists
-.playlist_container {
+.playlist_header {
   padding: 0 32px;
   max-width: 1400px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  h2 {
+    justify-self: flex-start;
+    text-decoration: underline;
+    text-decoration-color: #1DB954;
+  }
+  .layout_size {
+    justify-self: flex-end;
+    display: flex;
+    align-content: center;
+    margin: 16px 0;
+    .button {
+      justify-self: flex-end;
+      padding: 16px;
+      margin: 8px;
+      background-color: #282828;
+      border: 1px solid hsla(0,0%,100%,.6);
+      border-radius: 50%;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      transition: .5s;
+      cursor: pointer;
+      svg {
+        transition: .5s;
+      }
+      &:hover {
+        border: 1px solid #1DB954;
+        transition: .5s;
+        svg {
+          transition: .5s;
+          color: hsla(0,0%,100%,.6);
+        }
+      }
+    }
+    .enabled {
+      svg {
+        color: hsla(0,0%,100%,.3);
+      }
+    }
+    .disabled {
+      &:hover {
+        border: 1px solid rgb(185, 29, 29);
+        transition: .5s;
+        svg {
+          transition: .5s;
+          color: #3B3738;
+        }
+      }
+      svg {
+        color: #3B3738;
+      }
+    }
+  }
 }
 .playlist_single_container {
   padding: 0 8px;

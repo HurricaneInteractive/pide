@@ -98,10 +98,6 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
       
       // Do whatever you want to transform the data
       let res = JSON.parse(data);
-      console.warn('res => ', res)
-      console.log('res => ', res)
-      console.log('res => ', res)
-      console.log('res => ', res)
       let playlistLength = 0;
       if (data === undefined) {
         console.error('data undefined -_-')
@@ -139,7 +135,6 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
   }
 
   function getOtherPlaylistsData(url) {
-    console.log('getOtherPlaylistsData(url) => ', url)
     // sets total tracks to query from playlist
     const totalTracksQueried = 50;
     axios({
@@ -183,3 +178,41 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
 }
 
 // --------------------------------------------------------------
+
+
+export function getAllPlaylistDataById(playlist_id) {
+  let current_playlist_tracks = [];
+  return axios({
+    method: 'get',
+    url: 'https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks',
+    headers: {
+      Authorization: "Bearer " + AUTH_TOKEN
+    },
+    transformResponse: [function (data) {
+      // parses the RAW string data into a JSON object
+      let res = JSON.parse(data);
+      let playlistLength = 0;
+      if (data === undefined) {
+        console.error('data undefined -_-')
+      }
+
+      if (res.items !== undefined || null) {
+        playlistLength = res.items.length
+      } else {
+        console.log('length undefined', res)
+      }
+      for (let i = 0, len = playlistLength; i < len; i++) {
+        let addPlaylistSongs = res.items[i];
+
+        if (res.items[i] !== null) {
+          current_playlist_tracks.push(addPlaylistSongs);
+        } else {
+          console.log('null track => ', res.items[i])
+        }
+      }
+        
+      console.log('%c END of (getAllPlaylistDataById) => ', p)
+      return current_playlist_tracks;
+    }],
+  });
+}

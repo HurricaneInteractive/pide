@@ -293,9 +293,7 @@ class PlaylistInvididual extends Component {
                   onAddFilter={this.handleFilterChange}
                   onClearFilters={this.onClearFilters}
                 />
-                
               }
-              
               </div>
             </div>
           </div>
