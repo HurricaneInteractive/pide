@@ -6,6 +6,7 @@ const AUTH_TOKEN = window.sessionStorage.access_token
 let allPlaylists = [];
 let allPlaylistsObj = {};
 let allTracks = [];
+let totalPlaylistsQueried = 0;
 
 const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
@@ -45,7 +46,8 @@ export function getAllUserPlaylists() {
         Object.assign(allPlaylistsObj, pushMe)
       }
       getNumberOfTimesPlaylistsNeedsToBeRun(res.total);
-      return [allPlaylists, allPlaylistsObj];
+      // any values returned here are sent back to react
+      return [allPlaylists, allPlaylistsObj, res.total];
     }],
   });
 
@@ -72,7 +74,7 @@ export function getAllUserPlaylists() {
         Authorization: "Bearer " + AUTH_TOKEN
       }
     }).then(res => {
-      console.log('getPlaylistsRequest() res.data => ', res.data)
+      // console.log('getPlaylistsRequest() res.data => ', res.data)
 
       for (let i = 0, len = res.data.items.length; i < len; i++) {
         const addThisPlaylist = res.data.items[i];
@@ -120,31 +122,51 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
           console.log('null track => ', res.items[i])
         }
       }
-      getTheRestPlaylists();
-      return allTracks;
+      getTheRestPlaylists(playlist_data);
+      
+      console.warn(getTheRestPlaylists(playlist_data))
+
+      console.log('%c YOU MAY NOW RETURN => ', p)
+      console.log(allTracks)
+      console.log(totalPlaylistsQueried)
+      return [allTracks, totalPlaylistsQueried];
     }],
   });
 
   // get default track data by track_id
-  function getTheRestPlaylists() {
+  function getTheRestPlaylists(playlist_data) {
     console.log('%c BEFORE for loop (logPlaylists) => ', p)
+    console.log(playlist_data)
     // set max playlists to query
-    let totalPlaylistsQueried = 50;
+    let totalPlaylistsToQuery = 49;
+    console.log(playlist_data[0].tracks.href)
+    console.log(playlist_data[1].tracks.href)
     // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
-    for (let i = 1; i < totalPlaylistsQueried; i++) {
+    for (let i = 1; i < totalPlaylistsToQuery; i++) {
       getOtherPlaylistsData(playlist_data[i].tracks.href);
+      console.log('getOtherPlaylistsData(playlist_data[i].tracks.href)')
+      console.log(getOtherPlaylistsData(playlist_data[i].tracks.href))
     }
-    console.log('%c AFTER for loop (logPlaylists) => ', p)
+    
+    return [allTracks, totalPlaylistsQueried];
   }
 
   function getOtherPlaylistsData(url) {
-    // sets total tracks to query from playlist
-    const totalTracksQueried = 50;
-    axios({
+    // checks if total tracks is more than 2500 - if so, break ;)
+    let trackLength = allTracks.length;
+    console.log('TCL: getOtherPlaylistsData -> allTracks.length', allTracks.length);
+    if (trackLength <= 250) {
+      // totalPlaylistsToQuery = 0;
+      console.log('STOP THIS MADNESS... for the sake of the poor spotify API')
+      
+      return null;
+    }
+    return axios({
       method: 'get',
       url: url,
       params: {
-        limit: totalTracksQueried
+        // sets total tracks to query from playlist
+        limit: 50
       },
       headers: {
         Authorization: "Bearer " + AUTH_TOKEN
@@ -164,18 +186,19 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
         }
         for (let i = 0, len = playlistLength; i < len; i++) {
           let addPlaylistSongs = res.items[i];
+          console.log('TCL: getOtherPlaylistsData -> addPlaylistSongs', addPlaylistSongs);
   
           if (res.items[i] !== null) {
             allTracks.push(addPlaylistSongs);
           } else {
-            console.log('null track => ', res.items[i])
+            console.error('null track => ', res.items[i])
           }
         }
-          
         console.log('%c END of (getOtherPlaylistsData) => ', p)
-        return allTracks;
       }],
     });
+    
+    return allTracks;
   }
 }
 

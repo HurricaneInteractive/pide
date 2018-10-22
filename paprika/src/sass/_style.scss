@@ -36,6 +36,51 @@
   // font-size: calc(10px + 2vmin);
   // font-size: 72px;
   color: #1e3264;
+  .status_icons {
+    width: 48px;
+    display: inline-grid;
+    align-content: stretch;
+    justify-content: stretch;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 8px;
+    margin: 8px auto;
+    .country_flag {
+
+    }
+    .spotify_icon_div, .country_flag {      
+      transition: .05;
+      position: relative;
+      &:hover {
+        transition: .5s;
+        p {
+          transition: .5s;
+          top: -150%;
+          opacity: 1;
+        }
+        img {
+          opacity: .5;
+        }
+      }
+      p {
+        opacity: 0;
+        white-space: nowrap;
+        position: absolute;
+        top: -200%;
+        left: -150%;
+        height: 0px;
+        width: 0px;
+        font-size: 10px;
+        padding: 8px;
+        // background-color: teal;
+        color:  hsla(0,0%,100%,.3);
+        transition: .5s;
+      }
+      img {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+  }
   h1 {
     font-size:72px;
     line-height:82px;
