@@ -87,120 +87,188 @@ export function getAllUserPlaylists() {
 // --------------------------------------------------------------
 
 export function getFirstFiftyPlaylistTracks(playlist_data) {
-  // set limit of songs to call
-  let maxTrackCall = 50;
-  return axios({
-    method: 'get',
-    url: playlist_data[0].tracks.href,
-    params: {
-      limit: maxTrackCall
-    },
-    headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
-    },
-    transformResponse: [function (data) {
+  console.log('playlist_data => ', playlist_data);
 
-      
-      // Do whatever you want to transform the data
-      let res = JSON.parse(data);
-      let playlistLength = 0;
-      if (data === undefined) {
-        console.error('data undefined -_-')
-      }
+  let playlist_length = playlist_data.length;
 
-      if (res.items !== undefined || null) {
-        playlistLength = res.items.length
-      } else {
-        console.log('length undefined', res)
-      }
-      for (let i = 0, len = playlistLength; i < len; i++) {
-        let addPlaylistSongs = res.items[i];
-
-        if (res.items[i] !== null) {
-          allTracks.push(addPlaylistSongs);
-        } else {
-          console.log('null track => ', res.items[i])
-        }
-      }
-      getTheRestPlaylists(playlist_data);
-      
-      console.warn(getTheRestPlaylists(playlist_data))
-
-      console.log('%c YOU MAY NOW RETURN => ', p)
-      console.log(allTracks)
-      console.log(totalPlaylistsQueried)
-      return [allTracks, totalPlaylistsQueried];
-    }],
-  });
-
-  // get default track data by track_id
-  function getTheRestPlaylists(playlist_data) {
-    console.log('%c BEFORE for loop (logPlaylists) => ', p)
-    console.log(playlist_data)
-    // set max playlists to query
-    let totalPlaylistsToQuery = 49;
-    console.log(playlist_data[0].tracks.href)
-    console.log(playlist_data[1].tracks.href)
-    // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
-    for (let i = 1; i < totalPlaylistsToQuery; i++) {
-      getOtherPlaylistsData(playlist_data[i].tracks.href);
-      console.log('getOtherPlaylistsData(playlist_data[i].tracks.href)')
-      console.log(getOtherPlaylistsData(playlist_data[i].tracks.href))
-    }
-    
-    return [allTracks, totalPlaylistsQueried];
-  }
-
-  function getOtherPlaylistsData(url) {
-    // checks if total tracks is more than 2500 - if so, break ;)
-    let trackLength = allTracks.length;
-    console.log('TCL: getOtherPlaylistsData -> allTracks.length', allTracks.length);
-    if (trackLength <= 250) {
-      // totalPlaylistsToQuery = 0;
-      console.log('STOP THIS MADNESS... for the sake of the poor spotify API')
-      
-      return null;
-    }
-    return axios({
+  function requestPlaylistData(url) {
+    axios({
       method: 'get',
       url: url,
       params: {
-        // sets total tracks to query from playlist
-        limit: 50
+        limit: 2
       },
       headers: {
         Authorization: "Bearer " + AUTH_TOKEN
       },
       transformResponse: [function (data) {
-        // parses the RAW string data into a JSON object
+        // Parse raw data from string to JSON
         let res = JSON.parse(data);
-        let playlistLength = 0;
-        if (data === undefined) {
-          console.error('data undefined -_-')
-        }
-  
-        if (res.items !== undefined || null) {
-          playlistLength = res.items.length
-        } else {
-          console.log('length undefined', res)
-        }
-        for (let i = 0, len = playlistLength; i < len; i++) {
+
+        console.group('requestPlaylistData() res => ', res)
+
+        for (let i = 0; i < res.items.length; i++) {
           let addPlaylistSongs = res.items[i];
-          console.log('TCL: getOtherPlaylistsData -> addPlaylistSongs', addPlaylistSongs);
   
           if (res.items[i] !== null) {
             allTracks.push(addPlaylistSongs);
           } else {
-            console.error('null track => ', res.items[i])
+            console.log('null track => ', res.items[i])
           }
         }
-        console.log('%c END of (getOtherPlaylistsData) => ', p)
+        return allTracks;
       }],
+    }).then(res => {
+      console.log('.then(res => ', res)
+      return res;
     });
-    
-    return allTracks;
   }
+
+  // loops through all playlist and pushes the data to an axios req func
+  return new Promise(function(resolve, reject) {
+    // some code that fills in err if there is an error
+
+    console.log(playlist_length)
+    console.log(totalPlaylistsQueried)
+    let err = null;
+    if (playlist_length <= totalPlaylistsQueried) {
+      err = true
+    }
+    if (err) {
+      console.error('errors4days')
+      reject('error');
+    } else {
+      console.warn('success mate')
+      for (let i = 0; i < playlist_data.length; i++) {
+        requestPlaylistData(playlist_data[i].tracks.href)
+        totalPlaylistsQueried += 1;
+        console.groupEnd()
+        console.log(totalPlaylistsQueried)
+      }
+      console.log(playlist_length)
+      console.log(totalPlaylistsQueried)
+      resolve({
+        'playlist_data': playlist_data,
+        'allTracks': allTracks,
+        'totalPlaylistsQueried': totalPlaylistsQueried,
+      });
+    }
+  });
 }
+
+// export function getFirstFiftyPlaylistTracks(playlist_data) {
+//   // set limit of songs to call
+//   let maxTrackCall = 50;
+//   return axios({
+//     method: 'get',
+//     url: playlist_data[0].tracks.href,
+//     params: {
+//       limit: maxTrackCall
+//     },
+//     headers: {
+//       Authorization: "Bearer " + AUTH_TOKEN
+//     },
+//     transformResponse: [function (data) {
+//       // Parse raw data from string to JSON
+//       let res = JSON.parse(data);
+//       let playlistLength = 0;
+//       if (data === undefined) {
+//         console.error('data undefined -_-')
+//       }
+
+//       if (res.items !== undefined || null) {
+//         playlistLength = res.items.length
+//       } else {
+//         console.log('length undefined', res)
+//       }
+//       for (let i = 0, len = playlistLength; i < len; i++) {
+//         let addPlaylistSongs = res.items[i];
+
+//         if (res.items[i] !== null) {
+//           allTracks.push(addPlaylistSongs);
+//         } else {
+//           console.log('null track => ', res.items[i])
+//         }
+//       }
+//       getTheRestPlaylists(playlist_data);
+      
+//       console.warn(getTheRestPlaylists(playlist_data))
+
+//       console.log('%c YOU MAY NOW RETURN => ', p)
+//       console.log(allTracks)
+//       console.log(totalPlaylistsQueried)
+//       return [allTracks, totalPlaylistsQueried];
+//     }],
+//   });
+
+//   // get default track data by track_id
+//   function getTheRestPlaylists(playlist_data) {
+//     console.log('%c BEFORE for loop (logPlaylists) => ', p)
+//     console.log(playlist_data)
+//     // set max playlists to query
+//     let totalPlaylistsToQuery = 49;
+//     console.log(playlist_data[0].tracks.href)
+//     console.log(playlist_data[1].tracks.href)
+//     // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
+//     for (let i = 1; i < totalPlaylistsToQuery; i++) {
+//       getOtherPlaylistsData(playlist_data[i].tracks.href);
+//       console.log('getOtherPlaylistsData(playlist_data[i].tracks.href)')
+//       console.log(getOtherPlaylistsData(playlist_data[i].tracks.href))
+//     }
+    
+//     return [allTracks, totalPlaylistsQueried];
+//   }
+
+//   function getOtherPlaylistsData(url) {
+//     // checks if total tracks is more than 2500 - if so, break ;)
+//     let trackLength = allTracks.length;
+//     console.log('TCL: getOtherPlaylistsData -> allTracks.length', allTracks.length);
+//     if (trackLength <= 250) {
+//       // totalPlaylistsToQuery = 0;
+//       console.log('STOP THIS MADNESS... for the sake of the poor spotify API')
+      
+//       return null;
+//     }
+//     return axios({
+//       method: 'get',
+//       url: url,
+//       params: {
+//         // sets total tracks to query from playlist
+//         limit: 50
+//       },
+//       headers: {
+//         Authorization: "Bearer " + AUTH_TOKEN
+//       },
+//       transformResponse: [function (data) {
+//         // parses the RAW string data into a JSON object
+//         let res = JSON.parse(data);
+//         let playlistLength = 0;
+//         if (data === undefined) {
+//           console.error('data undefined -_-')
+//         }
+  
+//         if (res.items !== undefined || null) {
+//           playlistLength = res.items.length
+//         } else {
+//           console.log('length undefined', res)
+//         }
+//         for (let i = 0, len = playlistLength; i < len; i++) {
+//           let addPlaylistSongs = res.items[i];
+//           console.log('TCL: getOtherPlaylistsData -> addPlaylistSongs', addPlaylistSongs);
+  
+//           if (res.items[i] !== null) {
+//             allTracks.push(addPlaylistSongs);
+//           } else {
+//             console.error('null track => ', res.items[i])
+//           }
+//         }
+//         console.log('%c END of (getOtherPlaylistsData) => ', p)
+//       }],
+//     });
+    
+//     return allTracks;
+//   }
+// }
 
 // --------------------------------------------------------------
 

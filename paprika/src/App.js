@@ -120,19 +120,29 @@ class App extends Component {
       // pass in all playlist data as variable
       // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
       console.warn('COMPONENT getAllUserPlaylists() => ', res.data[0])
+      let og_res = res;
+      console.warn('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
       // returns about 2000k songs - more than enough to play with
-      getFirstFiftyPlaylistTracks(res.data[0]).then(res => {
+      getFirstFiftyPlaylistTracks(og_res.data[0]).then(res => {
         // console.log('%c COMPONENT getFirstFiftyPlaylistTracks() => ', p)
-        console.warn('getFirstFiftyPlaylistTracks => ', res.data)
-        this.setState({
-          tracks: res.data[0],
-          tracks_queried_length: res.data[0].length,
-          playlists_queried: res.data[1],
-          tracks_loading: false
-        });
-        this.checkTrackStats(res.data);
+        if (og_res.data[0].length === res.totalPlaylistQueried) {
+          console.warn('getFirstFiftyPlaylistTracks => ', res)
+        }
+        // console.warn('getFirstFiftyPlaylistTracks => ', res.data)
+        // this.setState({
+        //   tracks: res.data[0],
+        //   tracks_queried_length: res.data[0].length,
+        //   playlists_queried: res.data[1],
+        //   tracks_loading: false
+        // });
+        // this.checkTrackStats(res.data);
+        
       })
     });
+  }
+
+  testThisOut(data) {
+    console.log('testThisOut => ', data)
   }
 
   checkTrackStats(data) {
@@ -206,6 +216,7 @@ class App extends Component {
     }
     let currentPlaylistMeta = this.state.playlist_data_cache.currentID;
     console.log('TCL: App -> openPlaylist -> currentPlaylistMeta', currentPlaylistMeta);
+    
     getAllPlaylistDataById(currentID).then(res => {
       console.log('getAllPlaylistDataById => ', res.data);
       let currentCache = this.state.playlist_data_cache;
@@ -219,6 +230,7 @@ class App extends Component {
       });
       console.log('this.state.playlist_data_cache => ', this.state.playlist_data_cache)
     });
+
     console.log('open playlist (val) => ', val)
     this.setState({ playlist_view: true, current_playlist: val });
   }
