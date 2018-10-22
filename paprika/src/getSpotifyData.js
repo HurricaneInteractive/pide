@@ -35,7 +35,7 @@ export function getAllUserPlaylists() {
     },
     transformResponse: [function (data) {
       let res = JSON.parse(data);
-      console.warn('getAllUserPlaylists => ', res)
+      // console.log('getAllUserPlaylists => ', res)
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];
         allPlaylists.push(addThisPlaylist);
@@ -89,10 +89,14 @@ export function getAllUserPlaylists() {
 export function getFirstFiftyPlaylistTracks(playlist_data) {
   console.log('playlist_data => ', playlist_data);
 
+  // https://stackoverflow.com/questions/40328932/javascript-es6-promise-for-loop
+  // https://stackoverflow.com/questions/47211168/trying-to-execute-a-promise-chain-in-a-for-loop-once-for-each-item-in-a-list
+  // https://stackoverflow.com/questions/750486/javascript-closure-inside-loops-simple-practical-example
   let playlist_length = playlist_data.length;
+  let promises = [];
 
   function requestPlaylistData(url) {
-    axios({
+    return axios({
       method: 'get',
       url: url,
       params: {
@@ -104,56 +108,48 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
       transformResponse: [function (data) {
         // Parse raw data from string to JSON
         let res = JSON.parse(data);
-
-        console.group('requestPlaylistData() res => ', res)
-
-        for (let i = 0; i < res.items.length; i++) {
-          let addPlaylistSongs = res.items[i];
-  
-          if (res.items[i] !== null) {
-            allTracks.push(addPlaylistSongs);
-          } else {
-            console.log('null track => ', res.items[i])
-          }
-        }
-        return allTracks;
+        return res.items
       }],
-    }).then(res => {
-      console.log('.then(res => ', res)
-      return res;
-    });
+    })
   }
 
-  // loops through all playlist and pushes the data to an axios req func
-  return new Promise(function(resolve, reject) {
-    // some code that fills in err if there is an error
-
-    console.log(playlist_length)
+  for (let i = 0; i < 20; i++) {
+    promises.push(requestPlaylistData(playlist_data[i].tracks.href));
+    totalPlaylistsQueried += 1;
     console.log(totalPlaylistsQueried)
-    let err = null;
-    if (playlist_length <= totalPlaylistsQueried) {
-      err = true
-    }
-    if (err) {
-      console.error('errors4days')
-      reject('error');
-    } else {
-      console.warn('success mate')
-      for (let i = 0; i < playlist_data.length; i++) {
-        requestPlaylistData(playlist_data[i].tracks.href)
-        totalPlaylistsQueried += 1;
-        console.groupEnd()
-        console.log(totalPlaylistsQueried)
-      }
-      console.log(playlist_length)
-      console.log(totalPlaylistsQueried)
-      resolve({
-        'playlist_data': playlist_data,
-        'allTracks': allTracks,
-        'totalPlaylistsQueried': totalPlaylistsQueried,
-      });
-    }
-  });
+  }
+  return promises
+
+  // loops through all playlist and pushes the data to an axios req func
+  // return new Promise(function(resolve, reject) {
+  //   // some code that fills in err if there is an error
+
+  //   // console.log(playlist_length)
+  //   // console.log(totalPlaylistsQueried)
+  //   let err = false;
+  //   for (let i = 0; i < 20; i++) {
+  //     promises.push(requestPlaylistData(playlist_data[i].tracks.href));
+  //     totalPlaylistsQueried += 1;
+  //     console.log(totalPlaylistsQueried)
+  //   }
+  //   // Promise.all(promises).then(res => {
+  //   //   console.log('res Promise.all => ', res)
+  //   // })
+  //   if (playlist_length <= totalPlaylistsQueried) {
+  //     err = true
+  //   }
+  //   if (err) {
+  //     console.error('errors4days')
+  //     reject('error');
+  //   } else {
+  //     console.warn('success mate')
+  //     resolve({
+  //       'playlist_data': playlist_data,
+  //       'allTracks': allTracks,
+  //       'totalPlaylistsQueried': totalPlaylistsQueried,
+  //     });
+  //   }
+  // });
 }
 
 // export function getFirstFiftyPlaylistTracks(playlist_data) {

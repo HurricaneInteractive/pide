@@ -119,15 +119,38 @@ class App extends Component {
 
       // pass in all playlist data as variable
       // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
-      console.warn('COMPONENT getAllUserPlaylists() => ', res.data[0])
       let og_res = res;
-      console.warn('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
+      console.log('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
       // returns about 2000k songs - more than enough to play with
-      getFirstFiftyPlaylistTracks(og_res.data[0]).then(res => {
+      Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
         // console.log('%c COMPONENT getFirstFiftyPlaylistTracks() => ', p)
-        if (og_res.data[0].length === res.totalPlaylistQueried) {
-          console.warn('getFirstFiftyPlaylistTracks => ', res)
+        // Promise.all(promises).then(res => {
+        //   console.log('res Promise.all => ', res)
+        // })
+        let allTracks = [];
+        let playlistTracks = [];
+        console.warn('getFirstFiftyPlaylistTracks => ', res)
+        
+        for (let i = 0; i < res.length; i++) {
+          let addPlaylistSongs = res[i].data;
+
+          if (res[i].data !== null) {
+            playlistTracks.push(addPlaylistSongs);
+
+            for (let y = 0; y < res[i].data.length; y++) {
+              let addTracksSongs = res[i].data[y];
+              if (res[i].data[y] !== null) {
+                allTracks.push(addTracksSongs);
+              } else {
+                console.log('null track => ', res[i].data[y]);
+              }
+            }
+          } else {
+            console.log('null track => ', res.items[i])
+          }
         }
+        
+        console.log('allTracks => ', allTracks)
         // console.warn('getFirstFiftyPlaylistTracks => ', res.data)
         // this.setState({
         //   tracks: res.data[0],
@@ -151,7 +174,6 @@ class App extends Component {
 
   getGridSize(number) {
     let grid = '1fr '.repeat(number);
-    console.log('grid => ', grid)
     return grid
   }
   
