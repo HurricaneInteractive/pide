@@ -36,6 +36,7 @@ class App extends Component {
       user: null,
       user_loading: true,
       playlists: [],
+      playlist_data_cache: {},
       playlists_total: 0,
       playlist_grid: 4,
       playlist_loading: true,
@@ -102,17 +103,18 @@ class App extends Component {
     getAllUserPlaylists().then(res => {
       console.warn('COMPONENT getAllUserPlaylists() res.data => ', res.data)
       this.setState({
-        playlists: res.data,
+        playlists: res.data[1],
         playlist_loading: false
       });
       console.log('%c COMPONENT AFTER getAllUserPlaylists() => ', p)
-
+      
       // pass in all playlist data as variable
       const p = ["background: rgb(11, 11, 13)", "color: rgb(217, 178, 98)", "border: 1px solid rgb(217, 178, 98)", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
-      
+  
+      console.log('%c this.state.playlists', this.state.playlists)
       // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
       // returns about 2000k songs - more than enough to play with
-      getFirstFiftyPlaylistTracks(res.data).then(res => {
+      getFirstFiftyPlaylistTracks(res.data[0]).then(res => {
         console.log('%c COMPONENT getFirstFiftyPlaylistTracks() => ', p)
         console.warn('COMPONENT getFirstFiftyPlaylistTracks() => ', res.data)
         this.setState({
@@ -179,7 +181,29 @@ class App extends Component {
 
 
   openPlaylist(val) {
-    getAllPlaylistDataById(val.id)
+    let currentID = val.id;
+    console.log('this.state.playlist_data_cache.currentID => ', this.state.playlist_data_cache.currentID)
+    if (this.state.playlist_data_cache.currentID === null) {
+      console.log('item doesnt exist, fetch the data')
+    }
+    else {
+      console.log('item already exists')
+    }
+    let currentPlaylistMeta = this.state.playlist_data_cache.currentID;
+    console.log('TCL: App -> openPlaylist -> currentPlaylistMeta', currentPlaylistMeta);
+    getAllPlaylistDataById(currentID).then(res => {
+      console.log('getAllPlaylistDataById => ', res.data);
+      let currentCache = this.state.playlist_data_cache;
+      let pushMe = {
+        [currentID]: res.data
+      }
+      Object.assign(currentCache, pushMe)
+      // cacheMe.push(pushMe)
+      this.setState({
+        playlist_data_cache: currentCache
+      });
+      console.log('this.state.playlist_data_cache => ', this.state.playlist_data_cache)
+    });
     console.log('open playlist (val) => ', val)
     this.setState({ playlist_view: true, current_playlist: val });
   }
@@ -245,7 +269,7 @@ class App extends Component {
                 <>
                   <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
                   <h1 style={{textAlign: "center"}}>{this.state.user.display_name}</h1>
-                  <h4>{this.state.playlists_total} total playlists</h4>
+                  <h4>{this.state.playlists.length} total playlists</h4>
                 </>
               }
             </section>
@@ -270,6 +294,7 @@ class App extends Component {
                 : 
                 this.mapPlaylistCovers()
               }
+              <h2>scroll to top</h2>
             </div>
           </div>
         </div>

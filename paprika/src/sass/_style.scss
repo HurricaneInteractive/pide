@@ -154,7 +154,6 @@
 // playlists
 .playlist_header {
   padding: 0 32px;
-  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -211,6 +210,10 @@
       }
     }
   }
+}
+.playlist_container {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .playlist_single_container {
   padding: 0 8px;

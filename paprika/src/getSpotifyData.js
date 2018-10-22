@@ -4,11 +4,10 @@ const AUTH_TOKEN = window.sessionStorage.access_token
 // const REFRESH_TOKEN = window.sessionStorage.refresh_token
 
 let allPlaylists = [];
+let allPlaylistsObj = {};
 let allTracks = [];
-let allTracksExtensive = [];
 
 const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
-
 
 export function getUserData(val){
   return axios({
@@ -34,22 +33,25 @@ export function getAllUserPlaylists() {
       Authorization: "Bearer " + AUTH_TOKEN
     },
     transformResponse: [function (data) {
-      // Do whatever you want to transform the data
       let res = JSON.parse(data);
       console.warn('getAllUserPlaylists => ', res)
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];
         allPlaylists.push(addThisPlaylist);
+
+        let pushMe = {
+          [res.items[i].id]: res.items[i]
+        }
+        Object.assign(allPlaylistsObj, pushMe)
       }
       getNumberOfTimesPlaylistsNeedsToBeRun(res.total);
-      return allPlaylists
+      return [allPlaylists, allPlaylistsObj];
     }],
   });
 
   function getNumberOfTimesPlaylistsNeedsToBeRun(total) {
     console.log('we running getNumberOfTimesPlaylistsNeedsToBeRun(total) =>', total)
     let runThisManyTimes = (Math.ceil(total / 50)) + 1;
-    // let runThisManyTimes = 5;
 
     for (let i = 1; i < runThisManyTimes; i++) {
       let nextNumber = i * 50;
@@ -95,6 +97,7 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
       Authorization: "Bearer " + AUTH_TOKEN
     },
     transformResponse: [function (data) {
+
       
       // Do whatever you want to transform the data
       let res = JSON.parse(data);
@@ -124,10 +127,10 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
 
   // get default track data by track_id
   function getTheRestPlaylists() {
-    // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
     console.log('%c BEFORE for loop (logPlaylists) => ', p)
     // set max playlists to query
     let totalPlaylistsQueried = 50;
+    // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
     for (let i = 1; i < totalPlaylistsQueried; i++) {
       getOtherPlaylistsData(playlist_data[i].tracks.href);
     }
@@ -147,7 +150,6 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
         Authorization: "Bearer " + AUTH_TOKEN
       },
       transformResponse: [function (data) {
-        
         // parses the RAW string data into a JSON object
         let res = JSON.parse(data);
         let playlistLength = 0;
