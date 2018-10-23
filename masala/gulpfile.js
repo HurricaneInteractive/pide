@@ -12,7 +12,7 @@ var config = {
 gulp.task("sass", function() {
     return gulp.src(config.SASS_TARGET)
         .pipe(sass(config.SASS_SETTINGS).on('error', sass.logError))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('../public/masala'));
 });
 
 gulp.task('copy_build', function() {

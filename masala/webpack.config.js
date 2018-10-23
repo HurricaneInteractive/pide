@@ -4,7 +4,7 @@ const path = require('path');
 const config = {
   entry: './js/script.js',
   output: {
-    path: path.resolve(__dirname),
+    path: path.resolve(path.join(__dirname, '../public/masala/')),
     filename: 'script.js'
   },
   module: {
