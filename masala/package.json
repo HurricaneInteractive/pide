@@ -9,7 +9,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-rollup": "^2.16.2",
     "gulp-sass": "^4.0.1"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "jsdom": "^12.2.0"
   }
 }
