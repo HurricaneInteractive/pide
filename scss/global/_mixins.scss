@@ -31,24 +31,64 @@
     font-weight: $font-weight-bold;
 }
 
-@mixin grid($justify: 'flex-start', $align: 'middle') {
+@mixin grid($justify: flex-start, $align: center) {
     display: grid;
     justify-content: $justify;
     align-items: $align;
 }
 
 @mixin grid-column($cols: 2, $gap: $grid-padding) {
-    grid-template-columns: repeat($cols, 1fr);
-    grid-column-gap: calc-em($gap, $base-font-size);
+    @if is-number($cols) {
+        grid-template-columns: repeat($cols, 1fr);
+    }
+    @else {
+        grid-template-columns: $cols;
+    }
+    grid-column-gap: $gap;
 }
 
 @mixin grid-row($rows: auto, $gap: $grid-padding) {
-    grid-template-rows: $rows;
-    grid-row-gap: calc-em($gap, $base-font-size);
+    @if is-number($cols) {
+        grid-template-rows: repeat($rows, 1fr);
+    }
+    @else {
+        grid-template-columns: $rows;
+    }
+    grid-row-gap: $gap;
 }
 
 @mixin breakpoint($size: small) {
     @media screen and (min-width: #{map-get($breakpoints, $size)}) {
         @content;
+    }
+}
+
+@mixin progression-theme($ring: null, $size: null, $ring-size: null) {
+    @if $size != null {
+        width: $size;
+        height: $size;
+    }
+    @if $ring-size != null {
+        &:before {
+            width: calc(100% - #{$ring-size});
+            height: calc(100% - #{$ring-size});
+        }
+    }
+    @if $ring != null {
+        &:after {
+            background-color: $ring;
+        }
+        @for $i from 0 through $pc-loops {
+            &[data-progress='#{$i * $pc-step}']:after {
+                @if $i < $pc-half {
+                    $next-deg: 90deg + $pc-increment * $i;
+                    background-image: linear-gradient(90deg, get-colour($pc-bg-colour) 50%, transparent 50%, transparent), linear-gradient($next-deg, $ring 50%, get-colour($pc-bg-colour) 50%, get-colour($pc-bg-colour));
+                }
+                @else {
+                    $next-deg: -90deg + $pc-increment * ($i - $pc-half);
+                    background-image: linear-gradient($next-deg, $ring 50%, transparent 50%, transparent), linear-gradient(270deg, $ring 50%, get-colour($pc-bg-colour) 50%, get-colour($pc-bg-colour));
+                }
+            }
+        }
     }
 }

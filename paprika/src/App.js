@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import Parser from 'html-react-parser';
 import './App.scss';
+import paprikaImg from './content/paprika.jpg'
+// import filler from './filler.json'
+
+import PlaylistInvididual from './components/playlistIndividual'
 
 // https://countryflags.io/ could be used to get user location flag
 
 const AUTH_TOKEN = window.sessionStorage.access_token
 const REFRESH_TOKEN = window.sessionStorage.refresh_token
+
+const music_icon = '<svg width="80" height="81" viewBox="0 0 80 81" xmlns="http://www.w3.org/2000/svg"><title>Playlist Icon</title><path d="M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z" fill="currentColor" fill-rule="evenodd"></path></svg>'
 
 class App extends Component {
 
@@ -15,12 +22,50 @@ class App extends Component {
     this.state = {
       user: null,
       user_loading: true,
-      playlists: null,
-      playlists_20: null,
+      playlists: [],
+      playlists_total: 0,
+      playlist_grid: 4,
       playlist_loading: true,
-      current: null,
-      current_loading: true,
+      playlist_view: false,
+      current_playlist: null,
+      nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50'
     }
+  }
+
+  getPlaylistsRequest(nextOffset) {
+    axios({
+      method: 'get',
+      url: 'https://api.spotify.com/v1/users/12162909955/playlists',
+      params: {
+        offset: nextOffset,
+        limit: 50
+      },
+      headers: {
+        Authorization: "Bearer " + AUTH_TOKEN
+      }
+    }).then(res => {
+      const current = this.state.playlists;
+
+      for (let i = 0, len = res.data.items.length; i < len; i++) {
+        const addThisPlaylist = res.data.items[i];
+        current.push(addThisPlaylist);
+      }
+      this.setState({
+        playlists: current
+      });
+    });
+  }
+
+  getNumberOfTimesPlaylistsNeedsToBeRun(total) {
+    let runThisManyTimes = (Math.ceil(total / 50)) + 1;
+
+    for (let i = 1; i < runThisManyTimes; i++) {
+      let nextNumber = i * 50;
+      this.getPlaylistsRequest(nextNumber)
+    }
+    this.setState({
+      playlist_loading: false
+    })
   }
 
   componentDidMount() {
@@ -33,90 +78,103 @@ class App extends Component {
       }
     }).then(res => {
       const user_data = res.data;
-      console.log("axios user => ", user_data)
       this.setState({
         user: user_data,
         user_loading: false
       });
     });
 
-    axios({
-      method: 'get',
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
-      headers: {
-        Authorization: "Bearer " + AUTH_TOKEN
-      }
-    }).then(res => {
-      console.log("res.data => ", res.data)
-      const current_data = res.data;
-      console.log("axios current => ", current_data)
-      this.setState({
-        current: current_data,
-        current_loading: false
-      });
-    });
-
+    // playlist requests
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me/playlists',
       params: {
+        limit: 50,
         offset: 0
       },
       headers: {
         Authorization: "Bearer " + AUTH_TOKEN
       }
     }).then(res => {
-      const playlists = res.data;
+      const current = this.state.playlists;
+      for (let i = 0, len = res.data.items.length; i < len; i++) {
+        const addThisPlaylist = res.data.items[i];
+        current.push(addThisPlaylist);
+      }
+
       this.setState({
-        playlists: playlists,
-        // loading: false
+        playlists: current,
+        playlists_total: res.data.total
       });
-      axios({
-        method: 'get',
-        url: 'https://api.spotify.com/v1/me/playlists',
-        params: {
-          offset: 20
-        },
-        headers: {
-          Authorization: "Bearer " + AUTH_TOKEN
-        }
-      }).then(res => {
-        const playlists_20 = res.data;
-        this.setState({
-          playlists_20: playlists_20,
-          playlist_loading: false
-        });
-      })
+      
+      this.getNumberOfTimesPlaylistsNeedsToBeRun(res.data.total);
     })
+  }
+
+  getGridSize(number) {
+    let grid = '1fr '.repeat(number);
+    console.log('grid => ', grid)
+    return grid
+  }
+
+  changeGridAmount(val) {
+    if (val === 'down') {
+      this.setState({
+        playlist_grid: this.state.playlist_grid - 1 
+      })
+    } else {
+      this.setState({
+        playlist_grid: this.state.playlist_grid + 1 
+      })
+    }
+    this.getGridSize(this.state.playlist_grid);
   }
 
   mapPlaylistCovers() {
     let data = this.state.playlists;
-    let data_20 = this.state.playlists_20;
-    let keys = Object.keys(data.items);
-    let keys_20 = Object.keys(data_20.items);
+    let keys = Object.keys(data);
 
     let allPlaylistCovers = keys.map(key => {
-      const playlist_image = data.items[key].images[0].url;
-      return (
-        <img style={{width: "100%"}} src={playlist_image} key={key} alt={key}/>
-      )
-    });
+      const playlist_image = data[key].images[0] || null;
+      let imageURL = paprikaImg;
 
-    let allPlaylistCovers_20 = keys_20.map(keys_20 => {
-      const playlist_image = data_20.items[keys_20].images[0].url;
+      if (playlist_image !== null) {
+        imageURL = playlist_image.url;
+      }
       return (
-        <img style={{width: "100%"}} src={playlist_image} key={keys_20} alt={keys_20}/>
+        <div className="playlist_single_container" key={key}>
+          <div onClick={() => this.openPlaylist(data[key])} className="playlist_image">
+            <img src={imageURL} key={key} alt={key}/>
+            <div className="playlist_image_overlay">{Parser(music_icon)}</div>
+          </div>
+          <div className="playlist_title">
+            <h4 onClick={() => this.openPlaylist(data[key])}>{data[key].name}</h4>
+            <h6>{data[key].owner.display_name}</h6>
+          </div>
+        </div>
       )
     });
 
     return (
-      <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr"}}>
+      <div style={{display: "grid", gridTemplateColumns: this.getGridSize(this.state.playlist_grid)}} >
         {allPlaylistCovers}
-        {allPlaylistCovers_20}
       </div>
     )
   }
+
+
+  openPlaylist(val) {
+    console.log('open playlist (val) => ', val)
+    this.setState({ playlist_view: true, current_playlist: val });
+  }
+
+  showPlaylistView = () => {
+    this.setState({ playlist_view: true });
+  };
+
+  hidePlaylistView = () => {
+    this.setState({ playlist_view: false });
+  };
 
 
   render() {
@@ -124,46 +182,64 @@ class App extends Component {
       return <p>loading</p>
     }
 
-    console.log("this.state.current => ", this.state.current)
-    console.log("AUTH_TOKEN => ", AUTH_TOKEN)
-    console.log("REFRESH_TOKEN => ", REFRESH_TOKEN)
+    // console.log("this.state.current => ", this.state.current)
+    // console.log("AUTH_TOKEN => ", AUTH_TOKEN)
+    // console.log("REFRESH_TOKEN => ", REFRESH_TOKEN)
     return (
-      <div className="App">
-        <header className="bg-white">
-          <nav className="main-menu p-v-10 container">
-            <a className="logo" href="/" title="Go Home"><h1 className="m-0 c-black"><span className="hide-text">Pide</span>Pide</h1></a>
-            <ul className="menu p-0 m-0 cf">
-              <li><a href="/cumin">Cumin</a></li>
-              <li><a href="/masala">Masala</a></li>
-              <li><a href="/paprika">Paprika</a></li>
-            </ul>
-          </nav>
-        </header>
-        <section className="p-header">
-          {this.state.user_loading ? 
-            <h5>loading user data</h5>
-            :
-            <>
-              <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
-              <h2 style={{textAlign: "center"}}>{this.state.user.display_name}</h2>
-            </>
-          }
-          {this.state.current_loading ?
-            <h5>loading current track</h5>
-            :
-            <div>
-              hola
-              {this.state.current.item.album.name}
-            </div>
+      <div className="app">
+        <div className="absolute-background"/>
 
-          }
-        </section>
-        <div>
-          {this.state.playlist_loading ? 
-            <h5>loading</h5>
-            : 
-            this.mapPlaylistCovers()
-          }
+        {this.state.playlist_view ?
+          <PlaylistInvididual
+            show={this.state.playlist_view}
+            hidePlaylistView={this.hidePlaylistView}
+            data={this.state.current_playlist}
+          />
+          :
+          null
+        }
+
+        <div className="app-container">
+          <header className="bg-white">
+            <nav className="main-menu p-v-10 container">
+              <a className="logo" href="/" title="Go Home"><h1 className="m-0 c-black"><span className="hide-text">Pide</span>Pide</h1></a>
+              <ul className="menu p-0 m-0 cf">
+                <li><a href="/cumin">Cumin</a></li>
+                <li><a href="/masala">Masala</a></li>
+                <li><a href="/paprika">Paprika</a></li>
+              </ul>
+            </nav>
+          </header>
+          <section className="user-header">
+            {this.state.user_loading ? 
+              <h5>loading user data</h5>
+              :
+              <>
+                <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
+                <h1 style={{textAlign: "center"}}>{this.state.user.display_name}</h1>
+                <h4>{this.state.playlists_total} total playlists</h4>
+              </>
+            }
+          </section>
+          <div className="playlist_container">
+            <div>
+              {this.state.playlist_grid >= 7 ?
+                <p>grid MAXED</p>
+                :
+                <p onClick={() => this.changeGridAmount('up')}>grid up</p>
+              }
+              {this.state.playlist_grid <= 3 ?
+                <p>grid LOWEST</p>
+                :
+                <p onClick={() => this.changeGridAmount('down')}>grid down</p>
+              }
+            </div>
+            {this.state.playlist_loading ? 
+              <h5>loading</h5>
+              : 
+              this.mapPlaylistCovers()
+            }
+          </div>
         </div>
       </div>
     );

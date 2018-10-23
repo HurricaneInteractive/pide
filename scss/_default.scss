@@ -103,3 +103,8 @@ button,
     font-weight: $font-weight-bold;
     cursor: pointer;
 }
+
+hr {
+    margin: em(45px) 0;
+    border-color: get-colour('grey');
+}

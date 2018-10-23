@@ -12,11 +12,15 @@
                             *ngSwitchCase="'playlist'"
                         ></app-cu-playlist-data>
                         <app-cu-albums-data *ngSwitchCase="'albums'"></app-cu-albums-data>
-                        <app-cu-tracks-data *ngSwitchCase="'tracks'"></app-cu-tracks-data>
+                        <app-cu-tracks-data
+                            *ngSwitchCase="'tracks'"
+                            [tracks]="current_user_data.tracks"
+                            [genres]="artist_genres"
+                        ></app-cu-tracks-data>
                     </app-tabs>
                 </div>
             </div>
-            <div class="user-column" [ngSwitch]="opponent">
+            <!-- <div class="user-column" [ngSwitch]="opponent">
                 <div class="search-container" *ngSwitchCase="null">
                     <app-user-search (searched)="onArtistSearch($event)"></app-user-search>
                     <app-search-results [results]="searchResults" (selectedArtist)="onArtistSelect($event)"></app-search-results>
@@ -25,7 +29,7 @@
                     <i-x class="remove-opponent" (click)="clearOpponent()"></i-x>
                     <app-user-profile [user]="opponent"></app-user-profile>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

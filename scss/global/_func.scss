@@ -17,3 +17,7 @@
 @function get-heading-size($h: 'h3') {
     @return map-get($headings, $h);
 }
+
+@function is-number($value) {
+    @return type-of($value) == 'number';
+}

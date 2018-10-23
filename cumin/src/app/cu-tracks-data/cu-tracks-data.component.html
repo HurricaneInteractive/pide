@@ -1,3 +1,102 @@
-<p>
-  cu-tracks-data works!
-</p>
+<div class="wrapper" *ngIf="tracks && trackStatistics" [ngsReveal]="{reset:true}">
+  <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Popularity</h2>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">Do you good taste in music?</p>
+  <app-line-chart
+    [data]="tracks"
+    [type]="'bar'"
+    [labelkey]="'name'"
+    [datakey]="'popularity'"
+  ></app-line-chart>
+
+  <p class="h1 text--center m-b-20" [ngsReveal]="{reset:true}">Your saved tracks has a <span class="c-green">{{ trackStatistics.popularity }}</span> average rating.</p>
+  
+  <div class="popular-showcase" *ngIf="trackStatistics" [ngsReveal]="{reset:true}">
+    <div class="most-popular">
+        <div class="feature" [style.backgroundImage]="'url(' + trackStatistics.mostPopularSong.album.images[1].url + ')'">
+          <div class="content">
+            <span class="name">{{ trackStatistics.mostPopularSong.name }}</span>
+            <span class="pop h1">{{ trackStatistics.mostPopularSong.popularity }}</span>
+          </div>
+        </div>
+    </div>
+    <div class="least-popular">
+        <div class="feature" [style.backgroundImage]="'url(' + trackStatistics.leastPopularSong.album.images[1].url + ')'">
+          <div class="content">
+            <span class="name">{{ trackStatistics.leastPopularSong.name }}</span>
+            <span class="pop h1">{{ trackStatistics.leastPopularSong.popularity }}</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="wrapper" *ngIf="trackStatistics">
+  <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Clean or Dirty</h2>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How explicit is your saved tracks?</p>
+  <div class="progression-circles" [ngsRevealSet]="{ reset:true}" [ngsSelector]="'.track-stat'">
+    <!-- <div class="track-stat">
+        <div class="progression-circle black-inner-circle" [attr.data-progress]="trackStatistics.popularity"></div>
+        <div class="content">
+            <h6>Average Popularity</h6>
+            <p *ngIf="trackStatistics.mostPopularSong" >Most popular song: <strong>{{ trackStatistics.mostPopularSong.name }}</strong> with a rating of <span class="c-green">{{ trackStatistics.mostPopularSong.stat }}</span></p>
+        </div>
+    </div> -->
+    <div class="track-stat">
+        <div class="progression-circle black-inner-circle" [attr.data-progress]="trackStatistics.explicit.true_percentage"></div>
+        <div class="content">
+          <h6>Explicit Songs</h6>
+          <p><span class="c-green">{{ trackStatistics.explicit.true_count }}</span> explicit songs are present</p>
+        </div>
+    </div>
+    <div class="track-stat">
+        <div class="progression-circle black-inner-circle" [attr.data-progress]="trackStatistics.explicit.false_percentage"></div>
+        <div class="content">
+          <h6>Non Explicit Songs</h6>
+          <p><span class="c-green">{{ trackStatistics.explicit.false_count }}</span> non explicit songs are present</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper" *ngIf="genreComputed.length > 0">
+  <app-popular-genres
+    [genres]="genreComputed"
+  ></app-popular-genres>
+</div>
+
+<div class="wrapper" *ngIf="tracks" [ngsReveal]="{reset:true}">
+  <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Duration</h2>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How long does your songs go for?</p>
+  <app-line-chart
+    [data]="tracks"
+    [type]="'line'"
+    [labelkey]="'name'"
+    [datakey]="'duration_ms'"
+  ></app-line-chart>
+  <div class="time-stats" *ngIf="trackStatistics">
+    <p class="text--center m-t-0 h1">The "Time" line</p>
+    <ul class="timeline">
+      <li><span>{{ trackStatistics.totalMs }} milliseconds</span></li>
+      <li><span>{{ trackStatistics.timing.seconds }} seconds</span></li>
+      <li><span>{{ trackStatistics.timing.minutes }} minutes</span></li>
+      <li><span>{{ trackStatistics.timing.hours }} hours</span></li>
+      <li><span>{{ trackStatistics.timing.days }} days</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="wrapper" *ngIf="trackStatistics">
+  <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Featured Artists</h2>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">There are {{ trackStatistics.artists.length  }} artists featured in your saved tracks</p>
+  <ul class="track-artists">
+    <li *ngFor="let artist of trackStatistics.artists" [ngsReveal]="{reset:true}">
+      <div class="details">
+        <h3 class="name">{{ artist.name }}</h3>
+        <ul *ngIf="artist.genres">
+          <li *ngFor="let genre of artist.genres" class="text--uppercase">{{ genre }}</li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

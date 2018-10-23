@@ -60,3 +60,17 @@ $breakpoints: (
     xlarge: 120px,
     xxlarge: $grid-width
 );
+
+// Component Variables
+
+/* ****************** */
+/* Progression Circle */
+/* ****************** */
+$pc-size: 15rem;
+$pc-bg-colour: 'content';
+$pc-status-colour: 'green';
+$pc-ring-size: 2rem;
+$pc-step: 1;
+$pc-loops: round(100 / $pc-step);
+$pc-increment: 360 / $pc-loops;
+$pc-half: round($pc-loops / 2);

@@ -26,7 +26,9 @@
               "../public/css/style.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/scrollreveal/dist/scrollreveal.js"
+            ]
           },
           "configurations": {
             "production": {

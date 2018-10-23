@@ -1,0 +1,54 @@
+.progression-circle {
+    background-color: get-colour($pc-bg-colour);
+    border-radius: 50%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: $pc-size;
+    height: $pc-size;
+    position: relative;
+    &:before {
+        content: attr(data-progress)'%';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: calc(100% - #{$pc-ring-size});
+        height: calc(100% - #{$pc-ring-size});
+        border-radius: 50%;
+        background: get-colour('white');
+        color: get-colour('content');
+        font-size: get-heading-size('h2');
+        font-weight: $font-weight-bold;
+    }
+    &:after {
+        content: '';
+        background-color: get-colour($pc-status-colour);
+        border-radius: 50%;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+    }
+    @for $i from 0 through $pc-loops {
+        &[data-progress='#{$i * $pc-step}']:after {
+            @if $i < $pc-half {
+                $next-deg: 90deg + $pc-increment * $i;
+                background-image: linear-gradient(90deg, get-colour($pc-bg-colour) 50%, transparent 50%, transparent), linear-gradient($next-deg, get-colour($pc-status-colour) 50%, get-colour($pc-bg-colour) 50%, get-colour($pc-bg-colour));
+            }
+            @else {
+                $next-deg: -90deg + $pc-increment * ($i - $pc-half);
+                background-image: linear-gradient($next-deg, get-colour($pc-status-colour) 50%, transparent 50%, transparent), linear-gradient(270deg, get-colour($pc-status-colour) 50%, get-colour($pc-bg-colour) 50%, get-colour($pc-bg-colour));
+            }
+        }
+    }
+
+    &.black-inner-circle {
+        &:before {
+            background: get-colour('black');
+            color: get-colour('white');
+        }
+    }
+}

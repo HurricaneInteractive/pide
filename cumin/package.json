@@ -22,8 +22,13 @@
     "@angular/router": "^6.1.0",
     "angular-feather": "^5.3.0",
     "axios": "^0.18.0",
+    "chart.js": "^2.7.3",
     "core-js": "^2.5.4",
+    "gradient-color": "^2.0.1",
+    "ng2-charts": "^1.6.0",
+    "ngx-scrollreveal": "^3.0.0",
     "rxjs": "~6.2.0",
+    "scrollreveal": "^4.0.4",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

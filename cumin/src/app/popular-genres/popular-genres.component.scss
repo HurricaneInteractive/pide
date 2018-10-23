@@ -1,0 +1,35 @@
+// Super Globals
+@import "../../../../scss/global/index";
+
+$c: (#00ff7b, #00fd7b, #00f97c, #00f27e, #00e981, #00dd83, #00cd82, #00b87f, #00a076, #00876a);
+$i: 1;
+
+.popular-genres {
+    padding: 0;
+    list-style: none;
+    li {
+        &:not(:last-child) {
+            margin-bottom: em(20px);
+        }
+        span {
+            line-height: 1.2;
+        }
+        .percentage {
+            margin: 0;
+            height: 25px;
+            display: flex;
+            border-radius: 200px;
+            overflow: hidden;
+        }
+        @each $col in $c {
+            &:nth-child(#{$i}) {
+                .percentage {
+                    .bar {
+                        background: $col;
+                    }
+                }
+            }
+            $i: $i + 1
+        }
+    }
+}
