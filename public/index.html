@@ -4,10 +4,40 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <link rel="stylesheet" type="text/css" href="./css/home.css" />
         <title>Homepage</title>
     </head>
     <body>
-        <a href="/login">Login with Spotify</a>
+        <header class="main-header bg-white" id="main-header">
+            <nav class="main-menu p-v-10 container">
+                <a class="logo" href="/" title="Go Home"><h1 class="m-0 c-black"><span class="hide-text">Pide</span>Pide</h1></a>
+                <ul class="menu p-0 m-0 cf">
+                    <li><a href="/cumin">Cumin</a></li>
+                    <li><a href="/masala">Masala</a></li>
+                    <li><a href="/paprika">Paprika</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="home-container">
+            <ul class="choices" id="main-choices">
+                <li><a href="/cumin">Cumin</a></li>
+                <li><a href="/masala">Masala</a></li>
+                <li><a href="/paprika">Paprika</a></li>
+            </ul>
+
+            <div class="login" id="main-login" >
+                <h1>Pide</h1>
+                <p>Spice up your spotify life</p>
+                <a href="/login">
+                    <button>Login with Spotify</button>
+                </a>
+            </div>
+        </div>
+
+        
+
 
         <!-- Add your scripts before this one -->
         <script type="text/javascript">
@@ -28,19 +58,30 @@
 
                 var params = getHashParams();
                 console.log(params);
-                
+
                 if (params !== {}) {
                     var access_token = params.access_token,
                     refresh_token = params.refresh_token,
                     error = params.error;
 
                     if (error) {
+                        console.log('not logged in');
                         alert('There was an error processing your request, please try again')
                     }
                     else {
+                        console.log('user logged in')
                         window.sessionStorage.setItem('access_token', access_token);
                         window.sessionStorage.setItem('refresh_token', refresh_token);
                     }
+                }
+
+                if (window.sessionStorage.getItem('refresh_token') !== 'undefined') {
+                    console.log('access_token === null')
+                    document.getElementById("main-login").classList.add('false');
+                } else {
+                    console.log('access_token !== null')
+                    document.getElementById("main-header").classList.add('false');
+                    document.getElementById("main-choices").classList.add('false');
                 }
             })();
         </script>
