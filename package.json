@@ -7,6 +7,7 @@
     "start": "nodemon server.js",
     "start:cumin": "concurrently \"gulp\" \"cd cumin && ng serve\"",
     "start:paprika": "concurrently \"gulp\" \"cd paprika && npm run start\"",
+    "start:masala": "concurrently \"npm start\" \"gulp\" \"cd masala && npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

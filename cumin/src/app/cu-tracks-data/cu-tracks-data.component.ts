@@ -14,9 +14,13 @@ interface TrackStatistics {
     genres: Array<string>
   }>,
   popularity: number,
-  mostPopularSong: {
-    name: string,
-    stat: number
+  mostPopularSong: any,
+  leastPopularSong: any,
+  timing: {
+    seconds: number,
+    minutes: number,
+    hours: number,
+    days: number
   }
 }
 
@@ -86,8 +90,16 @@ export class CuTracksDataComponent {
           artists: [],
           popularity: 0,
           mostPopularSong: {
-            name: '',
-            stat: -1
+            popularity: -1
+          },
+          leastPopularSong: {
+            popularity: 200
+          },
+          timing: {
+            seconds: 0,
+            minutes: 0,
+            hours: 0,
+            days: 0
           }
         }
   
@@ -96,11 +108,12 @@ export class CuTracksDataComponent {
           object.totalMs += track.duration_ms
           object.popularity += track.popularity
 
-          if (track.popularity > object.mostPopularSong.stat) {
-            object.mostPopularSong = {
-              name: track.name,
-              stat: track.popularity
-            }
+          if (track.popularity > object.mostPopularSong.popularity) {
+            object.mostPopularSong = track
+          }
+
+          if (track.popularity < object.leastPopularSong.popularity) {
+            object.leastPopularSong = track
           }
 
           if (track.artists) {
@@ -123,6 +136,11 @@ export class CuTracksDataComponent {
         object.popularity = Math.floor((object.popularity / (this._tracks.length * 100)) * 100)
         object.explicit.true_percentage = Math.floor((object.explicit.true_count / this._tracks.length) * 100)
         object.explicit.false_percentage = Math.floor((object.explicit.false_count / this._tracks.length) * 100)
+
+        object.timing.seconds = Math.round((object.totalMs / 1000) * 100) / 100
+        object.timing.minutes = Math.round((object.totalMs / 60000) * 100) / 100
+        object.timing.hours = Math.round((object.timing.minutes / 60) * 100) / 100
+        object.timing.days = Math.round((object.timing.hours / 24) * 100) / 100
   
         this._trackStatistics = object
       }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
 import gradient from 'gradient-color'
 
@@ -9,6 +9,7 @@ import gradient from 'gradient-color'
 })
 
 export class LineChartComponent {
+  @ViewChild('chart') private chartRef
   chart: any
   private _data: any
 
@@ -16,15 +17,21 @@ export class LineChartComponent {
     this._data = data
   }
 
+  @Input() type: string;
+  @Input() labelkey: string;
+  @Input() datakey: string;
+
   ngOnChanges() {
     if (this._data) {
-      console.log(this._data);
       let labels: Array<string> = [],
         data: Array<any> = []
 
       this._data.forEach((d) => {
-        labels.push(d.name)
-        data.push(d.popularity)
+        let label = d.hasOwnProperty(this.labelkey) ? d[this.labelkey] : 'default'
+        let stat = d.hasOwnProperty(this.datakey) ? d[this.datakey] : 0
+
+        labels.push(label)
+        data.push(stat)
       })
 
       this.initialiseChart(labels, data);
@@ -33,17 +40,27 @@ export class LineChartComponent {
 
   initialiseChart(labels: Array<string>, data: Array<any>) {
     let colours = gradient(['#35ff54', '#17fff9', '#9412ff'], data.length);
+    
+    let settings = this.type === 'bar' ? {
+      backgroundColor: colours,
+      fill: true
+    } : {
+      borderColor: '#35ff54',
+      pointBackgroundColor: colours,
+      pointBorderColor: colours,
+      borderCapStyle: 'round',
+      showLine: false,
+      lineTension: 0
+    }
 
-    this.chart = new Chart('canvas', {
-      type: 'bar',
+    this.chart = new Chart(this.chartRef.nativeElement, {
+      type: this.type,
       data: {
         labels: labels,
         datasets: [
           {
             data: data,
-            backgroundColor: colours,
-            fill: true,
-            lineTension: 0
+            ...settings
           }
         ]
       },
@@ -56,8 +73,14 @@ export class LineChartComponent {
             display: false
           }],
           yAxes: [{
-            display: true
-          }],
+            display: true,
+            gridLines: {
+              color: '#757575'
+            }
+          }]
+        },
+        layout: {
+          padding: 10
         }
       }
     })
