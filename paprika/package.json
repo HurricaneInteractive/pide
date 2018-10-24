@@ -13,6 +13,7 @@
     "i": "^0.3.6",
     "node-sass": "^4.9.3",
     "npm": "^6.4.1",
+    "random-material-color": "^1.0.3",
     "react": "^16.5.2",
     "react-data-grid": "^4.0.8",
     "react-data-grid-addons": "^4.0.8",

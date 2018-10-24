@@ -183,3 +183,19 @@ export function getAllPlaylistDataById(playlist_id) {
     }],
   });
 }
+
+// --------------------------------------------------------------
+
+
+export function getArtistsById(artists_array) {
+  return axios({
+    method: 'get',
+    url: 'https://api.spotify.com/v1/artists',
+    params: {
+      ids: artists_array.toString()
+    },
+    headers: {
+      Authorization: "Bearer " + AUTH_TOKEN
+    }
+  });
+}

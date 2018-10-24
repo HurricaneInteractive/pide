@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import axios from 'axios'
 import musicKey from '../content/musicKey'
+import randomMC from 'random-material-color'
 import paprikaImg from '../content/paprika.jpg'
 import { ResponsiveWaffle } from '@nivo/waffle'
 
 import { convertDurationToString } from '../globalFunctions'
+import { getArtistsById } from '../getSpotifyData';
 
 const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
@@ -28,6 +30,7 @@ class PlaylistInvididual extends Component {
       energy: 0,
       liveness: 0,
       data_loading: true,
+      waffle_loading: true,
 
       data_for_waffle: {},
 
@@ -150,7 +153,7 @@ class PlaylistInvididual extends Component {
   };
 
   componentDidMount() {
-    console.log('this.props.data (componentDidMount) => ', this.props.data)
+    // console.log('this.props.data (componentDidMount) => ', this.props.data)
     this.getTracksData(this.props.data.tracks.href);
   }
 
@@ -165,85 +168,81 @@ class PlaylistInvididual extends Component {
       console.warn("res.data => ", res.data)
       let tracks_ids = [];
       let total_time = 0;
-      let data_for_waffle = {};
       let waffleArray = [];
-      let artistValues = {};
+      let artistArray = [];
+
       for (let i = 0, len = res.data.items.length; i < len; i++) {
         let addId = res.data.items[i].track.id || 'no_ID';
         let addDuration = res.data.items[i].track.duration_ms || 0;
         tracks_ids.push(addId);
         total_time += addDuration;
         let artistsLength = res.data.items[i].track.artists.length;
-        console.log('TCL: PlaylistInvididual -> getTracksData -> artistsLength', artistsLength);
+
         for (let ye = 0; ye < artistsLength; ye++ ) {
-          // console.log('res.data.items[i].track.artists[a] => ', res.data.items[i].track.artists[ye])
-          // console.log('res.data.items[i].track.artists[a] => ', res.data.items[i].track.artists[ye].name)
           let current_artist = res.data.items[i].track.artists[ye].id;
-          console.log(res.data.items[i])
-          console.log(res.data.items[i].track.artists)
-          // console.log('TCL: current_artist', current_artist);
-          // console.log('TCL: artistValues[current_artist]', artistValues[current_artist]);
-          // console.log('TCL: artistValues[current_artist]', artistValues);
+          artistArray.push(current_artist)
+        }
+      }
 
-          let waffle_artist_ref = artistValues['current_artist'];
-          // console.log('TCL: PlaylistInvididual -> getTracksData -> waffle_artist_ref', waffle_artist_ref);
 
-          let dataForWaffle = data_for_waffle;
-          const dataForWaffleConst = data_for_waffle;
-          // console.log('TCL: PlaylistInvididual -> getTracksData -> dataForWaffle', dataForWaffle);
-          // console.log('TCL: PlaylistInvididual -> getTracksData -> dataForWaffleConst', dataForWaffleConst);
-          // if (waffle_artist_ref === undefined) {
-          //   console.warn('%c waffle_artist_ref === undefined', p)
-          // }
-          if (typeof waffle_artist_ref === undefined) {
-            console.warn('%c typeof waffle_artist_ref === undefined', p)
-          }
-          if (waffle_artist_ref === 'undefined') {
-            console.warn('%c typeof waffle_artist_ref === "undefined"', p)
-          }
-          
-          if (waffle_artist_ref === undefined) {
-            console.error('value === undefined', waffle_artist_ref)
-            let pushArtistValue = {
-              [current_artist]: {
-                value: 1
-              }
+      function compressArray(original) {
+ 
+        let compressed = [];
+        let compressedObjectGlobal = {};
+        let arrayCopy = original.slice(0);
+       
+        for (let i = 0; i < original.length; i++) {
+       
+          let myCount = 0;	
+          for (let w = 0; w < arrayCopy.length; w++) {
+            if (original[i] === arrayCopy[w]) {
+              myCount++;
+              delete arrayCopy[w];
             }
-            data_for_waffle = Object.assign({}, dataForWaffle, pushArtistValue)
-          } else {
-            console.warn('value already exists', waffle_artist_ref)
-            let prevVal = waffle_artist_ref;
-            // console.log('TCL: PlaylistInvididual -> getTracksData -> prevVal', prevVal);
-            let pushArtistValue = {
-              [current_artist]: {
-                value: 111111
-              }
-            }
-            data_for_waffle = Object.assign({}, dataForWaffle, pushArtistValue)
           }
+          if (myCount > 0) {
+            if (original[i] !== null) {
+              compressed.push(original[i]);
+              const pushToObj = {
+                [original[i]]: {
+                  'value': original[i],
+                  'count': myCount
+                }
+              }
+              const oldObj = compressedObjectGlobal;
+              const compressedObject = Object.assign(oldObj, pushToObj);
+              compressedObjectGlobal = compressedObject;
+            }
+          }
+        }
+        return {'array': compressed, 'obj': compressedObjectGlobal};
+      };
+      
+      // It should go something like this:
+      
+      let filteredArtists = compressArray(artistArray);
+      // console.log('compressed', filteredArtists.array);
+      // console.warn('compressedObject', filteredArtists.obj);
+      let toGetArtists = filteredArtists.array.slice(0, 49);
+      console.log('TCL: PlaylistInvididual -> getTracksData -> toGetArtists', toGetArtists);
 
-          // let pushArtistValue = {
-          //   [current_artist]: newVal
-          // }
-          // Object.assign(data_for_waffle, pushArtistValue)
-          console.log('data_for_waffle object{} => ', data_for_waffle)
-
-          let artist_volume = data_for_waffle
-          let track_artist_string = res.data.items[i].track.artists[0].name;
-          console.log('TCL: PlaylistInvididual -> getTracksData -> track_artist_string', track_artist_string);
+      getArtistsById(toGetArtists).then(res => {
+        for (let i = 0; i < res.data.artists.length; i++) {
+          let getColour = randomMC.getColor({ text: res.data.artists[i].name })
+          // console.log('getColour => ', getColour)
           let pushMe = {
-            "id": addId,
-            "label": 'value',
-            "value": data_for_waffle[current_artist],
-            "color": "#468df3"
+            "id": res.data.artists[i].name,
+            "label": res.data.artists[i].name,
+            "value": filteredArtists.obj[res.data.artists[i].id].count,
+            "color": getColour
           }
           waffleArray.push(pushMe)
         }
-        
-        
-        // Object.assign(data_for_waffle, pushMe)
-      }
-      
+        console.warn('waffleArray => ', waffleArray)
+        this.setState({
+          waffle_loading: false
+        })
+      })
 
       this.setState({
         playlist_duration: total_time,
@@ -370,40 +369,23 @@ class PlaylistInvididual extends Component {
               <h3>Artists</h3>
               <p>visualisation of artist volume within this playlist</p>
               <div className="container waffle_graph">
-                {this.state.data_loading ?
+                {this.state.waffle_loading ?
                   'loading'
                     :
                   <ResponsiveWaffle
-                    data={[
-                      {
-                        "id": "men",
-                        "label": "men",
-                        "value": 29.95557264355736,
-                        "color": "#468df3"
-                      },
-                      {
-                        "id": "women",
-                        "label": "women",
-                        "value": 8.376879990309883,
-                        "color": "#ba72ff"
-                      },
-                      {
-                        "id": "children",
-                        "label": "children",
-                        "value": 23.846083196498633,
-                        "color": "#a1cfff"
-                      }
-                    ]}
-                    total={this.state.all_tracks_data.length}
-                    rows={12}
-                    columns={36}
+                    data={this.state.data_for_waffle}
+                    total={this.state.data_for_waffle.length}
+                    rows={64}
+                    columns={64}
                     margin={{
                       "top": 10,
                       "right": 10,
                       "bottom": 10,
                       "left": 120
                     }}
-                    colorBy="id"
+                    fillDirection="top"
+                    padding={0}
+                    colorBy={d => d.color}
                     borderColor="inherit:darker(0.3)"
                     animate={true}
                     motionStiffness={90}
