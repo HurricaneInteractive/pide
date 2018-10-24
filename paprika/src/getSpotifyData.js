@@ -10,6 +10,15 @@ let totalPlaylistsQueried = 0;
 
 const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
+export function convertDurationToString(milliseconds) {
+  let timeString = null;
+  console.log('milliseconds => ', milliseconds)
+  return timeString
+}
+
+
+// --------------------------------------------------------------
+
 export function getUserData(val){
   return axios({
     method: 'get',
@@ -88,11 +97,6 @@ export function getAllUserPlaylists() {
 
 export function getFirstFiftyPlaylistTracks(playlist_data) {
   console.log('playlist_data => ', playlist_data);
-
-  // https://stackoverflow.com/questions/40328932/javascript-es6-promise-for-loop
-  // https://stackoverflow.com/questions/47211168/trying-to-execute-a-promise-chain-in-a-for-loop-once-for-each-item-in-a-list
-  // https://stackoverflow.com/questions/750486/javascript-closure-inside-loops-simple-practical-example
-  let playlist_length = playlist_data.length;
   let promises = [];
 
   function requestPlaylistData(url) {
@@ -116,155 +120,9 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
   for (let i = 0; i < 20; i++) {
     promises.push(requestPlaylistData(playlist_data[i].tracks.href));
     totalPlaylistsQueried += 1;
-    console.log(totalPlaylistsQueried)
   }
   return promises
-
-  // loops through all playlist and pushes the data to an axios req func
-  // return new Promise(function(resolve, reject) {
-  //   // some code that fills in err if there is an error
-
-  //   // console.log(playlist_length)
-  //   // console.log(totalPlaylistsQueried)
-  //   let err = false;
-  //   for (let i = 0; i < 20; i++) {
-  //     promises.push(requestPlaylistData(playlist_data[i].tracks.href));
-  //     totalPlaylistsQueried += 1;
-  //     console.log(totalPlaylistsQueried)
-  //   }
-  //   // Promise.all(promises).then(res => {
-  //   //   console.log('res Promise.all => ', res)
-  //   // })
-  //   if (playlist_length <= totalPlaylistsQueried) {
-  //     err = true
-  //   }
-  //   if (err) {
-  //     console.error('errors4days')
-  //     reject('error');
-  //   } else {
-  //     console.warn('success mate')
-  //     resolve({
-  //       'playlist_data': playlist_data,
-  //       'allTracks': allTracks,
-  //       'totalPlaylistsQueried': totalPlaylistsQueried,
-  //     });
-  //   }
-  // });
 }
-
-// export function getFirstFiftyPlaylistTracks(playlist_data) {
-//   // set limit of songs to call
-//   let maxTrackCall = 50;
-//   return axios({
-//     method: 'get',
-//     url: playlist_data[0].tracks.href,
-//     params: {
-//       limit: maxTrackCall
-//     },
-//     headers: {
-//       Authorization: "Bearer " + AUTH_TOKEN
-//     },
-//     transformResponse: [function (data) {
-//       // Parse raw data from string to JSON
-//       let res = JSON.parse(data);
-//       let playlistLength = 0;
-//       if (data === undefined) {
-//         console.error('data undefined -_-')
-//       }
-
-//       if (res.items !== undefined || null) {
-//         playlistLength = res.items.length
-//       } else {
-//         console.log('length undefined', res)
-//       }
-//       for (let i = 0, len = playlistLength; i < len; i++) {
-//         let addPlaylistSongs = res.items[i];
-
-//         if (res.items[i] !== null) {
-//           allTracks.push(addPlaylistSongs);
-//         } else {
-//           console.log('null track => ', res.items[i])
-//         }
-//       }
-//       getTheRestPlaylists(playlist_data);
-      
-//       console.warn(getTheRestPlaylists(playlist_data))
-
-//       console.log('%c YOU MAY NOW RETURN => ', p)
-//       console.log(allTracks)
-//       console.log(totalPlaylistsQueried)
-//       return [allTracks, totalPlaylistsQueried];
-//     }],
-//   });
-
-//   // get default track data by track_id
-//   function getTheRestPlaylists(playlist_data) {
-//     console.log('%c BEFORE for loop (logPlaylists) => ', p)
-//     console.log(playlist_data)
-//     // set max playlists to query
-//     let totalPlaylistsToQuery = 49;
-//     console.log(playlist_data[0].tracks.href)
-//     console.log(playlist_data[1].tracks.href)
-//     // for loop starts at 1 - playlist_data[0].tracks.href was already run initially
-//     for (let i = 1; i < totalPlaylistsToQuery; i++) {
-//       getOtherPlaylistsData(playlist_data[i].tracks.href);
-//       console.log('getOtherPlaylistsData(playlist_data[i].tracks.href)')
-//       console.log(getOtherPlaylistsData(playlist_data[i].tracks.href))
-//     }
-    
-//     return [allTracks, totalPlaylistsQueried];
-//   }
-
-//   function getOtherPlaylistsData(url) {
-//     // checks if total tracks is more than 2500 - if so, break ;)
-//     let trackLength = allTracks.length;
-//     console.log('TCL: getOtherPlaylistsData -> allTracks.length', allTracks.length);
-//     if (trackLength <= 250) {
-//       // totalPlaylistsToQuery = 0;
-//       console.log('STOP THIS MADNESS... for the sake of the poor spotify API')
-      
-//       return null;
-//     }
-//     return axios({
-//       method: 'get',
-//       url: url,
-//       params: {
-//         // sets total tracks to query from playlist
-//         limit: 50
-//       },
-//       headers: {
-//         Authorization: "Bearer " + AUTH_TOKEN
-//       },
-//       transformResponse: [function (data) {
-//         // parses the RAW string data into a JSON object
-//         let res = JSON.parse(data);
-//         let playlistLength = 0;
-//         if (data === undefined) {
-//           console.error('data undefined -_-')
-//         }
-  
-//         if (res.items !== undefined || null) {
-//           playlistLength = res.items.length
-//         } else {
-//           console.log('length undefined', res)
-//         }
-//         for (let i = 0, len = playlistLength; i < len; i++) {
-//           let addPlaylistSongs = res.items[i];
-//           console.log('TCL: getOtherPlaylistsData -> addPlaylistSongs', addPlaylistSongs);
-  
-//           if (res.items[i] !== null) {
-//             allTracks.push(addPlaylistSongs);
-//           } else {
-//             console.error('null track => ', res.items[i])
-//           }
-//         }
-//         console.log('%c END of (getOtherPlaylistsData) => ', p)
-//       }],
-//     });
-    
-//     return allTracks;
-//   }
-// }
 
 // --------------------------------------------------------------
 
