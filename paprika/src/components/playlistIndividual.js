@@ -7,7 +7,7 @@ import paprikaImg from '../content/paprika.jpg'
 const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
 const AUTH_TOKEN = window.sessionStorage.access_token
-const REFRESH_TOKEN = window.sessionStorage.refresh_token
+// const REFRESH_TOKEN = window.sessionStorage.refresh_token
 
 
 class PlaylistInvididual extends Component {
@@ -293,9 +293,7 @@ class PlaylistInvididual extends Component {
                   onAddFilter={this.handleFilterChange}
                   onClearFilters={this.onClearFilters}
                 />
-                
               }
-              
               </div>
             </div>
           </div>

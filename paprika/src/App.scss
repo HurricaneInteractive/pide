@@ -5,3 +5,7 @@
 body {
   font-family: $font-family;
 }
+
+img {
+  user-select: none;
+}

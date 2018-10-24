@@ -9,6 +9,11 @@ var config = {
     }
 };
 
+gulp.task('watch', function() {
+  
+    gulp.watch("scss/**/*.scss", ['sass']);
+  });
+
 gulp.task("sass", function() {
     return gulp.src(config.SASS_TARGET)
         .pipe(sass(config.SASS_SETTINGS).on('error', sass.logError))
