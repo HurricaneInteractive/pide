@@ -36,9 +36,6 @@
             </div>
         </div>
 
-        
-
-
         <!-- Add your scripts before this one -->
         <script type="text/javascript">
             (function() {
@@ -65,21 +62,16 @@
                     error = params.error;
 
                     if (error) {
-                        console.log('not logged in');
                         alert('There was an error processing your request, please try again')
                     }
-                    else {
-                        console.log('user logged in')
+                    else {]
                         window.sessionStorage.setItem('access_token', access_token);
                         window.sessionStorage.setItem('refresh_token', refresh_token);
                     }
                 }
-
                 if (window.sessionStorage.getItem('refresh_token') !== 'undefined') {
-                    console.log('access_token === null')
                     document.getElementById("main-login").classList.add('false');
                 } else {
-                    console.log('access_token !== null')
                     document.getElementById("main-header").classList.add('false');
                     document.getElementById("main-choices").classList.add('false');
                 }

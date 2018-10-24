@@ -1,5 +1,7 @@
+@import './style.scss';
+
 body {
-  background-color: #3B3738;
+  background-color: get-colour('dark-grey');
   box-sizing: border-box;
 }
 .main-header {
@@ -10,7 +12,7 @@ body {
   display: none !important;
 }
 .home-container {
-  background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
+  background: linear-gradient(rgba(0,0,0,0) -30%, get-colour('black-bg'));
   min-height: 100vh;
   padding: 48px 0;
   display: flex;
