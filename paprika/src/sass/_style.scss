@@ -20,6 +20,15 @@
   
 }
 
+.no_user {
+  .app-container {
+    h1 {
+      margin: 0 auto;
+
+    }
+  }
+}
+
 .app-container {
   position: relative;
   min-height: 100vh;
@@ -28,7 +37,7 @@
 .user-header {
   // background-color: get-colour('black');
   // background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
-  min-height: 70vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,9 +53,6 @@
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 8px;
     margin: 8px auto;
-    .country_flag {
-
-    }
     .spotify_icon_div, .country_flag {      
       transition: .05;
       position: relative;
@@ -85,13 +91,17 @@
     font-size:72px;
     line-height:82px;
     letter-spacing:-.005em;
-    margin: 2rem auto 1rem;
+    margin: 2rem auto .1rem;
   }
   h4 {
     margin: 0 auto;
     color: hsla(0,0%,100%,.6);
     font-weight: 500;
   }
+}
+.tracks_playlists {
+  color: hsla(0,0%,100%,.6);
+  margin: 0 auto 8px;
 }
 .user-image {
   border-radius: 50%;
@@ -114,87 +124,37 @@
   }
 }
 
-.playlist_overlay_background {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  
-  background: rgba(0,0,0,0.5);
-}
+.top_playlists_container {
+  .header {
+    padding: 0 32px;
+    margin: 0 auto;
+    display: block;
+    // grid-template-columns: 1fr;
+    h2 {
+      text-decoration: underline;
+      text-decoration-color: #1DB954;
+    }
+    h6 {
+      color: hsla(0,0%,100%,.6);
+      margin: 0 auto;
+    }
+    h2, h6 {
+      width: 100%;
+      justify-self: flex-start;
+      text-align: left;
+    }
+  }
+  .top_playlists_content {
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .stats_items {
 
-.playlist_overlay {
-  position: absolute;
-  width: 80%;
-  margin: 10% 10%;
-  // height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  
-  background-color: #3B3738;
-  .playlist_overlay_wrapper {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
-    .close {
-      position: absolute;
-      top: 48px;
-      right: 68px;
-      transition: .5s;
-      cursor: pointer;
-      &:hover {
-        color: hsla(0,0%,100%,.6);
-        transition: .5s;
-      }
-    }
-    header {
-      padding: 24px;
-      display: grid;
-      grid-template-columns: 45% 1fr;
-      img {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-      }
-      .meta_box {
-        padding: 24px 48px;
-        text-align: left;
-        h1 {
-          font-size: 28px;
-          line-height: 36px;
-          letter-spacing: -.005em;
-        }
-        h3 {
-          color: hsla(0,0%,100%,.6);
-          font-size: 14px;
-          line-height: 18px;
-          letter-spacing: -.005em;
-        }
-        .playlist_stats {
-          height: 150px;
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          > div {
-            height: 100%;
-            width: 100%;
-            .progression-circle {
-              display: block;
-            }
-          }
-        }
-      }
-    }
-    .playlist_content {
-      padding: 24px 24px 48px;
     }
   }
 }
-
 
 // playlists
 .playlist_header {
@@ -212,6 +172,16 @@
     display: flex;
     align-content: center;
     margin: 16px 0;
+    .hide_private {
+      align-self: center;
+      margin: 0 8px;
+    }
+    .hide_private.disabled {
+      color: hsla(0,0%,100%,.6);
+    }
+    .hide_private.enabled {
+      color: hsla(0,0%,100%,.3);
+    }
     .button {
       justify-self: flex-end;
       padding: 16px;
@@ -236,12 +206,13 @@
         }
       }
     }
-    .enabled {
+    .button.enabled {
+      color: hsla(0,0%,100%,.3);
       svg {
         color: hsla(0,0%,100%,.3);
       }
     }
-    .disabled {
+    .button.disabled {
       &:hover {
         border: 1px solid rgb(185, 29, 29);
         transition: .5s;
@@ -256,7 +227,7 @@
     }
   }
 }
-.playlist_container {
+.playlist_container, .top_playlists_container {
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -305,71 +276,6 @@
       margin: 0 auto;
       font-weight: 400;
       color: hsla(0,0%,100%,.6);
-    }
-  }
-}
-
-
-.react-grid-Canvas, .react-grid-Cell, .react-grid-Row, .react-grid-HeaderCell, .react-grid-HeaderRow, .react-grid-Header, .react-grid-Grid, .react-grid-Main, .react-grid-Toolbar, .react-grid-Grid, .react-grid-Container {
-  background-color: none !important;
-  background: none !important;
-  color: hsla(0,0%,100%,.6) !important;
-  text-align: left;
-  border: none;
-  outline: none !important;
-  box-shadow: none !important;
-}
-.react-grid-Cell, .react-grid-HeaderCell {
-  border-left: none !important;
-  border-right: none !important;
-  border-bottom: none !important;
-  height: 100% !important;
-}
-.react-grid-Cell {
-  transition: .5s;
-  min-width: 0 !important;
-  &:hover {
-    transition: .5s;
-    width: auto !important;
-    background-color: #282828 !important;
-    z-index: 9999999;
-    div {
-      div {
-        span {
-          div {
-            transition: .5s;
-            color: hsla(0,0%,100%,1) !important;
-          }
-        }
-      }
-    }
-  }
-  div {
-    div {
-      span {
-        div {
-          transition: .5s;
-          color: hsla(0,0%,100%,.6) !important;
-          z-index: 9999999;
-        }
-      }
-    }
-  }
-}
-.react-grid-Row {
-  height: 48px !important;
-  border-bottom: 1px solid hsla(0,0%,100%,.3);
-}
-.react-grid-Grid {
-  border: none !important;
-}
-.react-grid-Toolbar {
-  border: solid transparent 0px;
-  border-width: 0px !important;
-  .tools {
-    button {
-      background: transparent;
-      color: white;
     }
   }
 }

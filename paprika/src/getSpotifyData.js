@@ -10,13 +10,6 @@ let totalPlaylistsQueried = 0;
 
 const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
-export function convertDurationToString(milliseconds) {
-  let timeString = null;
-  console.log('milliseconds => ', milliseconds)
-  return timeString
-}
-
-
 // --------------------------------------------------------------
 
 export function getUserData(val){
@@ -45,6 +38,8 @@ export function getAllUserPlaylists() {
     transformResponse: [function (data) {
       let res = JSON.parse(data);
       // console.log('getAllUserPlaylists => ', res)
+      let totalToQuery = 10;
+      // let totalToQuery = res.total;
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];
         allPlaylists.push(addThisPlaylist);
@@ -54,9 +49,9 @@ export function getAllUserPlaylists() {
         }
         Object.assign(allPlaylistsObj, pushMe)
       }
-      getNumberOfTimesPlaylistsNeedsToBeRun(res.total);
+      getNumberOfTimesPlaylistsNeedsToBeRun(totalToQuery);
       // any values returned here are sent back to react
-      return [allPlaylists, allPlaylistsObj, res.total];
+      return [allPlaylists, allPlaylistsObj, totalToQuery];
     }],
   });
 
@@ -72,6 +67,7 @@ export function getAllUserPlaylists() {
 
   // get all users playlists
   function getPlaylistsRequest(nextOffset) {
+    console.log('ran @ ', nextOffset)
     return axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me/playlists',
@@ -81,15 +77,39 @@ export function getAllUserPlaylists() {
       },
       headers: {
         Authorization: "Bearer " + AUTH_TOKEN
-      }
-    }).then(res => {
-      // console.log('getPlaylistsRequest() res.data => ', res.data)
-
-      for (let i = 0, len = res.data.items.length; i < len; i++) {
-        const addThisPlaylist = res.data.items[i];
-        allPlaylists.push(addThisPlaylist);
-      }
+      },
+      transformResponse: [function (data) {
+        let res = JSON.parse(data);
+        // console.log('getAllUserPlaylists => ', res)
+        if (res.items.length === undefined) {
+          console.log('res.items.length === undefined')
+        }
+        for (let i = 0, len = res.items.length; i < len; i++) {
+          const addThisPlaylist = res.items[i];
+          allPlaylists.push(addThisPlaylist);
+  
+          let pushMe = {
+            [res.items[i].id]: res.items[i]
+          }
+          Object.assign(allPlaylistsObj, pushMe)
+        }
+        // any values returned here are sent back to react
+        return [allPlaylists, allPlaylistsObj, res.total];
+      }],
     });
+    // .then(res => {
+    //   // console.log('getPlaylistsRequest() res.data => ', res.data)
+
+    //   for (let i = 0, len = res.data.items.length; i < len; i++) {
+    //     const addThisPlaylist = res.data.items[i];
+    //     allPlaylists.push(addThisPlaylist);
+
+    //     let pushMe = {
+    //       [res.items[i].id]: res.items[i]
+    //     }
+    //     Object.assign(allPlaylistsObj, pushMe)
+    //   }
+    // });
   }
 }
 

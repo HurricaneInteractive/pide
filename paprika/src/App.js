@@ -7,6 +7,7 @@ import './App.scss';
 import paprikaImg from './content/paprika.jpg'
 // import filler from './filler.json'
 import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks, getAllPlaylistDataById } from './getSpotifyData'
+import { convertDurationToString } from './globalFunctions'
 
 // eslint-disable-next-line
 import PlaylistInvididual from './components/playlistIndividual'
@@ -37,45 +38,27 @@ class App extends Component {
     super(props)
 
     this.state = {
+      loggedIn: false,
       user: null,
       user_loading: true,
+      imageLoad: false,
       playlists: [],
       playlist_data_cache: {},
+      hidePrivate: false,
       playlist_grid: 4,
       playlists_queried: 0,
       playlist_loading: true,
       playlist_view: false,
       playlists_total: 0,
+      artists_queried: [],
+      average_popularity_of_queried_tracks: 0,
+      durationTotal_of_queried_tracks: 0,
       total_tracks: 0,
       tracks_loading: true,
       current_playlist: null,
       nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50'
     }
   }
-
-  // getPlaylistsRequest(nextOffset) {
-  //   axios({
-  //     method: 'get',
-  //     url: 'https://api.spotify.com/v1/users/12162909955/playlists',
-  //     params: {
-  //       offset: nextOffset,
-  //       limit: 50
-  //     },
-  //     headers: {
-  //       Authorization: "Bearer " + AUTH_TOKEN
-  //     }
-  //   }).then(res => {
-  //     const current = this.state.playlists;
-
-  //     for (let i = 0, len = res.data.items.length; i < len; i++) {
-  //       const addThisPlaylist = res.data.items[i];
-  //       current.push(addThisPlaylist);
-  //     }
-  //     this.setState({
-  //       playlists: current
-  //     });
-  //   });
-  // }
 
   getNumberOfTimesPlaylistsNeedsToBeRun(total) {
     let runThisManyTimes = (Math.ceil(total / 50)) + 1;
@@ -97,71 +80,135 @@ class App extends Component {
   }, 5000);
 
   componentDidMount() {
-    getUserData().then(res => {
+
+    console.log("window.sessionStorage.getItem('refresh_token') => ", window.sessionStorage.getItem('refresh_token'))
+    console.log("window.sessionStorage.getItem('access_token') => ", window.sessionStorage.getItem('access_token'))
+    let userAuthed = false;
+    if (window.sessionStorage.getItem('access_token') === 'undefined') {
+      userAuthed = false;
       this.setState({
-        user: res.data,
-        user_loading: false
-      });
-    });
-
-    getAllUserPlaylists().then(res => {
-      let totalTracks = 0;
-      for (let i = 0; i < res.data[0].length; i++) {
-        totalTracks += res.data[0][i].tracks.total;
-      }
-      console.log('GETALLUSERPLAYLISTS => ', res.data)
-      this.setState({
-        playlists: res.data[1],
-        playlist_loading: false,
-        playlists_total: res.data[2],
-        total_tracks: totalTracks
-      });
-
-      // pass in all playlist data as variable
-      // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
-      let og_res = res;
-      console.log('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
-      // returns about 2000k songs - more than enough to play with
-      Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
-        // console.log('%c COMPONENT getFirstFiftyPlaylistTracks() => ', p)
-        // Promise.all(promises).then(res => {
-        //   console.log('res Promise.all => ', res)
-        // })
-        let allTracks = [];
-        let playlistTracks = [];
-        console.warn('getFirstFiftyPlaylistTracks => ', res)
-        
-        for (let i = 0; i < res.length; i++) {
-          let addPlaylistSongs = res[i].data;
-
-          if (res[i].data !== null) {
-            playlistTracks.push(addPlaylistSongs);
-
-            for (let y = 0; y < res[i].data.length; y++) {
-              let addTracksSongs = res[i].data[y];
-              if (res[i].data[y] !== null) {
-                allTracks.push(addTracksSongs);
-              } else {
-                console.log('null track => ', res[i].data[y]);
-              }
-            }
-          } else {
-            console.log('null track => ', res.items[i])
-          }
-        }
-        
-        console.log('allTracks => ', allTracks)
-        // console.warn('getFirstFiftyPlaylistTracks => ', res.data)
-        // this.setState({
-        //   tracks: res.data[0],
-        //   tracks_queried_length: res.data[0].length,
-        //   playlists_queried: res.data[1],
-        //   tracks_loading: false
-        // });
-        // this.checkTrackStats(res.data);
-        
+        loggedIn: false
       })
-    });
+    } else {
+      userAuthed = true;
+      this.setState({
+        loggedIn: true
+      })
+    }
+
+    // runs functions if user is logged in, else return null
+    if (userAuthed) {
+      getUserData().then(res => {
+        console.log('getUserData() ', res)
+        this.setState({
+          user: res.data,
+          user_loading: false
+        });
+      });
+  
+      getAllUserPlaylists().then(res => {
+        let totalTracks = 0;
+        for (let i = 0; i < res.data[0].length; i++) {
+          totalTracks += res.data[0][i].tracks.total;
+        }
+        console.log('GETALLUSERPLAYLISTS => ', res.data)
+        this.setState({
+          playlists: res.data[1],
+          playlist_loading: false,
+          playlists_total: res.data[2],
+          total_tracks: totalTracks
+        });
+  
+        // pass in all playlist data as variable
+        // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
+        let og_res = res;
+        console.log('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
+
+        // returns about 2000k songs - more than enough to play with
+        Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
+          let allTracks = [];
+          let artistSet = new Set();
+          let popularityAverage = 0;
+          let popularityTotal = 0;
+          let durationTotal = 0;
+          let release_year_range_min = null;
+          let release_year_range_max = null;
+          let playlistTracks = [];
+          console.warn('getFirstFiftyPlaylistTracks => ', res)
+          let totalPlaylistsQuried = res.length;
+          let totalTracksQueried = 0;
+  
+          
+          
+          for (let i = 0; i < res.length; i++) {
+            let addPlaylistSongs = res[i].data;
+  
+            if (res[i].data !== null) {
+              playlistTracks.push(addPlaylistSongs);
+              
+  
+              for (let y = 0; y < res[i].data.length; y++) {
+                let invididualTrack = res[i].data[y];
+                if (res[i].data[y] !== null) {
+                  allTracks.push(invididualTrack);
+                  totalTracksQueried++;
+                  popularityTotal += invididualTrack.track.popularity;
+                  durationTotal += invididualTrack.track.duration_ms;
+                  // loops through and extracts release year
+                  // checks if the min/max values are smaller/larger and appends if true
+                  if (invididualTrack.track.album.release_date !== undefined) {
+                    let stringReleaseYear = null;
+                    if (invididualTrack.track.album.release_date !== null) {
+                      stringReleaseYear = invididualTrack.track.album.release_date.substring(0, 4)
+                      if (release_year_range_max === null || release_year_range_min === null){
+                        release_year_range_max = stringReleaseYear;
+                        release_year_range_min = stringReleaseYear;
+                      }
+                      if (release_year_range_min > stringReleaseYear) {
+                        release_year_range_min = stringReleaseYear
+                      }
+                      if (release_year_range_max < stringReleaseYear) {
+                        release_year_range_max = stringReleaseYear
+                      }
+                    }
+                  }
+  
+                  // loops through artists array and adds them to the aristSet Set (unique vals only)
+                  for (let b = 0; b < invididualTrack.track.artists.length; b++) {
+                    artistSet.add(invididualTrack.track.artists[b].name);
+                  }
+                } else {
+                  console.log('null track => ', res[i].data[y]);
+                }
+              }
+            } else {
+              console.warn('null track => ', res.items[i])
+            } 
+          }
+          popularityAverage = popularityTotal / allTracks.length;
+
+          let convertedDuration = convertDurationToString(durationTotal).timeString;
+
+          this.setState({
+            tracks: allTracks,
+            tracks_queried_length: totalTracksQueried,
+            playlists_queried: totalPlaylistsQuried,
+            artists_queried: artistSet,
+            average_popularity_of_queried_tracks: popularityAverage,
+            release_year_range_min: release_year_range_min,
+            release_year_range_max: release_year_range_max,
+            tracks_loading: false,
+            durationTotal_of_queried_tracks: convertedDuration
+          });
+        })
+      });
+    } 
+  }
+
+  handleImageLoad() {
+    this.setState({
+      imageLoad: true
+    })
   }
 
   testThisOut(data) {
@@ -205,10 +252,19 @@ class App extends Component {
       if (data[key].owner.display_name !== null) {
         display_name = data[key].owner.display_name
       }
+      if (this.state.hidePrivate) {
+        if (data[key].public === false) {
+          return null
+        }
+      }
       return (
         <div className="playlist_single_container" key={key} >
           <div onClick={() => this.openPlaylist(data[key])} className="playlist_image">
-            <img src={imageURL} key={key} alt={key}/>
+            <img
+              src={imageURL}
+              key={key}
+              alt={key}
+            />
             <div className="playlist_image_overlay">{Parser(music_icon)}</div>
           </div>
           <div className="playlist_title">
@@ -220,7 +276,7 @@ class App extends Component {
     });
 
     return (
-      <div style={{display: "grid", gridTemplateColumns: this.getGridSize(this.state.playlist_grid)}} >
+      <div style={{display: "grid", gridTemplateColumns: this.getGridSize(this.state.playlist_grid)}}>
         {allPlaylistCovers}
       </div>
     )
@@ -265,9 +321,26 @@ class App extends Component {
     this.setState({ playlist_view: false });
   };
 
+  togglePrivatePlaylists = (toggle) => {
+    this.setState({ hidePrivate: toggle})
+  }
+
   render() {
     if (this.state.loading === true) {
       return <p>loading</p>
+    }
+
+    if (this.state.loggedIn === false) {
+      return (
+        <div className="app no_user">
+          <div className="absolute-background"/>
+          <div className="app-container">
+            <h1>no user data</h1>
+            {/* redirect back to login page */}
+            <a href="/login"><button>Please Login</button></a>
+          </div>
+        </div>
+      )
     }
 
     return (
@@ -317,6 +390,7 @@ class App extends Component {
                 <>
                   <img className="user-image" src={this.state.user.images[0].url} alt="logo" />
                   <h1 style={{textAlign: "center"}}>{this.state.user.display_name}</h1>
+                  <p className="tracks_playlists">{this.state.total_tracks} tracks - {this.state.playlists_total} playlists</p>
                   <div className="status_icons">
                     {this.state.user.product === 'premium' ?
                       <div id="premium" className="spotify_icon_div">
@@ -334,46 +408,44 @@ class App extends Component {
                       <p>Country {this.state.user.country}</p>
                     </div>
                   </div>
-                  <h4>{this.state.playlists.length} total playlists</h4>
-                  <ul>
-                    {this.state.playlist_loading ?
-                      <>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                      </>
-                      :
-                      <>
-                        <li>{this.state.playlists_total} playlists</li>
-                        <li>{this.state.total_tracks} tracks</li>
-                      </>
-                    }
-                  </ul>
-                  <h4>Based on {this.state.tracks_queried_length} tracks from your first {this.state.playlists_queried} playlists</h4>
-                  <ul>
-                    {this.state.tracks_loading ?
-                      <>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                      </>
-                      :
-                      <>
-                        <li>{this.state.playlists_total} artists</li>
-                        <li>{this.state.total_tracks} total time</li>
-                        <li>{this.state.total_tracks} average popularity</li>
-                        <li>{this.state.total_tracks} release year range (graph thing could be cool)</li>
-                      </>
-                    }
-                  </ul>
                 </>
               }
             </section>
+
+            <div className="top_playlists_container">
+              <div className="header">
+                <h2>A smal chunck of stats</h2>
+                <h6>Based on {this.state.tracks_queried_length} tracks from your first {this.state.playlists_queried} playlists</h6>
+              </div>
+              <div className="top_playlists_content">
+                {this.state.tracks_loading ?
+                  <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                  </ul>
+                  :
+                  <ul className="stats_items">
+                    <li>{this.state.artists_queried.size} different artists</li>
+                    <li>{this.state.durationTotal_of_queried_tracks} total time</li>
+                    <li>{Math.round(this.state.average_popularity_of_queried_tracks)}% average popularity</li>
+                    <li>Tracks released between {this.state.release_year_range_min} - {this.state.release_year_range_max}</li>
+                  </ul>
+                }
+              </div>
+
+            </div>
+
             <div className="playlist_container">
               <div className="playlist_header">
                 <h2>User Playlists</h2>
                 <div className="layout_size">
+                  {this.state.hidePrivate ?
+                    <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
+                    :
+                    <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
+                  }
                   {this.state.playlist_grid >= 7 ?
                     <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
                     :
@@ -393,6 +465,7 @@ class App extends Component {
               }
               <h2>scroll to top</h2>
             </div>
+
           </div>
         </div>
       </>

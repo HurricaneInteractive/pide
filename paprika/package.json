@@ -6,6 +6,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
     "@fortawesome/free-solid-svg-icons": "^5.4.1",
     "@fortawesome/react-fontawesome": "^0.1.3",
+    "@nivo/calendar": "^0.50.0",
+    "@nivo/waffle": "^0.50.0",
     "axios": "^0.18.0",
     "html-react-parser": "^0.4.7",
     "i": "^0.3.6",
