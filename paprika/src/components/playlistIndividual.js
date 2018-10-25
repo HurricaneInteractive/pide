@@ -155,6 +155,7 @@ class PlaylistInvididual extends Component {
 
   componentDidMount() {
     // console.log('this.props.data (componentDidMount) => ', this.props.data)
+    window.scrollTo(0, 0);
     this.getTracksData(this.props.data.tracks.href);
   }
 

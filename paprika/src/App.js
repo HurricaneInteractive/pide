@@ -5,6 +5,7 @@ import axios from 'axios'
 import Parser from 'html-react-parser';
 import gradient from 'gradient-color'
 import paprikaImg from './content/paprika.jpg'
+import black from './content/black.png'
 // import filler from './filler.json'
 import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks, getAllPlaylistDataById } from './getSpotifyData'
 import { convertDurationToString } from './globalFunctions'
@@ -312,11 +313,14 @@ class App extends Component {
       return (
         <div className="playlist_single_container" key={key} >
           <div onClick={() => this.openPlaylist(data[key])} className="playlist_image">
-            <img
-              src={imageURL}
-              key={key}
-              alt={key}
-            />
+            <img className="background_placeholder" src={black} alt="background"/>
+            <div className="actual_image">
+              <img
+                src={imageURL}
+                key={key}
+                alt={key}
+              />
+            </div>
             <div className="playlist_image_overlay">{Parser(music_icon)}</div>
           </div>
           <div className="playlist_title">
@@ -476,21 +480,21 @@ class App extends Component {
                   <>
                     <ul className="artists_bar_graph">
                       <li className="artists_bar_container">
-                        <h3>''</h3>
+                        <h3>load</h3>
 
                       </li>
                     </ul>
                     <ul className="stats_items">
                       <li>
-                        <h3>''</h3>
+                        <h3>load</h3>
                         <p></p>
                       </li>
                       <li> 
-                        <h3>''</h3>
+                        <h3>load</h3>
                         <p></p>
                       </li>
                       <li className="release_years">
-                        <h3>''</h3>
+                        <h3>load</h3>
                         <p></p>
                       </li>
                     </ul>
@@ -523,7 +527,7 @@ class App extends Component {
                           borderColor="inherit:darker(1.6)"
                           labelSkipWidth={12}
                           labelSkipHeight={12}
-                          labelTextColor="#1DB954"
+                          labelTextColor="transparent"
                           animate={true}
                           motionStiffness={90}
                           motionDamping={15}
@@ -533,7 +537,7 @@ class App extends Component {
                     <ul className="stats_items">
                       <li>
                         <h3>{this.state.durationTotal_of_queried_tracks}</h3>
-                        <p>total time popularity</p>
+                        <p>total time</p>
                       </li>
                       <li> 
                         <h3>{Math.round(this.state.average_popularity_of_queried_tracks)}%</h3>
