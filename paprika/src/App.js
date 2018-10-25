@@ -3,11 +3,15 @@ import {Helmet} from "react-helmet";
 // eslint-disable-next-line
 import axios from 'axios'
 import Parser from 'html-react-parser';
-import './App.scss';
+import gradient from 'gradient-color'
 import paprikaImg from './content/paprika.jpg'
 // import filler from './filler.json'
 import { getUserData, getAllUserPlaylists, getFirstFiftyPlaylistTracks, getAllPlaylistDataById } from './getSpotifyData'
 import { convertDurationToString } from './globalFunctions'
+import { ResponsiveBar } from '@nivo/bar'
+import Loading from './components/loading'
+
+import './App.scss';
 
 // eslint-disable-next-line
 import PlaylistInvididual from './components/playlistIndividual'
@@ -18,12 +22,7 @@ import { faTh, faThLarge } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faTh, faThLarge)
 
-
-// https://countryflags.io/ could be used to get user location flag
-
-// eslint-disable-next-line
-const AUTH_TOKEN = window.sessionStorage.access_token
-// const REFRESH_TOKEN = window.sessionStorage.refresh_token
+// const AUTH_TOKEN = window.sessionStorage.access_token
 
 const music_icon = '<svg width="80" height="81" viewBox="0 0 80 81" xmlns="http://www.w3.org/2000/svg"><title>Playlist Icon</title><path d="M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z" fill="currentColor" fill-rule="evenodd"></path></svg>'
 const user_icon = '<svg viewBox="0 0 80 79" xmlns="http://www.w3.org/2000/svg"><title>Artist Icon</title><path d="M53.043 50.486L46.68 46.83c-.636-.366-1.074-.99-1.2-1.716-.125-.725.077-1.462.555-2.02l5.178-6.072c3.287-3.84 5.097-8.743 5.097-13.803V21.24c0-5.85-2.447-11.497-6.716-15.5C45.266 1.686 39.596-.343 33.66.048c-11.12.718-19.83 10.326-19.83 21.87v1.3c0 5.063 1.81 9.964 5.096 13.802l5.18 6.074c.476.558.678 1.295.553 2.02-.127.723-.563 1.35-1.202 1.717l-12.697 7.3C4.124 57.9 0 64.982 0 72.61v5.92h2.97v-5.92c0-6.562 3.548-12.653 9.265-15.902l12.702-7.3c1.407-.81 2.372-2.19 2.65-3.788.276-1.598-.17-3.22-1.222-4.454l-5.18-6.077C18.356 31.787 16.8 27.57 16.8 23.216v-1.3c0-9.982 7.49-18.287 17.05-18.906 5.124-.326 9.99 1.41 13.712 4.9 3.727 3.493 5.778 8.227 5.778 13.332v1.977c0 4.352-1.557 8.57-4.385 11.872l-5.18 6.074c-1.05 1.234-1.496 2.858-1.22 4.456.278 1.597 1.242 2.977 2.647 3.785l4.51 2.59c1.048-.61 2.16-1.12 3.33-1.51zM66.84 37.133v22.71c-2.038-2.203-4.942-3.592-8.17-3.592-6.143 0-11.14 5-11.14 11.14 0 6.143 4.996 11.14 11.14 11.14 6.142 0 11.14-4.997 11.14-11.14V42.28l8.705 5.027L80 44.732l-13.16-7.6zM58.67 75.56c-4.504 0-8.17-3.664-8.17-8.17 0-4.504 3.664-8.168 8.17-8.168 4.504 0 8.168 3.664 8.168 8.17 0 4.504-3.664 8.168-8.17 8.168z" fill="hsla(0,0%,100%,.6)" fill-rule="evenodd"></path></svg>'
@@ -31,6 +30,8 @@ const spotify_icon = '<svg id="bb86c7b8-8e08-4a3d-b957-cd4781c36450" data-name="
 const spotify_icon_premium = '<svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 167.49 167.49"><title>Spotify_Icon_RGB_Black</title><path d="M85,1.28A83.75,83.75,0,1,0,168.77,85,83.75,83.75,0,0,0,85,1.28Zm38.4,120.79a5.22,5.22,0,0,1-7.18,1.74c-19.66-12-44.41-14.74-73.56-8.08a5.22,5.22,0,1,1-2.33-10.17c31.9-7.3,59.27-4.16,81.34,9.33A5.22,5.22,0,0,1,123.43,122.07Zm10.25-22.8a6.54,6.54,0,0,1-9,2.15c-22.51-13.84-56.82-17.84-83.45-9.76a6.53,6.53,0,1,1-3.79-12.5c30.41-9.22,68.22-4.75,94.07,11.13A6.54,6.54,0,0,1,133.68,99.27Zm.88-23.75c-27-16-71.52-17.5-97.29-9.68a7.83,7.83,0,1,1-4.54-15c29.58-9,78.75-7.25,109.83,11.2a7.83,7.83,0,0,1-8,13.47Z" transform="translate(-1.28 -1.28)"/></svg>'
 
 const p = ["background: rgb(11, 11, 13)", "color: rgb(217, 178, 98)", "border: 1px solid rgb(217, 178, 98)", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
+
+
 
 class App extends Component {
 
@@ -51,12 +52,16 @@ class App extends Component {
       playlist_view: false,
       playlists_total: 0,
       artists_queried: [],
+      artists_queried_bar: [],
       average_popularity_of_queried_tracks: 0,
       durationTotal_of_queried_tracks: 0,
       total_tracks: 0,
       tracks_loading: true,
       current_playlist: null,
-      nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50'
+      loadingAnimation: null,
+      nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50',
+      isStopped: false,
+      isPaused: false
     }
   }
 
@@ -128,6 +133,7 @@ class App extends Component {
         Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
           let allTracks = [];
           let artistSet = new Set();
+          let pieArray = [];
           let popularityAverage = 0;
           let popularityTotal = 0;
           let durationTotal = 0;
@@ -176,17 +182,68 @@ class App extends Component {
                   // loops through artists array and adds them to the aristSet Set (unique vals only)
                   for (let b = 0; b < invididualTrack.track.artists.length; b++) {
                     artistSet.add(invididualTrack.track.artists[b].name);
+                    
+                    pieArray.push(invididualTrack.track.artists[b].name)
                   }
                 } else {
                   console.log('null track => ', res[i].data[y]);
                 }
+                
               }
             } else {
               console.warn('null track => ', res.items[i])
             } 
           }
-          popularityAverage = popularityTotal / allTracks.length;
 
+          function compressArrayLocal(original) {
+ 
+            let compressed = [];
+            let compressedObjectGlobal = {};
+            let arrayCopy = original.slice(0);
+           
+            for (let i = 0; i < original.length; i++) {
+           
+              let myCount = 0;	
+              for (let w = 0; w < arrayCopy.length; w++) {
+                if (original[i] === arrayCopy[w]) {
+                  myCount++;
+                  delete arrayCopy[w];
+                }
+              }
+              let getColour = gradient([
+                '#17A467', '#47CA51', '#88DA73'
+              ], original.length)
+
+              if (myCount > 0) {
+                if (original[i] !== null) {
+                  
+                  let a = {
+                    'key': original[i],
+                    'artist': original[i],
+                    'id': original[i],
+                    'TracksBy': myCount,
+                    'artistColor': getColour[i]
+                  }
+                  compressed.push(a);
+                  const pushToObj = {
+                    [original[i]]: {
+                      'id': original[i],
+                      'label': original[i],
+                      'value': myCount,
+                      'color': getColour[i]
+                    }
+                  }
+                  const oldObj = compressedObjectGlobal;
+                  const compressedObject = Object.assign(oldObj, pushToObj);
+                  compressedObjectGlobal = compressedObject;
+                }
+              }
+            }
+            return {'array': compressed, 'obj': compressedObjectGlobal};
+          };
+
+          let filteredArtistData = compressArrayLocal(pieArray);
+          popularityAverage = popularityTotal / allTracks.length;
           let convertedDuration = convertDurationToString(durationTotal).timeString;
 
           this.setState({
@@ -194,6 +251,7 @@ class App extends Component {
             tracks_queried_length: totalTracksQueried,
             playlists_queried: totalPlaylistsQuried,
             artists_queried: artistSet,
+            artists_queried_bar: filteredArtistData.array,
             average_popularity_of_queried_tracks: popularityAverage,
             release_year_range_min: release_year_range_min,
             release_year_range_max: release_year_range_max,
@@ -203,12 +261,6 @@ class App extends Component {
         })
       });
     } 
-  }
-
-  handleImageLoad() {
-    this.setState({
-      imageLoad: true
-    })
   }
 
   testThisOut(data) {
@@ -378,6 +430,7 @@ class App extends Component {
               </nav>
             </header>
             <section className="user-header">
+              
               {this.state.user_loading ? 
                 <>
                   <div className="user-loading" >
@@ -407,6 +460,7 @@ class App extends Component {
                       <img src={"https://www.countryflags.io/" + this.state.user.country + "/flat/24.png"} alt="https://www.countryflags.io/be/flat/64.png"/>
                       <p>Country {this.state.user.country}</p>
                     </div>
+                    {/* <Loading/> */}
                   </div>
                 </>
               }
@@ -419,19 +473,78 @@ class App extends Component {
               </div>
               <div className="top_playlists_content">
                 {this.state.tracks_loading ?
-                  <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
+                  <>
+                    <ul className="artists_bar_graph">
+                      <li className="artists_bar_container">
+                        <h3>''</h3>
+
+                      </li>
+                    </ul>
+                    <ul className="stats_items">
+                      <li>
+                        <h3>''</h3>
+                        <p></p>
+                      </li>
+                      <li> 
+                        <h3>''</h3>
+                        <p></p>
+                      </li>
+                      <li className="release_years">
+                        <h3>''</h3>
+                        <p></p>
+                      </li>
+                    </ul>
+                  </>
                   :
-                  <ul className="stats_items">
-                    <li>{this.state.artists_queried.size} different artists</li>
-                    <li>{this.state.durationTotal_of_queried_tracks} total time</li>
-                    <li>{Math.round(this.state.average_popularity_of_queried_tracks)}% average popularity</li>
-                    <li>Tracks released between {this.state.release_year_range_min} - {this.state.release_year_range_max}</li>
-                  </ul>
+                  <>
+                    <ul className="artists_bar_graph">
+                      <li className="artists_bar_container">
+                      <h3>Artist tracks volume ({this.state.artists_queried.size})</h3>
+                      <ResponsiveBar
+                          data={this.state.artists_queried_bar}
+                          keys={[
+                            "artist",
+                            "TracksBy"
+                          ]}
+                          indexBy="artist"
+                          margin={{
+                              "top": 50,
+                              "right": 48,
+                              "bottom": 50,
+                              "left": 48
+                          }}
+                          axisBottom={false}
+                          axisTop={false}
+                          axisLeft={false}
+                          axisRight={false}
+                          padding={0.2}
+                          colors="nivo"
+                          colorBy={({ data }) => data['artistColor']}
+                          borderColor="inherit:darker(1.6)"
+                          labelSkipWidth={12}
+                          labelSkipHeight={12}
+                          labelTextColor="#1DB954"
+                          animate={true}
+                          motionStiffness={90}
+                          motionDamping={15}
+                      />
+                      </li>
+                    </ul>
+                    <ul className="stats_items">
+                      <li>
+                        <h3>{this.state.durationTotal_of_queried_tracks}</h3>
+                        <p>total time popularity</p>
+                      </li>
+                      <li> 
+                        <h3>{Math.round(this.state.average_popularity_of_queried_tracks)}%</h3>
+                        <p>average popularity</p>
+                      </li>
+                      <li className="release_years">
+                        <h3>{this.state.release_year_range_min} -  {this.state.release_year_range_max}</h3>
+                        <p>release date range</p>
+                      </li>
+                    </ul>
+                  </>
                 }
               </div>
 

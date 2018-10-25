@@ -5,8 +5,6 @@ const AUTH_TOKEN = window.sessionStorage.access_token
 
 let allPlaylists = [];
 let allPlaylistsObj = {};
-let allTracks = [];
-let totalPlaylistsQueried = 0;
 
 const p = ["background: rgb(11, 11, 13)", "color: #1DB954", "border: 1px solid #1DB954", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
@@ -139,7 +137,6 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
 
   for (let i = 0; i < 20; i++) {
     promises.push(requestPlaylistData(playlist_data[i].tracks.href));
-    totalPlaylistsQueried += 1;
   }
   return promises
 }

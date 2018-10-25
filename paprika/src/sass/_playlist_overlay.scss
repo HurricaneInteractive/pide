@@ -63,14 +63,28 @@
           letter-spacing: -.005em;
         }
         .playlist_stats {
+          padding: 24px 0;
           height: 150px;
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           > div {
-            height: 100%;
-            width: 100%;
-            .progression-circle {
-              display: block;
+            margin: 0 auto;
+            // justify-items: center;
+            h3 {
+              font-size: 1.25rem;
+              margin: 0 auto;
+              height: 72px;
+              width: 72px;
+              border: 2px solid #1DB954;
+              border-radius: 100%;
+              padding: 24px 14px;
+              display: grid;
+              align-items: center;
+            }
+            h3, p {
+              text-align: center;
+              margin: 4px auto;
+              padding: 0;
             }
           }
         }
@@ -82,7 +96,7 @@
         margin: 0 auto;
       }
       p {
-        margin: 0 auto;
+        margin: 0 auto 18px;
         color: hsla(0,0%,100%,.6);
       }
       .container {
@@ -110,7 +124,7 @@
   border-left: none !important;
   border-right: none !important;
   border-bottom: none !important;
-  height: 100% !important;
+  // height: 100% !important;
 }
 .react-grid-Cell {
   transition: .5s;
@@ -146,6 +160,8 @@
 .react-grid-Row {
   height: 48px !important;
   border-bottom: 1px solid hsla(0,0%,100%,.3);
+  display: grid;
+  align-items: center;
 }
 .react-grid-Grid {
   border: none !important;

@@ -32,20 +32,20 @@ export function convertDurationToString(milliseconds, type){
 
   let timeString =
     timeObject.days + ' days ' +
-    timeObject.hours + ' hours ' +
-    timeObject.mins + ' mins '
+    timeObject.hours + ' hrs ' +
+    timeObject.mins + ' m '
   ;
 
   if (days === 0) {
     timeString =
-      timeObject.hours + ' hours ' +
-      timeObject.mins + ' mins '
+      timeObject.hours + ' hrs ' +
+      timeObject.mins + ' m '
     ;
   }
 
   if (hours === 0) {
     timeString =
-      timeObject.mins + ' mins '
+      timeObject.mins + ' m '
     ;
   }
   
@@ -56,3 +56,40 @@ export function convertDurationToString(milliseconds, type){
 
   return {'timeObject': timeObject, 'timeString': timeString}
 }
+
+
+// --------------------------------------------------------------
+
+
+export function compressArray(original) {
+ 
+  let compressed = [];
+  let compressedObjectGlobal = {};
+  let arrayCopy = original.slice(0);
+ 
+  for (let i = 0; i < original.length; i++) {
+ 
+    let myCount = 0;	
+    for (let w = 0; w < arrayCopy.length; w++) {
+      if (original[i] === arrayCopy[w]) {
+        myCount++;
+        delete arrayCopy[w];
+      }
+    }
+    if (myCount > 0) {
+      if (original[i] !== null) {
+        compressed.push(original[i]);
+        const pushToObj = {
+          [original[i]]: {
+            'value': original[i],
+            'count': myCount
+          }
+        }
+        const oldObj = compressedObjectGlobal;
+        const compressedObject = Object.assign(oldObj, pushToObj);
+        compressedObjectGlobal = compressedObject;
+      }
+    }
+  }
+  return {'array': compressed, 'obj': compressedObjectGlobal};
+};

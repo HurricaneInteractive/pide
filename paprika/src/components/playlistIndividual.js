@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import axios from 'axios'
 import musicKey from '../content/musicKey'
-import randomMC from 'random-material-color'
+import gradient from 'gradient-color'
 import paprikaImg from '../content/paprika.jpg'
 import { ResponsiveWaffle } from '@nivo/waffle'
+import { unique_shuffled_colors } from 'unique-colors'
 
 import { convertDurationToString } from '../globalFunctions'
 import { getArtistsById } from '../getSpotifyData';
@@ -200,14 +201,17 @@ class PlaylistInvididual extends Component {
               delete arrayCopy[w];
             }
           }
+          let getColour = gradient([
+            '#17A467', '#47CA51', '#88DA73'
+          ], original.length)
           if (myCount > 0) {
             if (original[i] !== null) {
               compressed.push(original[i]);
               const pushToObj = {
                 [original[i]]: {
                   'value': original[i],
-                  'count': myCount
-                }
+                  'count': myCount,
+                  'çolor': getColour                }
               }
               const oldObj = compressedObjectGlobal;
               const compressedObject = Object.assign(oldObj, pushToObj);
@@ -227,14 +231,16 @@ class PlaylistInvididual extends Component {
       console.log('TCL: PlaylistInvididual -> getTracksData -> toGetArtists', toGetArtists);
 
       getArtistsById(toGetArtists).then(res => {
+        let getColour = unique_shuffled_colors(res.data.artists.length);
         for (let i = 0; i < res.data.artists.length; i++) {
-          let getColour = randomMC.getColor({ text: res.data.artists[i].name })
+
+          let getColourToUse = getColour[i];
           // console.log('getColour => ', getColour)
           let pushMe = {
             "id": res.data.artists[i].name,
             "label": res.data.artists[i].name,
             "value": filteredArtists.obj[res.data.artists[i].id].count,
-            "color": getColour
+            "color": getColourToUse
           }
           waffleArray.push(pushMe)
         }
@@ -331,16 +337,16 @@ class PlaylistInvididual extends Component {
                 <div className="playlist_stats">
 
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.danceability} danceability</p>
+                    <h3>{this.state.danceability}%</h3>
+                    <p>danceability</p>
                   </div>
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.energy} energy</p>
+                    <h3>{this.state.energy}%</h3>
+                    <p>energy</p>
                   </div>
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.liveness} liveness</p>
+                  <h3>{this.state.liveness}%</h3>
+                    <p>liveness</p>
                   </div>
                 </div>
 
@@ -373,15 +379,16 @@ class PlaylistInvididual extends Component {
                   'loading'
                     :
                   <ResponsiveWaffle
+                    // set legend to be at the bottom of the graph
                     data={this.state.data_for_waffle}
                     total={this.state.data_for_waffle.length}
-                    rows={64}
-                    columns={64}
+                    rows={24}
+                    columns={24}
                     margin={{
                       "top": 10,
                       "right": 10,
                       "bottom": 10,
-                      "left": 120
+                      "left": 100
                     }}
                     fillDirection="top"
                     padding={0}

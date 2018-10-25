@@ -150,8 +150,35 @@
       padding: 0;
       margin: 0;
     }
+    .artists_bar_graph {
+      padding: 48px 0;
+      .artists_bar_container {
+        height: 450px;
+        color: #3B3738;
+      }
+    }
     .stats_items {
+      height: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      justify-items: center;
+      padding: 48px 0;
+      h3 {
+        margin: 0 auto;
+        border: 2px solid #1DB954;
+        border-radius: 10px;
+        padding: 24px 14px;
+      }
+      p {
+        color: hsla(0,0%,100%,.6);
+      }
+      .artists_bar_graph {
+        color: #3B3738;
+      }
+      .release_years {
 
+      }
     }
   }
 }
