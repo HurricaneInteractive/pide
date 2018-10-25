@@ -33,6 +33,7 @@ app.use(morgan('dev'))
 
 app.use(express.static(path.join(__dirname + '/public')))
 	.use(express.static(path.join(__dirname + '/public/cumin')))
+	.use(express.static(path.join(__dirname + '/public/paprika')))
 	.use(express.static(path.join(__dirname + '/public/masala')))
 	.use(cors())
 	.use(cookieParser())
@@ -44,7 +45,9 @@ app.get('/', function(req, res) {
 app.get('/cumin', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/cumin/index.html'))
 })
-
+app.get('/paprika', function(req, res) {
+	res.sendFile(path.join(__dirname + '/public/paprika/index.html'))
+})
 app.get('/masala', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/masala/index.html'))
 })
