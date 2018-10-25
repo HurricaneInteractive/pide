@@ -30,6 +30,10 @@ export class LineChartComponent {
         let label = d.hasOwnProperty(this.labelkey) ? d[this.labelkey] : 'default'
         let stat = d.hasOwnProperty(this.datakey) ? d[this.datakey] : 0
 
+        if (this.datakey === 'duration_ms') {
+          stat = Math.round((stat / 60000) * 100) / 100
+        }
+
         labels.push(label)
         data.push(stat)
       })
