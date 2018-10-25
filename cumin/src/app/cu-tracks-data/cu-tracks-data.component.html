@@ -67,7 +67,7 @@
 
 <div class="wrapper" *ngIf="tracks" [ngsReveal]="{reset:true}">
   <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Duration</h2>
-  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How long does your songs go for?</p>
+  <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How long does your songs go for? (minutes)</p>
   <app-line-chart
     [data]="tracks"
     [type]="'line'"
@@ -75,7 +75,8 @@
     [datakey]="'duration_ms'"
   ></app-line-chart>
   <div class="time-stats" *ngIf="trackStatistics">
-    <p class="text--center m-t-0 h1">The "Time" line</p>
+    <p class="text--center m-0 h1">The "Time" line</p>
+    <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">Total duration compiled into different formats</p>
     <ul class="timeline">
       <li><span>{{ trackStatistics.totalMs }} milliseconds</span></li>
       <li><span>{{ trackStatistics.timing.seconds }} seconds</span></li>
@@ -93,6 +94,7 @@
     <li *ngFor="let artist of trackStatistics.artists" [ngsReveal]="{reset:true}">
       <div class="details">
         <h3 class="name">{{ artist.name }}</h3>
+        <p *ngIf="artist.bio">{{ artist.bio }}</p>
         <ul *ngIf="artist.genres">
           <li *ngFor="let genre of artist.genres" class="text--uppercase">{{ genre }}</li>
         </ul>

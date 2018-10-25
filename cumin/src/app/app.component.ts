@@ -1,6 +1,8 @@
 import { Component } from '@angular/core'
 import axios from 'axios'
 
+import { environment } from '../environments/environment'
+
 interface AuthHeader {
 	headers: object
 }
@@ -31,7 +33,14 @@ export class AppComponent {
 	all_playlist_tracks: Array<object>
 	tabs = ['albums', 'tracks']
 	active_tab = 'tracks'
-	artist_genres: Array<{ name: string, genres: Array<string> }>
+	artist_genres: Array<{ 
+		name: string,
+		genres: Array<string>,
+		bio?: string,
+		similarArtists?: Array<any>,
+		stats?: any,
+		onTour?: number
+	}>
 
 	constructor() {
 		axios.get(`${this.me_url}`, this.getAuthHeaders())
@@ -58,6 +67,8 @@ export class AppComponent {
 					return track.artists.map((artist: any) => artist.href)
 				})
 
+				let lastfmRoutes = []
+
 				let flatten = artist_hrefs.reduce((acc, val) => acc.concat(val), [])
 				let unique = Array.from(new Set(flatten))
 				let promises = unique.map((href: string) => {
@@ -67,11 +78,32 @@ export class AppComponent {
 				Promise.all(promises)
 					.then((data: any) => {
 						this.artist_genres = data.map((artist: any) => {
+							lastfmRoutes.push(axios.get(`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist.data.name)}&api_key=${environment.lastFM}&format=json`))
 							return {
 								name: artist.data.name,
 								genres: artist.data.genres
 							}
 						})
+					})
+					.then(() => {
+						Promise.all(lastfmRoutes)
+							.then(lastFmRes => {
+								lastFmRes.forEach(({data}, i) => {
+									if (data.hasOwnProperty('artist')) {
+										let object = Object.assign(
+											this.artist_genres[i],
+											{
+												bio: data.artist.bio.summary,
+												similarArtists: data.artist.similar.artist,
+												stats: data.artist.stats,
+												onTour: data.artist.ontour
+											}
+										)
+
+										this.artist_genres[i] = object
+									}
+								})
+							})
 					})
 			})
 			// .then(() => {
