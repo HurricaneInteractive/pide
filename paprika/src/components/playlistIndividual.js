@@ -7,12 +7,15 @@ import paprikaImg from '../content/paprika.jpg'
 import { ResponsiveWaffle } from '@nivo/waffle'
 import { unique_shuffled_colors } from 'unique-colors'
 
+import * as Scroll from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll'
+
 import { convertDurationToString } from '../globalFunctions'
 import { getArtistsById } from '../getSpotifyData';
 
-const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
-
 const AUTH_TOKEN = window.sessionStorage.access_token
+
+const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
 const p = ["background: rgb(11, 11, 13)", "color: rgb(217, 178, 98)", "border: 1px solid rgb(217, 178, 98)", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
@@ -155,7 +158,12 @@ class PlaylistInvididual extends Component {
 
   componentDidMount() {
     // console.log('this.props.data (componentDidMount) => ', this.props.data)
-    window.scrollTo(0, 0);
+    scroll.scrollToTop({
+      duration: 1500,
+      delay: 100,
+      smooth: "easeInOutQuint",
+    })
+    
     this.getTracksData(this.props.data.tracks.href);
   }
 

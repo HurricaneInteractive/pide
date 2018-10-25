@@ -17,14 +17,12 @@
   position: relative;
   text-align: center;
   background-color: #3B3738;
-  
 }
 
 .no_user {
   .app-container {
     h1 {
       margin: 0 auto;
-
     }
   }
 }
@@ -151,7 +149,7 @@
       margin: 0;
     }
     .artists_bar_graph {
-      padding: 48px 0;
+      padding: 16px 0 48px;
       .artists_bar_container {
         height: 450px;
         color: #3B3738;
@@ -166,18 +164,24 @@
       padding: 48px 0;
       h3 {
         margin: 0 auto;
-        border: 2px solid #1DB954;
+        border: 2px solid #17A467;
         border-radius: 10px;
-        padding: 24px 14px;
+        padding: 24px 18px;
+        transition: .5s;
+        &:hover {
+          
+          border: 2px solid #88DA73;
+          -webkit-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
+          -moz-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
+          box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
+          transition: .5s;
+        }
       }
       p {
         color: hsla(0,0%,100%,.6);
       }
       .artists_bar_graph {
         color: #3B3738;
-      }
-      .release_years {
-
       }
     }
   }
@@ -202,6 +206,7 @@
     .hide_private {
       align-self: center;
       margin: 0 8px;
+      cursor: pointer;
     }
     .hide_private.disabled {
       color: hsla(0,0%,100%,.6);
