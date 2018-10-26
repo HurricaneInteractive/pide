@@ -1,4 +1,6 @@
 import $ from "jquery";
+import axios from 'axios'
+import moment from 'moment'
 import { listTracks } from './methods/ListTracks'
 
 const apiUrl = 'https://api.spotify.com/v1/me/player/recently-played'

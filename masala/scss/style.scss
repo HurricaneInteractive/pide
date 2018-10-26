@@ -13,14 +13,70 @@ body {
   width: 70%;
   height: 100vh;
   flex: 0 0 65%;
-  padding: 5vh 10vw;
+  padding: 5vh 5vw 5vh 10vw;
+  #played {
+    width: 100%;
+    list-style: none;
+    overflow-y: hidden;
+    #latest{
+      height: 440px;
+      .list {
+        width: 100%;
+        text-align: left;
+        th {
+          border-bottom: 1px solid #777;
+          .see-all {
+            text-align: right;
+            font-weight: normal;
+            font-size: 12px;
+            opacity: 0.8;
+            &:hover {
+              text-decoration: underline;
+              opacity: 1;
+              cursor: pointer;
+            }
+          }
+        }
+        .row {
+          td {
+            border-bottom: 1px solid #222;
+          }
+          .track {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 5px 40px 5px 5px;
+          }
+          .artist{
+            width: 30%;
+          }
+          .timestamp {
+            width: 100px;
+            color: #777;
+            font-size: 12px;
+            text-transform: lowercase;
+          }
+        }
+      }
+    }
+  }
 }
 
+
+
+
 #title {
+  position: fixed;
+  right: 0;
   width: 30%;
   height: 100vh;
   display: inline-block;
   flex: 1;
   background-color: rgba(255, 255, 255, 0.05);
   padding: 5vh 30px;
+}
+
+.active {
+  height: 1000px !important;
 }
