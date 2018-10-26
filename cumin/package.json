@@ -27,6 +27,7 @@
     "gradient-color": "^2.0.1",
     "ng2-charts": "^1.6.0",
     "ngx-scrollreveal": "^3.0.0",
+    "numeral": "^2.0.6",
     "rxjs": "~6.2.0",
     "scrollreveal": "^4.0.4",
     "zone.js": "~0.8.26"

@@ -9,9 +9,13 @@ interface TrackStatistics {
     false_percentage: number
   },
   artists: Array<{
-    name: string,
     appears: number,
-    genres: Array<string>
+    name: string,
+		genres: Array<string>,
+		bio?: string,
+		similarArtists?: Array<any>,
+		stats?: any,
+		onTour?: number
   }>,
   popularity: number,
   mostPopularSong: any,
@@ -123,10 +127,11 @@ export class CuTracksDataComponent {
                 object.artists[index].appears++
               }
               else {
+                let x = this._genres.findIndex(item => item.name === artist.name)
                 object.artists.push({
                   name: artist.name,
                   appears: 1,
-                  genres: this._genres[this._genres.findIndex(item => item.name === artist.name)].genres
+                  genres: this._genres[x].genres
                 })
               }
             })

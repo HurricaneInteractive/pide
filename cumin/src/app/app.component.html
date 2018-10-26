@@ -5,19 +5,18 @@
             <div class="user-column">
                 <app-user-profile *ngIf="current_user" [user]="current_user"></app-user-profile>
                 <div class="cu-data-vis" *ngIf="current_user_data">
-                    <app-tabs (tabbed)="changeTab($event)" [tabs]="tabs" [ngSwitch]="active_tab" [active_tab]="active_tab">
+                    <app-cu-tracks-data
+                        [tracks]="current_user_data.tracks"
+                        [genres]="artist_genres"
+                    ></app-cu-tracks-data>
+                    <!-- <app-tabs (tabbed)="changeTab($event)" [tabs]="tabs" [ngSwitch]="active_tab" [active_tab]="active_tab">
                         <app-cu-playlist-data
                             [data]="current_user_data.playlists"
                             [playlist_tracks]="all_playlist_tracks"
                             *ngSwitchCase="'playlist'"
                         ></app-cu-playlist-data>
                         <app-cu-albums-data *ngSwitchCase="'albums'"></app-cu-albums-data>
-                        <app-cu-tracks-data
-                            *ngSwitchCase="'tracks'"
-                            [tracks]="current_user_data.tracks"
-                            [genres]="artist_genres"
-                        ></app-cu-tracks-data>
-                    </app-tabs>
+                    </app-tabs> -->
                 </div>
             </div>
             <!-- <div class="user-column" [ngSwitch]="opponent">

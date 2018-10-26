@@ -126,36 +126,6 @@ h2 {
         &:not(:last-child) {
             border-bottom: 1px solid rgba(get-colour('grey'), 0.5);
         }
-        .details {
-            h3 {
-                margin: 0;
-            }
-            > ul {
-                margin-top: 5px;
-            }
-            ul {
-                padding: 0;
-                @include clearfix();
-                li {
-                    font-size: calc-em($button-size, $base-font-size);
-                    margin: 0 em(10px) em(10px) 0;
-                    float: left;
-                    padding: em(14px) em(25px);
-                    line-height: 1;
-                    border-radius: 200px;
-                    border: 1px solid get-colour('green');
-                    text-transform: uppercase;
-                    color: get-colour('black');
-                    @each $col in $c {
-                        &:nth-last-child(#{$i}) {
-                            background: $col;
-                            border-color: $col;
-                        }
-                        $i: $i + 1;
-                    }
-                }
-            }
-        }
     }
 }
 

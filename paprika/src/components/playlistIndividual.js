@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import axios from 'axios'
 import musicKey from '../content/musicKey'
+import gradient from 'gradient-color'
 import paprikaImg from '../content/paprika.jpg'
+import { ResponsiveWaffle } from '@nivo/waffle'
+import { unique_shuffled_colors } from 'unique-colors'
+
+import * as Scroll from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll'
+
+import { convertDurationToString } from '../globalFunctions'
+import { getArtistsById } from '../getSpotifyData';
+
+const AUTH_TOKEN = window.sessionStorage.access_token
 
 const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
-const AUTH_TOKEN = window.sessionStorage.access_token
-const REFRESH_TOKEN = window.sessionStorage.refresh_token
-
+const p = ["background: rgb(11, 11, 13)", "color: rgb(217, 178, 98)", "border: 1px solid rgb(217, 178, 98)", "margin: 8px 0", "padding: 8px 32px 8px 24px", "line-height: 32px"].join(";");
 
 class PlaylistInvididual extends Component {
 
@@ -25,6 +34,9 @@ class PlaylistInvididual extends Component {
       energy: 0,
       liveness: 0,
       data_loading: true,
+      waffle_loading: true,
+
+      data_for_waffle: {},
 
       rows: null,
       filters: {},
@@ -60,9 +72,16 @@ class PlaylistInvididual extends Component {
       {
         key: 'length',
         name: 'Length',
-        filterable: true,
-        sortable: true,
+        filterable: false,
+        sortable: false,
         width: 120
+      },
+      {
+        key: 'bpm',
+        name: 'BPM',
+        filterable: false,
+        sortable: true,
+        width: 80
       },
       {
         key: 'key',
@@ -114,19 +133,23 @@ class PlaylistInvididual extends Component {
     let rows = [];
     let numberOfRows = this.state.all_tracks_data.length;
     for (let i = 0; i < numberOfRows; i++) {
-      let seconds = (this.state.all_tracks_data[i].track.duration_ms) / 1000;
-      let minutes = seconds/60;
-      let timeString = Math.floor(minutes);
+
+      let durationObj = convertDurationToString(this.state.all_tracks_data[i].track.duration_ms, 'track').timeString;
       let keyNumber = 'null';
+      let bpmNumber = 'null';
+      let externalSpotifyURL = 'https://lukesecomb.digital'
       if (this.state.allExtraTrackData[i] !== null) {
         keyNumber = musicKey[this.state.allExtraTrackData[i].key];
+        bpmNumber = Math.round(this.state.allExtraTrackData[i].tempo)
+        externalSpotifyURL = this.state.all_tracks_data[i].track.external_urls.spotify
       }
       rows.push({
         id: i + 1,
-        title: this.state.all_tracks_data[i].track.name,
+        title: <a href={externalSpotifyURL}>{this.state.all_tracks_data[i].track.name}</a>,
         artist: this.state.all_tracks_data[i].track.artists[0].name,
         album: this.state.all_tracks_data[i].track.album.name,
-        length: timeString + ':' + seconds,
+        length: durationObj,
+        bpm: bpmNumber,
         key: keyNumber,
       });
     }
@@ -134,7 +157,13 @@ class PlaylistInvididual extends Component {
   };
 
   componentDidMount() {
-    console.log('this.props.data (componentDidMount) => ', this.props.data)
+    // console.log('this.props.data (componentDidMount) => ', this.props.data)
+    scroll.scrollToTop({
+      duration: 1500,
+      delay: 100,
+      smooth: "easeInOutQuint",
+    })
+    
     this.getTracksData(this.props.data.tracks.href);
   }
 
@@ -149,22 +178,94 @@ class PlaylistInvididual extends Component {
       console.warn("res.data => ", res.data)
       let tracks_ids = [];
       let total_time = 0;
+      let waffleArray = [];
+      let artistArray = [];
+
       for (let i = 0, len = res.data.items.length; i < len; i++) {
-        const addId = res.data.items[i].track.id;
-        const addDuration = res.data.items[i].track.duration_ms;
+        let addId = res.data.items[i].track.id || 'no_ID';
+        let addDuration = res.data.items[i].track.duration_ms || 0;
         tracks_ids.push(addId);
         total_time += addDuration;
+        let artistsLength = res.data.items[i].track.artists.length;
+
+        for (let ye = 0; ye < artistsLength; ye++ ) {
+          let current_artist = res.data.items[i].track.artists[ye].id;
+          artistArray.push(current_artist)
+        }
       }
+
+
+      function compressArray(original) {
+ 
+        let compressed = [];
+        let compressedObjectGlobal = {};
+        let arrayCopy = original.slice(0);
+       
+        for (let i = 0; i < original.length; i++) {
+       
+          let myCount = 0;	
+          for (let w = 0; w < arrayCopy.length; w++) {
+            if (original[i] === arrayCopy[w]) {
+              myCount++;
+              delete arrayCopy[w];
+            }
+          }
+          let getColour = gradient([
+            '#17A467', '#47CA51', '#88DA73'
+          ], original.length)
+          if (myCount > 0) {
+            if (original[i] !== null) {
+              compressed.push(original[i]);
+              const pushToObj = {
+                [original[i]]: {
+                  'value': original[i],
+                  'count': myCount,
+                  'çolor': getColour                }
+              }
+              const oldObj = compressedObjectGlobal;
+              const compressedObject = Object.assign(oldObj, pushToObj);
+              compressedObjectGlobal = compressedObject;
+            }
+          }
+        }
+        return {'array': compressed, 'obj': compressedObjectGlobal};
+      };
+      
+      // It should go something like this:
+      
+      let filteredArtists = compressArray(artistArray);
+      // console.log('compressed', filteredArtists.array);
+      // console.warn('compressedObject', filteredArtists.obj);
+      let toGetArtists = filteredArtists.array.slice(0, 49);
+      console.log('TCL: PlaylistInvididual -> getTracksData -> toGetArtists', toGetArtists);
+
+      getArtistsById(toGetArtists).then(res => {
+        let getColour = unique_shuffled_colors(res.data.artists.length);
+        for (let i = 0; i < res.data.artists.length; i++) {
+
+          let getColourToUse = getColour[i];
+          // console.log('getColour => ', getColour)
+          let pushMe = {
+            "id": res.data.artists[i].name,
+            "label": res.data.artists[i].name,
+            "value": filteredArtists.obj[res.data.artists[i].id].count,
+            "color": getColourToUse
+          }
+          waffleArray.push(pushMe)
+        }
+        console.warn('waffleArray => ', waffleArray)
+        this.setState({
+          waffle_loading: false
+        })
+      })
 
       this.setState({
         playlist_duration: total_time,
         tracks_ids: tracks_ids,
         all_tracks_data: res.data.items,
+        data_for_waffle: waffleArray,
         playlists_total: res.data.total
       });
-
-      console.log('this.state.tracks_ids => ', this.state.tracks_ids)
-      
       
       this.getExtensiveTracksData();
     })
@@ -215,8 +316,6 @@ class PlaylistInvididual extends Component {
         data_loading: false,
         rows: this.createRows(1000)
       });
-
-
     })
   }
 
@@ -229,15 +328,7 @@ class PlaylistInvididual extends Component {
       imageURL = playlist_image.url;
     }
 
-    let playlist_ms = this.state.playlist_duration;
-    let playlist_seconds = playlist_ms / 1000;
-    let playlist_mins = playlist_seconds / 60;
-    console.log('TCL: PlaylistInvididual -> render -> playlist_mins', playlist_mins);
-    let playlist_hrs = playlist_mins / 60;
-    console.log('TCL: PlaylistInvididual -> render -> playlist_hrs', playlist_hrs);
-    let playlist_days = playlist_hrs / 24;
-    console.log('TCL: PlaylistInvididual -> render -> playlist_days', playlist_days);
-
+    // console.log('data_for_waffle => ', this.state.data_for_waffle);
 
     return (
       <>
@@ -249,53 +340,99 @@ class PlaylistInvididual extends Component {
               <img src={imageURL} alt="playlist artwork"/>
               <div className="meta_box">
                 <h1>{this.props.data.name}</h1>
-                <h3>Created by <span>{this.props.data.owner.display_name}</span>
-                  {this.state.data_loading ? null : <p>{playlist_hrs}</p>}
+                <h3>Created by <span>{this.props.data.owner.display_name}</span> - 
+                  {this.state.data_loading ? null : convertDurationToString(this.state.playlist_duration).timeString}
                 </h3>
                 <div className="playlist_stats">
 
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.danceability} danceability</p>
+                    <h3>{this.state.danceability}%</h3>
+                    <p>danceability</p>
                   </div>
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.energy} energy</p>
+                    <h3>{this.state.energy}%</h3>
+                    <p>energy</p>
                   </div>
                   <div>
-                    <div className="progression_circle" data-progress="50"></div>
-                    <p>{this.state.liveness} liveness</p>
+                  <h3>{this.state.liveness}%</h3>
+                    <p>liveness</p>
                   </div>
                 </div>
 
               </div>
             </header>
             <div className="playlist_content">
-              <h1>PLAYLIST VIEW</h1>
-              <p>Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
-                <br></br>
-                Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
-                <br></br>
-                Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
-              </p>
-              <div className="all_tracks">
-              {this.state.data_loading ?
-                'loading'
-                :
-                <ReactDataGrid
-                  onGridSort={this.handleGridSort}
-                  enableCellSelect={true}
-                  columns={this._columns}
-                  rowGetter={this.rowGetter}
-                  rowsCount={this.getSize()}
-                  minHeight={500}
-                  toolbar={<Toolbar enableFilter={true}/>}
-                  onAddFilter={this.handleFilterChange}
-                  onClearFilters={this.onClearFilters}
-                />
-                
-              }
-              
+              <h3>Tracklist</h3>
+              <p>sortable and filterable tracklist</p>
+              <div className="container all_tracks">
+                {this.state.data_loading ?
+                  'loading'
+                  :
+                  <ReactDataGrid
+                    onGridSort={this.handleGridSort}
+                    enableCellSelect={true}
+                    columns={this._columns}
+                    rowGetter={this.rowGetter}
+                    rowsCount={this.getSize()}
+                    minHeight={500}
+                    toolbar={<Toolbar enableFilter={true}/>}
+                    onAddFilter={this.handleFilterChange}
+                    onClearFilters={this.onClearFilters}
+                  />
+                }
+              </div>
+              <h3>Artists</h3>
+              <p>visualisation of artist volume within this playlist</p>
+              <div className="container waffle_graph">
+                {this.state.waffle_loading ?
+                  'loading'
+                    :
+                  <ResponsiveWaffle
+                    // set legend to be at the bottom of the graph
+                    data={this.state.data_for_waffle}
+                    total={this.state.data_for_waffle.length}
+                    rows={24}
+                    columns={24}
+                    margin={{
+                      "top": 10,
+                      "right": 10,
+                      "bottom": 10,
+                      "left": 100
+                    }}
+                    fillDirection="top"
+                    padding={0}
+                    colorBy={d => d.color}
+                    borderColor="inherit:darker(0.3)"
+                    animate={true}
+                    motionStiffness={90}
+                    motionDamping={11}
+                    legends={[
+                      {
+                        "anchor": "top-left",
+                        "direction": "column",
+                        "justify": false,
+                        "translateX": -100,
+                        "translateY": 0,
+                        "itemsSpacing": 4,
+                        "itemWidth": 100,
+                        "itemHeight": 20,
+                        "itemDirection": "left-to-right",
+                        "itemOpacity": 1,
+                        "itemTextColor": "#777",
+                        "symbolSize": 20,
+                        "effects": [
+                          {
+                            "on": "hover",
+                            "style": {
+                              "itemTextColor": "#000",
+                              "itemBackground": "#f7fafb"
+                            }
+                          }
+                        ]
+                      }
+                    ]}
+                  />
+                }
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ interface AuthHeader {
 
 interface CurrentUserData {
 	// playlists: Array<object>,
-	albums: Array<object>,
+	// albums: Array<object>,
 	tracks: Array<object>
 }
 
@@ -31,7 +31,14 @@ export class AppComponent {
 	all_playlist_tracks: Array<object>
 	tabs = ['albums', 'tracks']
 	active_tab = 'tracks'
-	artist_genres: Array<{ name: string, genres: Array<string> }>
+	artist_genres: Array<{ 
+		name: string,
+		genres: Array<string>,
+		bio?: string,
+		similarArtists?: Array<any>,
+		stats?: any,
+		onTour?: number
+	}>
 
 	constructor() {
 		axios.get(`${this.me_url}`, this.getAuthHeaders())
@@ -49,14 +56,16 @@ export class AppComponent {
 			.then(res => {
 				this.current_user_data = {
 					// playlists: res[0].data.items,
-					albums: res[0].data.items,
-					tracks: res[1].data.items
+					// albums: res[0].data.items,
+					tracks: res[0].data.items
 				}
 			})
 			.then(() => {
 				let artist_hrefs = this.current_user_data.tracks.map((track: any) => {
 					return track.artists.map((artist: any) => artist.href)
 				})
+
+				// let lastfmRoutes = []
 
 				let flatten = artist_hrefs.reduce((acc, val) => acc.concat(val), [])
 				let unique = Array.from(new Set(flatten))
@@ -74,16 +83,6 @@ export class AppComponent {
 						})
 					})
 			})
-			// .then(() => {
-			// 	let promises = this.current_user_data.playlists.map((playlist: any) => {
-			// 		return axios.get(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, this.getAuthHeaders());
-			// 	})
-
-			// 	Promise.all(promises)
-			// 		.then((data) => {
-			// 			this.all_playlist_tracks = data.map(item => item.data.items)
-			// 		})
-			// })
 	}
 
 	getAuthHeaders() : AuthHeader {
@@ -120,8 +119,6 @@ export class AppComponent {
 
 	async fetchAllUserData() {
 		let promiseURLs = [
-			// axios.get(`${this.me_url}/playlists`, this.getAuthHeaders()),
-			axios.get(`${this.me_url}/albums`, this.getAuthHeaders()),
 			axios.get(`${this.me_url}/top/tracks?limit=50&time_range=long_term`, this.getAuthHeaders())
 		]
 

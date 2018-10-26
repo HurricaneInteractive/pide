@@ -1,7 +1,12 @@
 @import "../../scss/style.scss";
 
+@import "sass/playlist_overlay.scss";
 @import "sass/style.scss";
 
 body {
   font-family: $font-family;
+}
+
+img {
+  user-select: none;
 }
