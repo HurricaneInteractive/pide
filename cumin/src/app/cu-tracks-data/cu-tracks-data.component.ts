@@ -128,15 +128,10 @@ export class CuTracksDataComponent {
               }
               else {
                 let x = this._genres.findIndex(item => item.name === artist.name)
-                console.log(this._genres[x]);
                 object.artists.push({
                   name: artist.name,
                   appears: 1,
-                  genres: this._genres[x].genres,
-                  bio: this._genres[x].bio || null,
-                  similarArtists: this._genres[x].similarArtists || null,
-                  stats: this._genres[x].stats || null,
-                  onTour: this._genres[x].onTour || null
+                  genres: this._genres[x].genres
                 })
               }
             })

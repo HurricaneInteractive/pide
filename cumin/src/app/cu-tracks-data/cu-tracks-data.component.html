@@ -31,7 +31,7 @@
 
 </div>
 
-<div class="wrapper" *ngIf="trackStatistics">
+<div class="wrapper" *ngIf="tracks && trackStatistics">
   <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Clean or Dirty</h2>
   <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How explicit is your saved tracks?</p>
   <div class="progression-circles" [ngsRevealSet]="{ reset:true}" [ngsSelector]="'.track-stat'">
@@ -59,13 +59,13 @@
   </div>
 </div>
 
-<div class="wrapper" *ngIf="genreComputed.length > 0">
+<div class="wrapper" *ngIf="tracks && trackStatistics && genreComputed.length > 0">
   <app-popular-genres
     [genres]="genreComputed"
   ></app-popular-genres>
 </div>
 
-<div class="wrapper" *ngIf="tracks" [ngsReveal]="{reset:true}">
+<div class="wrapper" *ngIf="tracks && trackStatistics" [ngsReveal]="{reset:true}">
   <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Track Duration</h2>
   <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">How long does your songs go for? (minutes)</p>
   <app-line-chart
@@ -87,18 +87,12 @@
   </div>
 </div>
 
-<div class="wrapper" *ngIf="trackStatistics">
+<div class="wrapper" *ngIf="tracks && trackStatistics">
   <h2 class="text--center m-0 sub-header-text" [ngsReveal]="{reset:true}">Featured Artists</h2>
   <p class="c-grey text--center m-b-30 m-t-0" [ngsReveal]="{reset:true}">There are {{ trackStatistics.artists.length  }} artists featured in your saved tracks</p>
   <ul class="track-artists">
-    <li *ngFor="let artist of trackStatistics.artists" [ngsReveal]="{reset:true}">
-      <div class="details">
-        <h3 class="name">{{ artist.name }}</h3>
-        <p *ngIf="artist.bio">{{ artist.bio }}</p>
-        <ul *ngIf="artist.genres">
-          <li *ngFor="let genre of artist.genres" class="text--uppercase">{{ genre }}</li>
-        </ul>
-      </div>
+    <li *ngFor="let artist of trackStatistics.artists">
+      <app-artist-info [artist]="artist" [style.width]="'100%'"></app-artist-info>
     </li>
   </ul>
 </div>
