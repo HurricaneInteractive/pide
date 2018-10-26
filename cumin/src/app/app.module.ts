@@ -18,6 +18,7 @@ import { CuAlbumsDataComponent } from './cu-albums-data/cu-albums-data.component
 import { CuTracksDataComponent } from './cu-tracks-data/cu-tracks-data.component';
 import { PopularGenresComponent } from './popular-genres/popular-genres.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { ArtistInfoComponent } from './artist-info/artist-info.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     CuAlbumsDataComponent,
     CuTracksDataComponent,
     PopularGenresComponent,
-    LineChartComponent
+    LineChartComponent,
+    ArtistInfoComponent
   ],
   imports: [
     BrowserModule,

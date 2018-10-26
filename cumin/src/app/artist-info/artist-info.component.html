@@ -1,0 +1,25 @@
+<div class="details">
+  <h2 class="name m-t-0">{{ artist.name }}</h2>
+  <div class="additional-details" *ngIf="artist_details">
+    <div class="stats" *ngIf="artist_details.stats">
+      <p *ngIf="artist_details.stats.listeners">Listeners: {{ getNumber(artist_details.stats.listeners) }}</p>
+      <p *ngIf="artist_details.stats.playcount">Playcount: {{ getNumber(artist_details.stats.playcount) }}</p>
+    </div>
+    <p class="bio" [innerHTML]="artist_details.bio.summary"></p>
+    <div class="similar m-b-20" *ngIf="artist_details.similar.artist.length > 0">
+      <h4 class="m-0 m-b-10 c-grey">You may also enjoy</h4>
+      <ul>
+        <ng-container *ngFor="let sim of artist_details.similar.artist">
+          <li *ngIf="sim.image.length > 2 && sim.image[1]['#text'] !== ''">
+            <a href="{{sim.url}}" target="_blank" rel="noopener noreferrer">
+              <img [src]="sim.image[1]['#text']" alt="{{sim.name}}" />
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+  <ul *ngIf="artist.genres">
+    <li *ngFor="let genre of artist.genres" class="text--uppercase">{{ genre }}</li>
+  </ul>
+</div>

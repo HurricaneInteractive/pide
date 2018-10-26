@@ -1,0 +1,86 @@
+// Super Globals
+@import "../../../../scss/global/index";
+
+$c: (
+    #35ff97, 
+    #31ff95, 
+    #2cff96, 
+    #27ff99, 
+    #23ff9e, 
+    #20ffa6, 
+    #1dffb1, 
+    #1affbe, 
+    #18ffce, 
+    #16ffe0, 
+    #15fff4, 
+    #14f5ff, 
+    #13e0ff, 
+    #12cdff, 
+    #12bcff
+);
+$i: 1;
+
+
+.details {
+    > ul {
+        margin-top: 5px;
+        padding: 0;
+        list-style: none;
+    }
+    ul {
+        padding: 0;
+        @include clearfix();
+        li {
+            font-size: calc-em($button-size, $base-font-size);
+            margin: 0 em(10px) em(10px) 0;
+            float: left;
+            padding: em(14px) em(25px);
+            line-height: 1;
+            border-radius: 200px;
+            border: 1px solid get-colour('green');
+            text-transform: uppercase;
+            color: get-colour('black');
+            @each $col in $c {
+                &:nth-last-child(#{$i}) {
+                    background: $col;
+                    border-color: $col;
+                }
+                $i: $i + 1;
+            }
+        }
+    }
+
+    .additional-information {
+        width: 100%;
+    }
+
+    .stats {
+        @include grid();
+        @include grid-column();
+        > p {
+            margin: 0;
+            text-transform: uppercase;
+            padding: em(10px);
+            border-radius: 5px;
+            border: 1px solid get-colour('green');
+            text-align: center;
+            font-size: em($button-size);
+            line-height: 1.1;
+            font-weight: $font-weight-bold;
+        }
+    }
+
+    .similar {
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            li {
+                background: none;
+                border: none;
+                padding: 0;
+                border-radius: 0;
+            }
+        }
+    }
+}
