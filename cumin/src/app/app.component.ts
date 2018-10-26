@@ -1,15 +1,13 @@
 import { Component } from '@angular/core'
 import axios from 'axios'
 
-import { environment } from '../environments/environment'
-
 interface AuthHeader {
 	headers: object
 }
 
 interface CurrentUserData {
 	// playlists: Array<object>,
-	albums: Array<object>,
+	// albums: Array<object>,
 	tracks: Array<object>
 }
 
@@ -58,8 +56,8 @@ export class AppComponent {
 			.then(res => {
 				this.current_user_data = {
 					// playlists: res[0].data.items,
-					albums: res[0].data.items,
-					tracks: res[1].data.items
+					// albums: res[0].data.items,
+					tracks: res[0].data.items
 				}
 			})
 			.then(() => {
@@ -67,7 +65,7 @@ export class AppComponent {
 					return track.artists.map((artist: any) => artist.href)
 				})
 
-				let lastfmRoutes = []
+				// let lastfmRoutes = []
 
 				let flatten = artist_hrefs.reduce((acc, val) => acc.concat(val), [])
 				let unique = Array.from(new Set(flatten))
@@ -78,44 +76,13 @@ export class AppComponent {
 				Promise.all(promises)
 					.then((data: any) => {
 						this.artist_genres = data.map((artist: any) => {
-							lastfmRoutes.push(axios.get(`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist.data.name)}&api_key=${environment.lastFM}&format=json`))
 							return {
 								name: artist.data.name,
 								genres: artist.data.genres
 							}
 						})
 					})
-					.then(() => {
-						Promise.all(lastfmRoutes)
-							.then(lastFmRes => {
-								lastFmRes.forEach(({data}, i) => {
-									if (data.hasOwnProperty('artist')) {
-										let object = Object.assign(
-											this.artist_genres[i],
-											{
-												bio: data.artist.bio.summary,
-												similarArtists: data.artist.similar.artist,
-												stats: data.artist.stats,
-												onTour: data.artist.ontour
-											}
-										)
-
-										this.artist_genres[i] = object
-									}
-								})
-							})
-					})
 			})
-			// .then(() => {
-			// 	let promises = this.current_user_data.playlists.map((playlist: any) => {
-			// 		return axios.get(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, this.getAuthHeaders());
-			// 	})
-
-			// 	Promise.all(promises)
-			// 		.then((data) => {
-			// 			this.all_playlist_tracks = data.map(item => item.data.items)
-			// 		})
-			// })
 	}
 
 	getAuthHeaders() : AuthHeader {
@@ -152,8 +119,6 @@ export class AppComponent {
 
 	async fetchAllUserData() {
 		let promiseURLs = [
-			// axios.get(`${this.me_url}/playlists`, this.getAuthHeaders()),
-			axios.get(`${this.me_url}/albums`, this.getAuthHeaders()),
 			axios.get(`${this.me_url}/top/tracks?limit=50&time_range=long_term`, this.getAuthHeaders())
 		]
 
