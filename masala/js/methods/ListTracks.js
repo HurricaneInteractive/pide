@@ -6,10 +6,9 @@ const appendLi = (list, html, position = 'beforeend') => {
 }
 
 export const listTracks = (response) => {
-  console.log(response);
   const list = document.querySelector('.list')
   response.data.items.forEach((item, i) => {
-    const track = item.track //one recently played item
+    // const track = item.track //one recently played item
     const trackName = item.track.name;
     const artist = item.track.artists[0].name;
     const nowTime = new Date().getTime();
