@@ -1,8 +1,9 @@
-export const bgImage = (response) => {
+export const bgImage = (data) => {
 
-  const albumImage = response.data.items[0].track.album.images[0].url
+  console.log(data)
+  const artistImage = data.images[0].url
   const div = document.getElementById('title')
 
-  div.insertAdjacentHTML('afterbegin', '<img id="bg-img" src="'+albumImage+'" />');
+  div.insertAdjacentHTML('afterbegin', '<img id="bg-img" src="'+artistImage+'" />');
 
 }

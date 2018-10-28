@@ -44,44 +44,43 @@ function getSpotifyData() {
   })
   .then(function (response) {
     listTracks(response);
-    bgImage(response);
+    // bgImage(response);
     indieRating(response);
     // loop through the tracks
 
     // response.data.items[0].forEach((track, i) => {
     //   const id = track.artists[0].id
-    //   axios(url).then(data => console.log(data))
+    //   axios(artistUrl).then(data => console.log(data))
     //   return response.data.items
     //
     //   console.log(response)
     // })
 
+return response.data.items
 
 
   })
-  // .then((items) => {
-  //   // loop and do all the calls.
-  //   // let artist = []
-  //   // items.forEach((item, i) => {
-  //   //   let id = item.track.artist[0].id
-  //   //   artist.push(axios.get(`${artistUrl}${id}`))
-  //   // })
-  //
-  //
-  //   // // array of promises
-  //   // axios.all(artist).then(data => {
-  //   //   data.forEach((item, i) => {
-  //   //     // append
-  //   //   })
-  //   // })
-  //
-  //   return items
-  //   console.log(items)
-  //
-  // })
-  // .then((items) => {
-  //   // another group of calls
-  // })
+  .then((items) => {
+    // loop and do all the calls.
+    let artist = []
+    // console.log(items)
+    items.forEach((item, i) => {
+      let artists = item.track.artists
+      if (artists.length > 0) {
+        let id = artists[0].id
+        artist.push(axios.get(`${artistUrl}${id}`, { headers: { Authorization: "Bearer " + AUTH_TOKEN } }))
+      }
+    })
+
+    // // array of promises
+    axios.all(artist).then(data => {
+      data.forEach(({data}, i) => {
+        // append
+        console.log(data);
+        bgImage(data);
+      })
+    })
+  })
   .catch(function (error) {
     return 'you done messed up a-a-ron'
   });
