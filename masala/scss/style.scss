@@ -20,9 +20,17 @@ body {
     overflow-y: hidden;
     #latest{
       height: 440px;
+      transition: 0.3s;
+      transition-timing-function: ease;
       .list {
         width: 100%;
         text-align: left;
+        a{
+          color: white !important;
+          &:hover{
+            text-decoration: underline;
+          }
+        }
         th {
           border-bottom: 1px solid #777;
           .see-all {
@@ -68,6 +76,37 @@ body {
   }
 }
 
+#genre {
+
+}
+
+#indie {
+  p{
+    text-transform: none;
+  }
+  .bar {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    .indie-vis {
+      width: 0;
+      height: 40px;
+      background-color: white;
+      display: inline-flex;
+      // position: absolute;
+      // z-index: -1;
+    }
+    .avg-text {
+      // position: absolute;
+      display: inline-flex;
+      padding: 6px 0;
+      padding-left: 20px;
+      margin: 0;
+      position: absolute;
+    }
+  }
+}
+
 
 
 
@@ -91,6 +130,22 @@ body {
     padding: 5vh 30px;
     height: 100%;
     background-image: linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.5));
+    p {
+      color: rgba(255, 255, 255, 0.4);
+      a {
+        color: rgba(255, 255, 255, 0.2);
+        &:hover {
+          color: rgba(255, 255, 255, 1);
+          text-decoration: underline;:
+        }
+      }
+    }
+  }
+}
+
+footer{
+  p{
+    color: rgba(255, 255, 255, 0.2)
   }
 }
 
