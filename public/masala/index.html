@@ -8,6 +8,16 @@
         <title>Document</title>
     </head>
     <body>
+      <header class="bg-white">
+        <nav class="main-menu p-v-10 container">
+          <a class="logo" href="/" title="Go Home"><h1 class="m-0 c-black"><span class="hide-text">Pide</span>Pide</h1></a>
+          <ul class="menu p-0 m-0 cf">
+            <li><a href="/cumin">Cumin</a></li>
+            <li><a href="/masala">Masala</a></li>
+            <li><a href="/paprika">Paprika</a></li>
+          </ul>
+        </nav>
+      </header>
       <div id="container">
         <header>
         </header>
@@ -16,8 +26,13 @@
           <div id="played">
             <h4>recently played</h4>
             <div id="latest">
-              <ul id="list">
-            </ul>
+              <table class="list">
+                <tr>
+                  <th>track</th>
+                  <th>Artist</th>
+                  <th><p class="see-all">see all</p></th>
+                </tr>
+            </table>
             </div>
           </div>
           <div id="genre">
@@ -27,6 +42,10 @@
             <h4>indie rating</h4>
             <p>The lower your number, the higher you value not being a sheep. Based on the Spotify
               popularity ratings of the last 50 songs you’ve listened to. </p>
+            <div class="bar">
+              <div class="indie-vis">
+              </div>
+            </div>
           </div>
           <div id="artists">
             <h4>artists</h4>
@@ -34,15 +53,18 @@
         </div>
 
         <div id="title">
-          <div id="bg-img">
-          </div>
-            <p>masala</p>
+          <div class="wrapper">
+            <p>masala //
+              <a href="http://timknott.com" target="_blank">Tim Knott</a>
+            </p>
             <h1>of your last <br> 50 songs</h1>
+          </div>
         </div>
       </div>
 
 
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+      <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
       <script src="script.js" charset="utf-8"></script>
     </body>
 </html>
