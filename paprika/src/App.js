@@ -65,30 +65,27 @@ class App extends Component {
       loadingAnimation: null,
       nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50',
       isStopped: false,
-      isPaused: false
+      isPaused: false,
+      width: window.innerWidth,
+      height: window.innerHeight
     }
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  getNumberOfTimesPlaylistsNeedsToBeRun(total) {
-    let runThisManyTimes = (Math.ceil(total / 50)) + 1;
-
-    for (let i = 1; i < runThisManyTimes; i++) {
-      let nextNumber = i * 50;
-      this.getPlaylistsRequest(nextNumber)
-    }
-    this.setState({
-      playlist_loading: false
-    })
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
-  timer = () => setTimeout(() => { // return the timeoutID
-    this.setState({
-      redirect: true
-    })
-
-  }, 5000);
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+    console.log('this.state.width => ', this.state.width)
+  }
 
   componentDidMount() {
+    
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
 
     console.log("window.sessionStorage.getItem('refresh_token') => ", window.sessionStorage.getItem('refresh_token'))
     console.log("window.sessionStorage.getItem('access_token') => ", window.sessionStorage.getItem('access_token'))
@@ -267,6 +264,25 @@ class App extends Component {
     } 
   }
 
+  getNumberOfTimesPlaylistsNeedsToBeRun(total) {
+    let runThisManyTimes = (Math.ceil(total / 50)) + 1;
+
+    for (let i = 1; i < runThisManyTimes; i++) {
+      let nextNumber = i * 50;
+      this.getPlaylistsRequest(nextNumber)
+    }
+    this.setState({
+      playlist_loading: false
+    })
+  }
+
+  timer = () => setTimeout(() => { // return the timeoutID
+    this.setState({
+      redirect: true
+    })
+
+  }, 5000);
+
   testThisOut(data) {
     console.log('testThisOut => ', data)
   }
@@ -277,6 +293,12 @@ class App extends Component {
 
   getGridSize(number) {
     let grid = '1fr '.repeat(number);
+    if (this.state.width < 768) {
+      grid = '1fr 1fr';
+    }
+    if (this.state.width < 480) {
+      grid = '1fr';
+    }
     return grid
   }
   
@@ -385,9 +407,9 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading === true) {
-      return <Loading/>
-    }
+    // if (this.state.loading === true) {
+    //   return <Loading/>
+    // }
 
     if (this.state.loggedIn === false) {
       return (
@@ -413,7 +435,7 @@ class App extends Component {
         />
         <div className="app">
 
-          {this.state.loading ? null : <Loading/>}
+          {this.state.loading ? <Loading/> : null}
           
           <div className="absolute-background"/>
 
@@ -476,7 +498,7 @@ class App extends Component {
 
             <div className="top_playlists_container">
               <div className="header">
-                <h2>A smal chunck of stats</h2>
+                <h2>A small chunck of stats</h2>
                 <h6>Based on {this.state.tracks_queried_length} tracks from your first {this.state.playlists_queried} playlists</h6>
               </div>
               <div className="top_playlists_content">
@@ -557,23 +579,35 @@ class App extends Component {
             <div className="playlist_container">
               <div className="playlist_header">
                 <h2>User Playlists</h2>
-                <div className="layout_size">
-                  {this.state.hidePrivate ?
-                    <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
-                    :
-                    <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
-                  }
-                  {this.state.playlist_grid >= 7 ?
-                    <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
-                    :
-                    <div className="button enabled" onClick={() => this.changeGridAmount('up')}><FontAwesomeIcon icon="th"/></div>
-                  }
-                  {this.state.playlist_grid <= 3 ?
-                    <div className="button disabled"><FontAwesomeIcon icon="th-large" /></div>
-                    :
-                    <div className="button enabled" onClick={() => this.changeGridAmount('down')}><FontAwesomeIcon icon="th-large" /></div>
-                  }
-                </div>
+                
+                {this.state.width < 768 ?
+                  <div className="layout_size">
+                    {this.state.hidePrivate ?
+                      <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
+                      :
+                      <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
+                    }
+                  </div>
+                  :
+                  <div className="layout_size">
+                    {this.state.hidePrivate ?
+                      <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
+                      :
+                      <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
+                    }
+                    {this.state.playlist_grid >= 7 ?
+                      <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
+                      :
+                      <div className="button enabled" onClick={() => this.changeGridAmount('up')}><FontAwesomeIcon icon="th"/></div>
+                    }
+                    {this.state.playlist_grid <= 3 ?
+                      <div className="button disabled"><FontAwesomeIcon icon="th-large" /></div>
+                      :
+                      <div className="button enabled" onClick={() => this.changeGridAmount('down')}><FontAwesomeIcon icon="th-large" /></div>
+                    }
+                  </div>
+                  
+                }
               </div>
               {this.state.playlist_loading ? 
                 <h5><Loading/></h5>
