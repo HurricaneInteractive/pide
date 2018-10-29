@@ -24,9 +24,9 @@ import PlaylistInvididual from './components/playlistIndividual'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTh, faThLarge } from '@fortawesome/free-solid-svg-icons'
+import { faTh, faThLarge, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faTh, faThLarge)
+library.add(faTh, faThLarge, faAngleUp)
 
 // const AUTH_TOKEN = window.sessionStorage.access_token
 
@@ -65,30 +65,27 @@ class App extends Component {
       loadingAnimation: null,
       nextCall: 'https://api.spotify.com/v1/users/12162909955/playlists?offset=50&limit=50',
       isStopped: false,
-      isPaused: false
+      isPaused: false,
+      width: window.innerWidth,
+      height: window.innerHeight
     }
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  getNumberOfTimesPlaylistsNeedsToBeRun(total) {
-    let runThisManyTimes = (Math.ceil(total / 50)) + 1;
-
-    for (let i = 1; i < runThisManyTimes; i++) {
-      let nextNumber = i * 50;
-      this.getPlaylistsRequest(nextNumber)
-    }
-    this.setState({
-      playlist_loading: false
-    })
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
-  timer = () => setTimeout(() => { // return the timeoutID
-    this.setState({
-      redirect: true
-    })
-
-  }, 5000);
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+    console.log('this.state.width => ', this.state.width)
+  }
 
   componentDidMount() {
+    
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
 
     console.log("window.sessionStorage.getItem('refresh_token') => ", window.sessionStorage.getItem('refresh_token'))
     console.log("window.sessionStorage.getItem('access_token') => ", window.sessionStorage.getItem('access_token'))
@@ -267,6 +264,25 @@ class App extends Component {
     } 
   }
 
+  getNumberOfTimesPlaylistsNeedsToBeRun(total) {
+    let runThisManyTimes = (Math.ceil(total / 50)) + 1;
+
+    for (let i = 1; i < runThisManyTimes; i++) {
+      let nextNumber = i * 50;
+      this.getPlaylistsRequest(nextNumber)
+    }
+    this.setState({
+      playlist_loading: false
+    })
+  }
+
+  timer = () => setTimeout(() => { // return the timeoutID
+    this.setState({
+      redirect: true
+    })
+
+  }, 5000);
+
   testThisOut(data) {
     console.log('testThisOut => ', data)
   }
@@ -277,6 +293,12 @@ class App extends Component {
 
   getGridSize(number) {
     let grid = '1fr '.repeat(number);
+    if (this.state.width < 768) {
+      grid = '1fr 1fr';
+    }
+    if (this.state.width < 480) {
+      grid = '1fr';
+    }
     return grid
   }
   
@@ -321,7 +343,7 @@ class App extends Component {
               <img
                 src={imageURL}
                 key={key}
-                alt={key}
+                alt={data[key].name + ' playlist cover'}
               />
             </div>
             <div className="playlist_image_overlay">{Parser(music_icon)}</div>
@@ -385,9 +407,9 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading === true) {
-      return <p>loading</p>
-    }
+    // if (this.state.loading === true) {
+    //   return <Loading/>
+    // }
 
     if (this.state.loggedIn === false) {
       return (
@@ -413,6 +435,8 @@ class App extends Component {
         />
         <div className="app">
 
+          {this.state.loading ? <Loading/> : null}
+          
           <div className="absolute-background"/>
 
           {this.state.playlist_view ?
@@ -421,8 +445,7 @@ class App extends Component {
               hidePlaylistView={this.hidePlaylistView}
               data={this.state.current_playlist}
             />
-            :
-            null
+            : null
           }
 
           <div className="app-container">
@@ -444,7 +467,7 @@ class App extends Component {
                     {Parser(user_icon)}
                   </div>
                   <h1 style={{textAlign: "center"}}>User</h1>
-                  <h4> </h4>
+                  <h4><Loading/></h4>
                 </>
                 :
                 <>
@@ -464,7 +487,7 @@ class App extends Component {
                       </div>
                     }
                     <div className="country_flag">
-                      <img src={"https://www.countryflags.io/" + this.state.user.country + "/flat/24.png"} alt="https://www.countryflags.io/be/flat/64.png"/>
+                      <img src={"https://www.countryflags.io/" + this.state.user.country + "/flat/24.png"} alt="flag"/>
                       <p>Country {this.state.user.country}</p>
                     </div>
                     {/* <Loading/> */}
@@ -475,7 +498,7 @@ class App extends Component {
 
             <div className="top_playlists_container">
               <div className="header">
-                <h2>A smal chunck of stats</h2>
+                <h2>A small chunck of stats</h2>
                 <h6>Based on {this.state.tracks_queried_length} tracks from your first {this.state.playlists_queried} playlists</h6>
               </div>
               <div className="top_playlists_content">
@@ -483,21 +506,21 @@ class App extends Component {
                   <>
                     <ul className="artists_bar_graph">
                       <li className="artists_bar_container">
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
 
                       </li>
                     </ul>
                     <ul className="stats_items">
                       <li>
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                       <li> 
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                       <li className="release_years">
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                     </ul>
@@ -520,10 +543,6 @@ class App extends Component {
                               "bottom": 50,
                               "left": 48
                           }}
-                          axisBottom={false}
-                          axisTop={false}
-                          axisLeft={false}
-                          axisRight={false}
                           padding={0.2}
                           colors="nivo"
                           colorBy={({ data }) => data['artistColor']}
@@ -560,34 +579,46 @@ class App extends Component {
             <div className="playlist_container">
               <div className="playlist_header">
                 <h2>User Playlists</h2>
-                <div className="layout_size">
-                  {this.state.hidePrivate ?
-                    <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
-                    :
-                    <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
-                  }
-                  {this.state.playlist_grid >= 7 ?
-                    <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
-                    :
-                    <div className="button enabled" onClick={() => this.changeGridAmount('up')}><FontAwesomeIcon icon="th"/></div>
-                  }
-                  {this.state.playlist_grid <= 3 ?
-                    <div className="button disabled"><FontAwesomeIcon icon="th-large" /></div>
-                    :
-                    <div className="button enabled" onClick={() => this.changeGridAmount('down')}><FontAwesomeIcon icon="th-large" /></div>
-                  }
-                </div>
+                
+                {this.state.width < 768 ?
+                  <div className="layout_size">
+                    {this.state.hidePrivate ?
+                      <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
+                      :
+                      <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
+                    }
+                  </div>
+                  :
+                  <div className="layout_size">
+                    {this.state.hidePrivate ?
+                      <p className="hide_private disabled" onClick={() => this.togglePrivatePlaylists(false)}>show private playlists</p>
+                      :
+                      <p className="hide_private enabled" onClick={() => this.togglePrivatePlaylists(true)}>hide private playlists</p>
+                    }
+                    {this.state.playlist_grid >= 7 ?
+                      <div className="button disabled"><FontAwesomeIcon icon="th" /></div>
+                      :
+                      <div className="button enabled" onClick={() => this.changeGridAmount('up')}><FontAwesomeIcon icon="th"/></div>
+                    }
+                    {this.state.playlist_grid <= 3 ?
+                      <div className="button disabled"><FontAwesomeIcon icon="th-large" /></div>
+                      :
+                      <div className="button enabled" onClick={() => this.changeGridAmount('down')}><FontAwesomeIcon icon="th-large" /></div>
+                    }
+                  </div>
+                  
+                }
               </div>
               {this.state.playlist_loading ? 
-                <h5>loading playlist data</h5>
+                <h5><Loading/></h5>
                 : 
                 this.mapPlaylistCovers()
               }
-              <h2 onClick={() => scroll.scrollToTop({
+              <h6 className="jumpToTop" onClick={() => scroll.scrollToTop({
                 duration: 1500,
                 delay: 100,
                 smooth: "easeInOutQuint",
-              })}>jump to top</h2>
+              })}>JUMP <FontAwesomeIcon icon="angle-up" /></h6>
             </div>
 
           </div>

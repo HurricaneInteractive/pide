@@ -33,9 +33,7 @@
 }
 
 .user-header {
-  // background-color: get-colour('black');
-  // background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
-  min-height: 60vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +41,9 @@
   // font-size: calc(10px + 2vmin);
   // font-size: 72px;
   color: #1e3264;
+  @media (min-width: 1079px) {
+    min-height: 60vh;
+  }
   .status_icons {
     width: 48px;
     display: inline-grid;
@@ -325,6 +326,43 @@
       margin: 0 auto;
       font-weight: 400;
       color: hsla(0,0%,100%,.6);
+    }
+  }
+}
+
+.jumpToTop {
+  cursor: pointer;
+  position: relative;
+  color: hsla(0,0%,100%,.3);
+  svg {
+    position: absolute;
+    top: 1px;
+    margin: 0 8px;
+    transition: .5s;
+    fill: hsla(0,0%,100%,.3);
+    color: hsla(0,0%,100%,.3);
+  }
+  &:hover {
+    color: hsla(0,0%,100%,.6);
+    svg {
+      top: -1px;
+      transition: .5s;
+      fill: hsla(0,0%,100%,.6);
+      color: hsla(0,0%,100%,.6);
+    }
+  }
+}
+
+
+.loading_animation {
+  width: 75px;
+  margin: 0 auto;
+  > div {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    * {
+      fill: #1DB954;  
     }
   }
 }
