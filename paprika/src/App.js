@@ -24,9 +24,9 @@ import PlaylistInvididual from './components/playlistIndividual'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTh, faThLarge } from '@fortawesome/free-solid-svg-icons'
+import { faTh, faThLarge, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faTh, faThLarge)
+library.add(faTh, faThLarge, faAngleUp)
 
 // const AUTH_TOKEN = window.sessionStorage.access_token
 
@@ -321,7 +321,7 @@ class App extends Component {
               <img
                 src={imageURL}
                 key={key}
-                alt={key}
+                alt={data[key].name + ' playlist cover'}
               />
             </div>
             <div className="playlist_image_overlay">{Parser(music_icon)}</div>
@@ -386,7 +386,7 @@ class App extends Component {
 
   render() {
     if (this.state.loading === true) {
-      return <p>loading</p>
+      return <Loading/>
     }
 
     if (this.state.loggedIn === false) {
@@ -413,6 +413,8 @@ class App extends Component {
         />
         <div className="app">
 
+          {this.state.loading ? null : <Loading/>}
+          
           <div className="absolute-background"/>
 
           {this.state.playlist_view ?
@@ -421,8 +423,7 @@ class App extends Component {
               hidePlaylistView={this.hidePlaylistView}
               data={this.state.current_playlist}
             />
-            :
-            null
+            : null
           }
 
           <div className="app-container">
@@ -444,7 +445,7 @@ class App extends Component {
                     {Parser(user_icon)}
                   </div>
                   <h1 style={{textAlign: "center"}}>User</h1>
-                  <h4> </h4>
+                  <h4><Loading/></h4>
                 </>
                 :
                 <>
@@ -464,7 +465,7 @@ class App extends Component {
                       </div>
                     }
                     <div className="country_flag">
-                      <img src={"https://www.countryflags.io/" + this.state.user.country + "/flat/24.png"} alt="https://www.countryflags.io/be/flat/64.png"/>
+                      <img src={"https://www.countryflags.io/" + this.state.user.country + "/flat/24.png"} alt="flag"/>
                       <p>Country {this.state.user.country}</p>
                     </div>
                     {/* <Loading/> */}
@@ -483,21 +484,21 @@ class App extends Component {
                   <>
                     <ul className="artists_bar_graph">
                       <li className="artists_bar_container">
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
 
                       </li>
                     </ul>
                     <ul className="stats_items">
                       <li>
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                       <li> 
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                       <li className="release_years">
-                        <h3>load</h3>
+                        <h3><Loading/></h3>
                         <p></p>
                       </li>
                     </ul>
@@ -520,10 +521,6 @@ class App extends Component {
                               "bottom": 50,
                               "left": 48
                           }}
-                          axisBottom={false}
-                          axisTop={false}
-                          axisLeft={false}
-                          axisRight={false}
                           padding={0.2}
                           colors="nivo"
                           colorBy={({ data }) => data['artistColor']}
@@ -579,15 +576,15 @@ class App extends Component {
                 </div>
               </div>
               {this.state.playlist_loading ? 
-                <h5>loading playlist data</h5>
+                <h5><Loading/></h5>
                 : 
                 this.mapPlaylistCovers()
               }
-              <h2 onClick={() => scroll.scrollToTop({
+              <h6 className="jumpToTop" onClick={() => scroll.scrollToTop({
                 duration: 1500,
                 delay: 100,
                 smooth: "easeInOutQuint",
-              })}>jump to top</h2>
+              })}>JUMP <FontAwesomeIcon icon="angle-up" /></h6>
             </div>
 
           </div>

@@ -1,18 +1,19 @@
 import React from 'react'
-import Lottie from 'react-lottie'
-import * as animationData from '../content/loading.json'
+// import Lottie from 'react-lottie'
+import ReactBodymovin from 'react-bodymovin'
+import animation from '../content/loading.json'
+// import * as animationData from '../content/loading-zoosta.json'
 
 const Loading = () => {
-    const defaultOptions = {
+    const bodymovinOptions = {
         loop: true,
         autoplay: true,
-        animationData: animationData,
-    };
+        prerender: true,
+        animationData: animation
+    }
     return (
-        <div classname="loading_component">
-            <Lottie
-                options={defaultOptions}
-            />
+        <div className="loading_animation">
+            <ReactBodymovin options={bodymovinOptions}/>
         </div>
     )
 }

@@ -16,11 +16,11 @@
     "npm": "^6.4.1",
     "random-material-color": "^1.0.3",
     "react": "^16.5.2",
+    "react-bodymovin": "^2.0.0",
     "react-data-grid": "^4.0.8",
     "react-data-grid-addons": "^4.0.8",
     "react-dom": "^16.5.2",
     "react-helmet": "^5.2.0",
-    "react-lottie": "^1.2.3",
     "react-scripts": "2.0.4",
     "react-scroll": "^1.7.10",
     "unique-colors": "^1.0.1"
