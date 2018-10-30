@@ -12,13 +12,17 @@
 
 .playlist_overlay {
   position: absolute;
-  width: 80%;
-  margin: 10% 10%;
+  width: 90%;
+  margin: 5% 5%;
   // height: 100%;
   top: 0;
   left: 0;
   right: 0;
   z-index: 9999;
+  @media (min-width: 768px) {
+    width: 80%;
+    margin: 10% 10%;
+  }
   
   background-color: #3B3738;
   .playlist_overlay_wrapper {
@@ -39,8 +43,13 @@
     header {
       padding: 36px 36px 0;
       display: grid;
-      grid-template-columns: 30% 1fr;
+      grid-template-columns: 1fr;
+      @media (min-width: 768px) {
+        padding: 36px 36px 0;
+        grid-template-columns: 30% 1fr;
+      }
       img {
+        display: block;
         width: 100%;
         padding: 0;
         margin: 0;
