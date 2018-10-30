@@ -1,4 +1,5 @@
 <div *ngIf="user" class="user-profile">
-  <div class="profile-image" [style.backgroundImage]="'url(' + user.image + ')'"></div>
-  <h3>{{ user.name }}</h3>
+  <h3 class="sub-header-text">Welcome, <span class="c-green">{{ user.name }}</span></h3>
+  <!-- <div class="profile-image" [style.backgroundImage]="'url(' + user.image + ')'"></div> -->
+  <p>Are you ready to see some interesting data about your saved tracks? Hope you enjoy!</p>
 </div>
