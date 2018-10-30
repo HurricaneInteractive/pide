@@ -296,7 +296,7 @@ class App extends Component {
     if (this.state.width < 768) {
       grid = '1fr 1fr';
     }
-    if (this.state.width < 480) {
+    if (this.state.width < 320) {
       grid = '1fr';
     }
     return grid
