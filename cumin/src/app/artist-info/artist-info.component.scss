@@ -50,10 +50,6 @@ $i: 1;
         }
     }
 
-    .additional-information {
-        width: 100%;
-    }
-
     .stats {
         @include grid();
         @include grid-column();
