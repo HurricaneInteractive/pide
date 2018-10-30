@@ -39,6 +39,7 @@ export class AppComponent {
 		stats?: any,
 		onTour?: number
 	}>
+	fetching: boolean = true
 
 	constructor() {
 		axios.get(`${this.me_url}`, this.getAuthHeaders())
@@ -81,8 +82,18 @@ export class AppComponent {
 								genres: artist.data.genres
 							}
 						})
+
+						this.fetching = false
 					})
 			})
+	}
+
+	scrollToElement($element): void {
+		$element.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+			inline: "nearest"
+		});
 	}
 
 	getAuthHeaders() : AuthHeader {

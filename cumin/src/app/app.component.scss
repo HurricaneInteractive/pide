@@ -3,3 +3,18 @@
 
 // Versus Globals
 @import "../assets/scss/style";
+
+.intro {
+    color: get-colour('black');
+    background: white;
+    min-height: calc(100vh - 78px);
+}
+
+.actions {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.data {
+    min-height: 100vh;
+}
