@@ -18,23 +18,6 @@ body {
   margin: 0 auto;
   padding: 0 8px;
 }
-.site-logo {
-  margin: 6px 0 2px;
-  padding: 4px 0;
-  display: flex;
-  height: 50px;
-  border-bottom: 2px solid transparent;
-  transition: .5s;
-  &:hover {
-    border-bottom: 2px solid get-colour('green');
-    transition: .5s;
-  }
-  svg {
-    width: auto;
-    height: 100%;
-    margin: 0 auto;
-  }
-}
 .false {
   display: none !important;
 }
