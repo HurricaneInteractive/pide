@@ -25,29 +25,6 @@ body {
   margin: 0 auto;
   padding: 0 8px;
 }
-<<<<<<< HEAD
-=======
-.site-logo {
-  margin: 6px auto 2px;
-  padding: 4px 0;
-  display: flex;
-  height: 50px;
-  border-bottom: 2px solid transparent;
-  transition: .5s;
-  @media (min-width: 768px) {
-    margin: 6px 0 2px;
-  }
-  &:hover {
-    border-bottom: 2px solid get-colour('green');
-    transition: .5s;
-  }
-  svg {
-    width: auto;
-    height: 100%;
-    margin: 0 auto;
-  }
-}
->>>>>>> 8c89a4e93c63b661d2411171889a2c1a792d6c39
 .false {
   display: none !important;
 }
