@@ -533,14 +533,12 @@ class App extends Component {
                       <li className="artists_bar_container">
                       <h3>Artist tracks volume ({this.state.artists_queried.size})
                       </h3>
-                      {this.state.width > 480 ? 
-                        null
-                        :
-                        <p>graph better viewed on desktop</p>
-                      }
-                      
-                     
-                      <ResponsiveBar
+                        {this.state.width > 480 ? 
+                          null
+                          :
+                          <p>graph better viewed on desktop</p>
+                        }
+                        <ResponsiveBar
                           data={this.state.artists_queried_bar}
                           keys={[
                             "artist",
@@ -563,7 +561,7 @@ class App extends Component {
                           animate={true}
                           motionStiffness={90}
                           motionDamping={15}
-                      />
+                        />
                       </li>
                     </ul>
                     <ul className="stats_items">

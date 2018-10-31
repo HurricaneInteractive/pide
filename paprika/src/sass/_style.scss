@@ -207,6 +207,21 @@
       .artists_bar_container {
         height: 450px;
         color: #3B3738;
+        > div {
+          > div {
+            > svg {
+              > g {
+                > :nth-child(2) {
+                  display: none;
+                }
+                > :nth-child(3) {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+
       }
     }
     .stats_items {

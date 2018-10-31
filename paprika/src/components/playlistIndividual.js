@@ -145,7 +145,7 @@ class PlaylistInvididual extends Component {
       }
       rows.push({
         id: i + 1,
-        title: <a href={externalSpotifyURL}>{this.state.all_tracks_data[i].track.name}</a>,
+        title: <a href={externalSpotifyURL} target="_blank" rel="noreferrer noopener">{this.state.all_tracks_data[i].track.name}</a>,
         artist: this.state.all_tracks_data[i].track.artists[0].name,
         album: this.state.all_tracks_data[i].track.album.name,
         length: durationObj,
@@ -339,9 +339,8 @@ class PlaylistInvididual extends Component {
             <header>
               <img src={imageURL} alt="playlist artwork"/>
               <div className="meta_box">
-                <h1>{this.props.data.name}</h1>
-                <h3>Created by <span>{this.props.data.owner.display_name}</span> - 
-                  {this.state.data_loading ? null : convertDurationToString(this.state.playlist_duration).timeString}
+                <h2>{this.props.data.name}</h2>
+                <h3>Created by <span>{this.props.data.owner.display_name}</span> - {this.state.data_loading ? null : convertDurationToString(this.state.playlist_duration).timeString}
                 </h3>
                 <div className="playlist_stats">
 
