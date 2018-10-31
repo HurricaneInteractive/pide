@@ -41,15 +41,25 @@
 }
 
 .header-text {
-    font-size: calc-em($header-size, $base-font-size);
-    margin-top: calc-em(30px, $header-size);
-    margin-bottom: calc-em(20px, $header-size);
+    font-size: calc-em(50px, $base-font-size);
+    margin-top: calc-em(30px, 50px);
+    margin-bottom: calc-em(20px, 50px);
+    @include breakpoint(xlarge) {
+        font-size: calc-em($header-size, $base-font-size);
+        margin-top: calc-em(30px, $header-size);
+        margin-bottom: calc-em(20px, $header-size);
+    }
 }
 
 .sub-header-text {
-    font-size: calc-em($subheader-size, $base-font-size);
-    margin-top: calc-em(30px, $subheader-size);
-    margin-bottom: calc-em(20px, $subheader-size);
+    font-size: calc-em(45px, $base-font-size);
+    margin-top: calc-em(30px, 45px);
+    margin-bottom: calc-em(20px, 45px);
+    @include breakpoint(xlarge) {
+        font-size: calc-em($subheader-size, $base-font-size);
+        margin-top: calc-em(30px, $subheader-size);
+        margin-bottom: calc-em(20px, $subheader-size);
+    }
 }
 
 .header-text,
@@ -81,11 +91,16 @@
 }
 
 .container {
-    max-width: calc(#{$grid-width} - (#{$grid-padding} * 2));
-    padding-right: $grid-padding;
-    padding-left: $grid-padding;
+    max-width: calc(#{$grid-width} - (15px * 2));
+    padding-right: 15px;
+    padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    @include breakpoint(medium) {
+        max-width: calc(#{$grid-width} - (#{$grid-padding} * 2));
+        padding-right: $grid-padding;
+        padding-left: $grid-padding;
+    }
 }
 
 .wrapper {

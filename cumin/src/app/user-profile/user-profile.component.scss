@@ -19,7 +19,9 @@
         background-position: center center;
     }
     p {
-        font-size: em(21px);
+        @include breakpoint(xlarge) {
+            font-size: em(21px);
+        }
     }
     .get-started {
         margin-top: 100px;

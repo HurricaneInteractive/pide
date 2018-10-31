@@ -37,15 +37,21 @@ h2 {
     max-width: calc(700px + #{$grid-padding});
     margin: 0 auto;
     @include grid();
-    @include grid-column();
+    @include grid-column(1);
+    @include breakpoint(medium) {
+        @include grid-column();
+    }
     > div {
         .feature {
-            height: 350px;
+            height: 280px;
             background-color: get-colour('green');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
             position: relative;
+            @include breakpoint(medium) {
+                height: 350px;
+            }
             .content {
                 position: absolute;
                 top: 0;
@@ -76,11 +82,19 @@ h2 {
 
 .progression-circles {
     @include grid($align: flex-start);
-    @include grid-column(2);
+    @include grid-column(1);
+    @include breakpoint(medium) {
+        @include grid-column(2);
+    }
     .track-stat {
         text-align: center;
         &:not(:first-child) {
-            // margin-top: 50px;
+            margin-top: 20px;
+        }
+        @include breakpoint(medium) {
+            &:not(:first-child) {
+                margin-top: 0px;
+            }
         }
         .progression-circle {
             @include progression-theme($size: 10rem, $ring-size: 1.25rem);
@@ -167,15 +181,19 @@ h2 {
                 transform: translateX(-50%) translateY(20px);
                 opacity: 0;
                 display: block;
-                width: 300px;
                 text-align: center;
-                padding: em(14px) em(25px);
+                padding: em(14px) em(20px);
                 border-radius: 5px;
                 background: get-colour('green');
                 color: get-colour('black');
                 font-weight: $font-weight-bold;
                 text-transform: uppercase;
                 transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+                pointer-events: none;
+                @include breakpoint(medium) {
+                    width: 300px;
+                    padding: em(14px) em(25px);
+                }
             }
             &:nth-child(1) span {
                 transform: translateX(0) translateY(20px);

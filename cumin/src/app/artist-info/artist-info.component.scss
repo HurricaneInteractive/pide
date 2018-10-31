@@ -52,7 +52,10 @@ $i: 1;
 
     .stats {
         @include grid();
-        @include grid-column();
+        @include grid-column(1);
+        @include breakpoint(medium) {
+            @include grid-column();
+        }
         > p {
             margin: 0;
             text-transform: uppercase;
@@ -63,6 +66,12 @@ $i: 1;
             font-size: em($button-size);
             line-height: 1.1;
             font-weight: $font-weight-bold;
+            &:first-child {
+                margin-bottom: 10px;
+                @include breakpoint(medium) {
+                    margin-bottom: 0;
+                }
+            }
         }
     }
 

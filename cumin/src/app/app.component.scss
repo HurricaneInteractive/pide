@@ -8,11 +8,24 @@
     color: get-colour('black');
     background: white;
     min-height: calc(100vh - 78px);
+    display: flex;
+    > .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        > .wrapper {
+            width: 100%;
+        }
+    }
 }
 
 .actions {
-    margin-top: 100px;
+    margin-top: 50px;
     text-align: center;
+    @include breakpoint(medium) {
+        margin-top: 100px;
+    }
 }
 
 .data {

@@ -23,12 +23,15 @@
 }
 
 @mixin heading($type, $colour: 'white', $margin-top: 30px, $margin-bottom: 20px) {
-    font-size: calc-em(get-heading-size($type), $base-font-size);
+    font-size: calc-em(get-heading-size($type) - 2px, $base-font-size);
     color: get-colour($colour);
     margin-top: calc-em($margin-top, get-heading-size($type));
     margin-bottom: calc-em($margin-bottom, get-heading-size($type));
     line-height: 1.2;
     font-weight: $font-weight-bold;
+    @include breakpoint(xlarge) {
+        font-size: calc-em(get-heading-size($type), $base-font-size);
+    }
 }
 
 @mixin grid($justify: flex-start, $align: center) {
