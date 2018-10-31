@@ -31,8 +31,9 @@
     background: linear-gradient(rgba(0,0,0,0) -30%,#181818);
     .close {
       position: absolute;
-      top: 48px;
-      right: 68px;
+      top: 24px;
+      right: 36px;
+
       transition: .5s;
       cursor: pointer;
       &:hover {
@@ -47,23 +48,36 @@
       @media (min-width: 768px) {
         padding: 36px 36px 0;
         grid-template-columns: 30% 1fr;
+        .meta_box {
+          width: 100%;
+        }
       }
       img {
         display: block;
-        width: 100%;
+        width: 60%;
         padding: 0;
-        margin: 0;
+        margin: 48px 20%;
         -webkit-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
         -moz-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
         box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.25);
+        @media (min-width: 768px) {
+          width: 100%;
+          margin: 0 auto;
+        }
       }
       .meta_box {
-        padding: 0 48px;
+        width: 100%;
         text-align: left;
-        h1 {
+        @media (min-width: 768px) {
+          width: 100%;
+          padding: 0 48px;
+        }
+        h2 {
           font-size: 28px;
           line-height: 36px;
           letter-spacing: -.005em;
+          text-decoration: underline;
+          text-decoration-color: #1DB954;
         }
         h3 {
           color: hsla(0,0%,100%,.6);
@@ -79,8 +93,22 @@
           > div {
             margin: 0 auto;
             // justify-items: center;
+            @media (min-width: 768px) {
+
+              h3 {
+                font-size: 1.25rem;
+              }
+              p {
+                font-size: 1rem;
+              }
+            }
+            h3, p {
+              text-align: center;
+              margin: 4px auto;
+              padding: 0;
+            }
             h3 {
-              font-size: 1.25rem;
+              font-size: 1rem;
               margin: 0 auto;
               height: 72px;
               width: 72px;
@@ -90,10 +118,8 @@
               display: grid;
               align-items: center;
             }
-            h3, p {
-              text-align: center;
-              margin: 4px auto;
-              padding: 0;
+            p {
+              font-size: 1rem;
             }
           }
         }
