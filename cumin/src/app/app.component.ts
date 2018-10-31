@@ -99,7 +99,7 @@ export class AppComponent {
 	getAuthHeaders() : AuthHeader {
 		return {
 			headers: {
-				'Authorization': 'Bearer ' + this.access_token
+				'Authorization': 'Bearer ' + window.sessionStorage.getItem('access_token')
 			}
 		}
 	}
