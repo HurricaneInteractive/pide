@@ -1,6 +1,13 @@
 (function() {
 
-    var refresh = window.sessionStorage.getItem('refresh_token');
+    function sendRefresh(xhr) {
+        var refresh = window.sessionStorage.getItem('refresh_token');
+        if (typeof refresh !== 'undefined' && refresh !== 'undefined') {
+            xhr.open('GET', window.location.origin + '/refresh_token?refresh_token=' + refresh);
+            xhr.send();
+        }
+    }
+
     var XHR = new XMLHttpRequest();
 
     XHR.onload = function() {
@@ -14,8 +21,11 @@
     }
     
     setInterval(function() {
-        XHR.open('GET', window.location.origin + '/refresh_token?refresh_token=' + refresh);
-        XHR.send();
+        sendRefresh(XHR);
     }, 25 * 60000);
+
+    window.onload = function() {
+        sendRefresh(XHR);
+    }
 
 })();
