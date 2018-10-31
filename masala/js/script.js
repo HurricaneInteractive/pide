@@ -68,8 +68,10 @@ return response.data.items
     axios.all(artist).then(data => {
       data.forEach(({data}, i) => {
         // append
-        // console.log(data);
-        bgImage(data);
+
+        if (i === 0) {
+          bgImage(data);
+        }
         // artistPop();
       })
     })
@@ -82,6 +84,7 @@ return response.data.items
 $('.circle').circleProgress({
   value: 0.75,
   size: 200,
+  thickness: 6,
   lineCap: "round",
   fill: "#fff",
   startAngle: -Math.PI / 2
