@@ -7,6 +7,11 @@ let cors = require('cors')
 let querystring = require('querystring')
 let cookieParser = require('cookie-parser')
 
+let port = process.env.PORT;
+if (port === null || port === '') {
+	port = 8000
+}
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -25,7 +30,7 @@ let generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 var client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 var client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
+var redirect_uri = process.env.SPOTIY_REDIRECT_URI; // Your redirect uri
 
 let app = express()
 
@@ -157,4 +162,4 @@ app.get('/refresh_token', function(req, res) {
 	});
 });
 
-app.listen(3000)
+app.listen(port)
