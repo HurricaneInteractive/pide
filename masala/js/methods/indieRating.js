@@ -14,7 +14,6 @@ export const indieRating = (response) => {
 
   totalValue = ratingValues.reduce(add)
   const avg = (totalValue / 50)
-  console.log(avg)
 
   const label = document.querySelector('.indie-vis')
   label.insertAdjacentHTML('afterend', '<h3 class="avg-text">' + Math.round(avg) + '</h3>')
