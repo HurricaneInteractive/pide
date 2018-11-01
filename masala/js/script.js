@@ -11,8 +11,7 @@ import { artistPop } from './methods/artistPop'
 const apiUrl = 'https://api.spotify.com/v1/me/player/recently-played'
 const artistUrl = 'https://api.spotify.com/v1/artists/'
 
-const AUTH_TOKEN = window.sessionStorage.access_token
-const REFRESH_TOKEN = window.sessionStorage.refresh_token
+// const AUTH_TOKEN = window.sessionStorage.access_token
 
 $(document).ready(() => {
   // const i = [1, 2, 3].map(n => n ** 2);
@@ -31,7 +30,7 @@ function getSpotifyData() {
       limit: 50
     },
     headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
+      Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
     }
   })
   .then(function (response) {
@@ -50,7 +49,7 @@ function getSpotifyData() {
       let artists = item.track.artists
       if (artists.length > 0) {
         let id = artists[0].id
-        promises.push(axios.get(`${artistUrl}${id}`, { headers: { Authorization: "Bearer " + AUTH_TOKEN } }))
+        promises.push(axios.get(`${artistUrl}${id}`, { headers: { Authorization: "Bearer " + window.sessionStorage.getItem('access_token') } }))
       }
     })
 
