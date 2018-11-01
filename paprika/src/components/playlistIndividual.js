@@ -7,7 +7,6 @@ import paprikaImg from '../content/paprika.jpg'
 import { ResponsiveWaffle } from '@nivo/waffle'
 import { unique_shuffled_colors } from 'unique-colors'
 
-import * as Scroll from 'react-scroll';
 import { animateScroll as scroll } from 'react-scroll'
 
 import { convertDurationToString } from '../globalFunctions'

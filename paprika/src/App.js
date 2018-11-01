@@ -79,7 +79,6 @@ class App extends Component {
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-    console.log('this.state.width => ', this.state.width)
   }
 
   componentDidMount() {
@@ -87,8 +86,6 @@ class App extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
 
-    console.log("window.sessionStorage.getItem('refresh_token') => ", window.sessionStorage.getItem('refresh_token'))
-    console.log("window.sessionStorage.getItem('access_token') => ", window.sessionStorage.getItem('access_token'))
     let userAuthed = false;
     if (window.sessionStorage.getItem('access_token') === 'undefined') {
       userAuthed = false;
@@ -105,7 +102,6 @@ class App extends Component {
     // runs functions if user is logged in, else return null
     if (userAuthed) {
       getUserData().then(res => {
-        console.log('getUserData() ', res)
         this.setState({
           user: res.data,
           user_loading: false
@@ -117,7 +113,6 @@ class App extends Component {
         for (let i = 0; i < res.data[0].length; i++) {
           totalTracks += res.data[0][i].tracks.total;
         }
-        console.log('GETALLUSERPLAYLISTS => ', res.data)
         this.setState({
           playlists: res.data[1],
           playlist_loading: false,
@@ -128,7 +123,6 @@ class App extends Component {
         // pass in all playlist data as variable
         // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
         let og_res = res;
-        console.log('COMPONENT getAllUserPlaylists() => ', og_res.data[0])
 
         // returns about 2000k songs - more than enough to play with
         Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
@@ -141,7 +135,6 @@ class App extends Component {
           let release_year_range_min = null;
           let release_year_range_max = null;
           let playlistTracks = [];
-          console.warn('getFirstFiftyPlaylistTracks => ', res)
           let totalPlaylistsQuried = res.length;
           let totalTracksQueried = 0;
   
@@ -283,14 +276,6 @@ class App extends Component {
 
   }, 5000);
 
-  testThisOut(data) {
-    console.log('testThisOut => ', data)
-  }
-
-  checkTrackStats(data) {
-    console.log('checkTrackStats(data)')
-  }
-
   getGridSize(number) {
     let grid = '1fr '.repeat(number);
     if (this.state.width < 768) {
@@ -366,18 +351,9 @@ class App extends Component {
 
   openPlaylist(val) {
     let currentID = val.id;
-    console.log('this.state.playlist_data_cache.currentID => ', this.state.playlist_data_cache.currentID)
-    if (this.state.playlist_data_cache.currentID === null) {
-      console.log('item doesnt exist, fetch the data')
-    }
-    else {
-      console.log('item already exists')
-    }
+
     let currentPlaylistMeta = this.state.playlist_data_cache.currentID;
-    console.log('TCL: App -> openPlaylist -> currentPlaylistMeta', currentPlaylistMeta);
-    
     getAllPlaylistDataById(currentID).then(res => {
-      console.log('getAllPlaylistDataById => ', res.data);
       let currentCache = this.state.playlist_data_cache;
       let pushMe = {
         [currentID]: res.data
@@ -387,10 +363,7 @@ class App extends Component {
       this.setState({
         playlist_data_cache: currentCache
       });
-      console.log('this.state.playlist_data_cache => ', this.state.playlist_data_cache)
     });
-
-    console.log('open playlist (val) => ', val)
     this.setState({ playlist_view: true, current_playlist: val });
   }
 
@@ -407,9 +380,6 @@ class App extends Component {
   }
 
   render() {
-    // if (this.state.loading === true) {
-    //   return <Loading/>
-    // }
 
     if (this.state.loggedIn === false) {
       return (
@@ -451,7 +421,7 @@ class App extends Component {
           <div className="app-container">
             <header className="bg-white">
               <nav className="main-menu p-v-10 container">
-                <a className="site-logo" href="/" title="Go Home"><span class="hide-text"></span>
+                <a className="site-logo" href="/" title="Go Home"><span className="hide-text"></span>
                     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 531.85 202.11"><title>pide logo</title><path d="M326.78,466.58V480h.6a34.66,34.66,0,0,1,4.7-5.7,31,31,0,0,1,7.1-5.2,45.81,45.81,0,0,1,9.5-3.8,43.67,43.67,0,0,1,11.9-1.5,44.78,44.78,0,0,1,33.6,14.6,48.43,48.43,0,0,1,9.6,16,56.57,56.57,0,0,1,3.4,19.8,59.06,59.06,0,0,1-3.3,19.9,48.75,48.75,0,0,1-9.4,16.2,45.22,45.22,0,0,1-14.8,11,45.73,45.73,0,0,1-19.7,4.1,41.64,41.64,0,0,1-18.7-4.2,31.84,31.84,0,0,1-13.1-11.4h-.4v60.8h-24v-144Zm56,47.6a37.54,37.54,0,0,0-1.7-11.1,30.82,30.82,0,0,0-5.1-9.9,25.65,25.65,0,0,0-8.6-7.1,26.13,26.13,0,0,0-12.2-2.7,24.46,24.46,0,0,0-11.8,2.8,30.33,30.33,0,0,0-8.9,7.2,30.72,30.72,0,0,0-5.6,10,34.58,34.58,0,0,0-1.9,11.2,33.73,33.73,0,0,0,1.9,11.1,30.87,30.87,0,0,0,5.6,9.9,29,29,0,0,0,8.9,7.1,27.56,27.56,0,0,0,24-.1,26.78,26.78,0,0,0,8.6-7.2,30.71,30.71,0,0,0,5.1-10A38.49,38.49,0,0,0,382.78,514.18Z" transform="translate(-234.35 -408.47)"/><path d="M427.38,434a13.81,13.81,0,0,1,4.3-10.1,14.76,14.76,0,0,1,10.9-4.3,15.89,15.89,0,0,1,11.1,4.1,14,14,0,0,1,0,20.6,15.89,15.89,0,0,1-11.1,4.1,14.76,14.76,0,0,1-10.9-4.3A13.81,13.81,0,0,1,427.38,434Zm3.4,32.6h24v96h-24Z" transform="translate(-234.35 -408.47)"/><path d="M581.58,562.58h-22.8v-14.4h-.4a32.7,32.7,0,0,1-13.9,12.8,42.58,42.58,0,0,1-19.1,4.4,45.7,45.7,0,0,1-19.7-4.1,45.12,45.12,0,0,1-14.8-11,48.75,48.75,0,0,1-9.4-16.2,59.06,59.06,0,0,1-3.3-19.9,56.57,56.57,0,0,1,3.4-19.8,48.1,48.1,0,0,1,9.6-16,44.78,44.78,0,0,1,33.6-14.6,41.93,41.93,0,0,1,20.9,5.2,35.64,35.64,0,0,1,6.7,4.8,38.63,38.63,0,0,1,4.6,5h.6v-67.4h24Zm-79-48.4a38.16,38.16,0,0,0,1.7,11.2,30.71,30.71,0,0,0,5.1,10,26.67,26.67,0,0,0,8.6,7.2,27.56,27.56,0,0,0,24,.1,29.07,29.07,0,0,0,8.9-7.1,31.06,31.06,0,0,0,5.6-9.9,34,34,0,0,0,1.9-11.1,34.85,34.85,0,0,0-1.9-11.2,30.9,30.9,0,0,0-5.6-10,30.46,30.46,0,0,0-8.9-7.2,24.46,24.46,0,0,0-11.8-2.8,26.1,26.1,0,0,0-12.2,2.7,25.55,25.55,0,0,0-8.6,7.1,30.82,30.82,0,0,0-5.1,9.9A37.21,37.21,0,0,0,502.58,514.18Z" transform="translate(-234.35 -408.47)"/><path d="M702.38,515.78V519a24.56,24.56,0,0,1-.21,3.2h-73a23.56,23.56,0,0,0,2.7,9.5,24,24,0,0,0,6.1,7.4,30.23,30.23,0,0,0,8.6,4.9,28.23,28.23,0,0,0,10,1.8q9,0,15.2-3.3a28.5,28.5,0,0,0,10.2-9.1l16,12.8q-14.21,19.2-41.2,19.2a58.64,58.64,0,0,1-20.6-3.5,48.47,48.47,0,0,1-16.3-9.9,44.65,44.65,0,0,1-10.8-15.7,54.11,54.11,0,0,1-3.9-21.1,55.07,55.07,0,0,1,3.9-21.1,47,47,0,0,1,26.8-26.6,53.81,53.81,0,0,1,20.1-3.7,50.72,50.72,0,0,1,18.5,3.3,40.15,40.15,0,0,1,14.69,9.8,45.41,45.41,0,0,1,9.71,16.2A66.92,66.92,0,0,1,702.38,515.78Zm-34.21-66H649.38L621.18,421h27.2ZM678.38,505a29.79,29.79,0,0,0-1.3-8.8,19.62,19.62,0,0,0-11.2-12.5,24.8,24.8,0,0,0-10.1-1.9,27,27,0,0,0-18.3,6.5,23.68,23.68,0,0,0-8.3,16.7Z" transform="translate(-234.35 -408.47)"/><path d="M235,517.11a214.63,214.63,0,0,1-.6-23.52,189.31,189.31,0,0,1,13.9-67.5c1.63-4,3.37-7.87,5.32-11.68a10.87,10.87,0,0,1,20.54,4.31,11.44,11.44,0,0,1-1.28,5.82A154.85,154.85,0,0,0,262,453.31a172.78,172.78,0,0,0-5.53,34.41,208.9,208.9,0,0,0,1.35,38.65,256.22,256.22,0,0,0,5.47,29.46c1.83,7.49,3.94,14.91,6.28,22.26a10.88,10.88,0,1,1-20.72,6.64c-2.54-8-4.86-16-6.82-24.2-1.79-7.45-3.32-14.95-4.52-22.52C236.6,532,235.83,526,235,517.11Z" transform="translate(-234.35 -408.47)"/><path d="M765.52,517.11a214.63,214.63,0,0,0,.6-23.52,189.31,189.31,0,0,0-13.9-67.5c-1.63-4-3.36-7.87-5.31-11.68a10.87,10.87,0,0,0-20.54,4.31,11.44,11.44,0,0,0,1.28,5.82,155.52,155.52,0,0,1,10.86,28.77,172.79,172.79,0,0,1,5.54,34.41,208.9,208.9,0,0,1-1.36,38.65,258.36,258.36,0,0,1-5.46,29.46c-1.83,7.49-4,14.91-6.28,22.26a10.88,10.88,0,1,0,20.72,6.64c2.53-8,4.85-16,6.82-24.2,1.79-7.45,3.32-14.95,4.52-22.52C764,532,764.73,526,765.52,517.11Z" transform="translate(-234.35 -408.47)"/></svg>
                 </a>
                 <ul className="menu p-0 m-0 cf">
