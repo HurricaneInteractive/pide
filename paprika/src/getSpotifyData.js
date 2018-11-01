@@ -1,8 +1,5 @@
 import axios from 'axios'
 
-const AUTH_TOKEN = window.sessionStorage.access_token
-// const REFRESH_TOKEN = window.sessionStorage.refresh_token
-
 let allPlaylists = [];
 let allPlaylistsObj = {};
 
@@ -15,7 +12,7 @@ export function getUserData(val){
     method: 'get',
     url: 'https://api.spotify.com/v1/me',
     headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
+      Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
     }
   });
 }
@@ -31,13 +28,11 @@ export function getAllUserPlaylists() {
       offset: 0
     },
     headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
+      Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
     },
     transformResponse: [function (data) {
       let res = JSON.parse(data);
-      // console.log('getAllUserPlaylists => ', res)
       let totalToQuery = 10;
-      // let totalToQuery = res.total;
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];
         allPlaylists.push(addThisPlaylist);
@@ -54,7 +49,6 @@ export function getAllUserPlaylists() {
   });
 
   function getNumberOfTimesPlaylistsNeedsToBeRun(total) {
-    console.log('we running getNumberOfTimesPlaylistsNeedsToBeRun(total) =>', total)
     let runThisManyTimes = (Math.ceil(total / 50)) + 1;
 
     for (let i = 1; i < runThisManyTimes; i++) {
@@ -65,7 +59,6 @@ export function getAllUserPlaylists() {
 
   // get all users playlists
   function getPlaylistsRequest(nextOffset) {
-    console.log('ran @ ', nextOffset)
     return axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me/playlists',
@@ -74,11 +67,10 @@ export function getAllUserPlaylists() {
         limit: 50
       },
       headers: {
-        Authorization: "Bearer " + AUTH_TOKEN
+        Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
       },
       transformResponse: [function (data) {
         let res = JSON.parse(data);
-        // console.log('getAllUserPlaylists => ', res)
         if (res.items.length === undefined) {
           console.log('res.items.length === undefined')
         }
@@ -95,26 +87,12 @@ export function getAllUserPlaylists() {
         return [allPlaylists, allPlaylistsObj, res.total];
       }],
     });
-    // .then(res => {
-    //   // console.log('getPlaylistsRequest() res.data => ', res.data)
-
-    //   for (let i = 0, len = res.data.items.length; i < len; i++) {
-    //     const addThisPlaylist = res.data.items[i];
-    //     allPlaylists.push(addThisPlaylist);
-
-    //     let pushMe = {
-    //       [res.items[i].id]: res.items[i]
-    //     }
-    //     Object.assign(allPlaylistsObj, pushMe)
-    //   }
-    // });
   }
 }
 
 // --------------------------------------------------------------
 
 export function getFirstFiftyPlaylistTracks(playlist_data) {
-  console.log('playlist_data => ', playlist_data);
   let promises = [];
 
   function requestPlaylistData(url) {
@@ -125,7 +103,7 @@ export function getFirstFiftyPlaylistTracks(playlist_data) {
         limit: 2
       },
       headers: {
-        Authorization: "Bearer " + AUTH_TOKEN
+        Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
       },
       transformResponse: [function (data) {
         // Parse raw data from string to JSON
@@ -150,7 +128,7 @@ export function getAllPlaylistDataById(playlist_id) {
     method: 'get',
     url: 'https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks',
     headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
+      Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
     },
     transformResponse: [function (data) {
       // parses the RAW string data into a JSON object
@@ -163,7 +141,7 @@ export function getAllPlaylistDataById(playlist_id) {
       if (res.items !== undefined || null) {
         playlistLength = res.items.length
       } else {
-        console.log('length undefined', res)
+        console.error('length undefined', res)
       }
       for (let i = 0, len = playlistLength; i < len; i++) {
         let addPlaylistSongs = res.items[i];
@@ -171,11 +149,9 @@ export function getAllPlaylistDataById(playlist_id) {
         if (res.items[i] !== null) {
           current_playlist_tracks.push(addPlaylistSongs);
         } else {
-          console.log('null track => ', res.items[i])
+          console.warn('null track => ', res.items[i])
         }
       }
-        
-      console.log('%c END of (getAllPlaylistDataById) => ', p)
       return current_playlist_tracks;
     }],
   });
@@ -192,7 +168,7 @@ export function getArtistsById(artists_array) {
       ids: artists_array.toString()
     },
     headers: {
-      Authorization: "Bearer " + AUTH_TOKEN
+      Authorization: "Bearer " + window.sessionStorage.getItem('access_token')
     }
   });
 }
