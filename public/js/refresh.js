@@ -25,7 +25,15 @@
     }, 25 * 60000);
 
     window.onload = function() {
-        sendRefresh(XHR);
+        let access_token = window.sessionStorage.getItem('access_token');
+        if (typeof access_token === 'undefined' || access_token === 'undefined') {
+            if (window.location.pathname !== '/') {
+                window.location = '/';
+            }
+        }
+        else {
+            sendRefresh(XHR);
+        }
     }
 
 })();
