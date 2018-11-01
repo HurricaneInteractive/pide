@@ -1,0 +1,10 @@
+.opponent-wrapper {
+    position: relative;
+    .remove-opponent {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: get-colour('grey');
+        cursor: pointer;
+    }
+}

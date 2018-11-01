@@ -1,0 +1,6 @@
+.versus-grid {
+    margin: 0 auto;
+    @include breakpoint(xlarge) {
+        max-width: 75%;
+    }
+}

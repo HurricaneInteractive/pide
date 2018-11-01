@@ -53,8 +53,6 @@ function getSpotifyData() {
       }
     })
 
-
-
     // // array of promises
     axios.all(promises).then(data => {
       // console.log(data)
