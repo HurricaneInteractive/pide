@@ -23,8 +23,7 @@
   "devDependencies": {
     "concurrently": "^4.0.1",
     "gulp": "^3.9.1",
-    "gulp-sass": "^4.0.1",
-    "morgan": "^1.9.1"
+    "gulp-sass": "^4.0.1"
   },
   "dependencies": {
     "cookie-parser": "^1.4.3",
@@ -33,7 +32,8 @@
     "express": "^4.16.3",
     "nodemon": "^1.18.4",
     "querystring": "^0.2.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "morgan": "^1.9.1"
   },
   "engines": {
     "node": "10.x"
