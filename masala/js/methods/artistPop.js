@@ -68,7 +68,7 @@ export const artistPop = (data) => {
   arrayFinal.forEach((artist, i) => {
     let artistImage = 'https://images.unsplash.com/photo-1535554975110-9133cf938160?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=35d4b5255f124736018f06fa8487e858&w=1000&q=80'
     const artistName = artist.value
-    const circleValue = artist.count / arrayFinal.length
+    const circleValue = artist.count / 50
     const percentage = Math.round(circleValue * 100)
     if (artist.image.length > 0) {
       artistImage = artist.image[0].url
