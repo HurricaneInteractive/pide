@@ -27,7 +27,7 @@ export class ArtistInfoComponent {
 
   ngOnInit() {
     if (this._artist) {
-      axios.get(`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(this.artist.name)}&api_key=${environment.lastFM}&format=json`)
+      axios.get(`https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(this.artist.name)}&api_key=${environment.lastFM}&format=json`)
         .then((res) => {
             if (res.data.hasOwnProperty('artist')) {
               this._artist_details = res.data.artist

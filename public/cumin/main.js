@@ -686,7 +686,7 @@ var ArtistInfoComponent = /** @class */ (function () {
     ArtistInfoComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (this._artist) {
-            axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(this.artist.name) + "&api_key=" + _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].lastFM + "&format=json")
+            axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(this.artist.name) + "&api_key=" + _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].lastFM + "&format=json")
                 .then(function (res) {
                 if (res.data.hasOwnProperty('artist')) {
                     _this._artist_details = res.data.artist;
