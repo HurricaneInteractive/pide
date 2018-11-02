@@ -444,9 +444,9 @@ class App extends Component {
                 :
                 <>
                   {this.state.user.images[0].url === undefined || this.state.user.images[0].url === null || this.state.user.images[0].url === '' ? 
-                    <img className="user-image" src={this.state.user.images[0].url} alt="user" />
-                    :
                     <img className="user-image" src='https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e79d1986f31127432328ba0b78f0b510&auto=format&fit=crop&w=675&q=80' alt="logo" />
+                    :
+                    <img className="user-image" src={this.state.user.images[0].url} alt="user" />
                   }
                   <h1 style={{textAlign: "center"}}>{this.state.user.display_name}</h1>
                   <p className="tracks_playlists">{this.state.total_tracks} tracks - {this.state.playlists_total} playlists</p>
