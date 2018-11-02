@@ -12,7 +12,6 @@ export const artistPop = (data) => {
   const appendAr = (circles, html, position = 'beforeend') => {
     circles.insertAdjacentHTML(position, html);
   }
-  // console.log(data)
   const artistArray = []
   data.forEach((item, i) => {
 
