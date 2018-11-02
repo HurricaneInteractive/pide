@@ -32,6 +32,17 @@ export function getAllUserPlaylists() {
     },
     transformResponse: [function (data) {
       let res = JSON.parse(data);
+      // res = {};
+      if (res === undefined
+        || res === null
+        || res.length === 0
+        || res.items === undefined
+        || res.items === null
+        || res.items.length === 0
+      ) {
+        alert('Error - please create or follow at least one playlist on Spotify - thank you xo')
+        return null
+      }
       let totalToQuery = 10;
       for (let i = 0, len = res.items.length; i < len; i++) {
         const addThisPlaylist = res.items[i];

@@ -67,7 +67,8 @@ class App extends Component {
       isStopped: false,
       isPaused: false,
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
+      dontRunPlaylists: false
     }
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -110,149 +111,159 @@ class App extends Component {
   
       getAllUserPlaylists().then(res => {
         let totalTracks = 0;
-        for (let i = 0; i < res.data[0].length; i++) {
-          totalTracks += res.data[0][i].tracks.total;
-        }
-        this.setState({
-          playlists: res.data[1],
-          playlist_loading: false,
-          playlists_total: res.data[2],
-          total_tracks: totalTracks
-        });
-  
-        // pass in all playlist data as variable
-        // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
-        let og_res = res;
-
-        // returns about 2000k songs - more than enough to play with
-        Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
-          let allTracks = [];
-          let artistSet = new Set();
-          let pieArray = [];
-          let popularityAverage = 0;
-          let popularityTotal = 0;
-          let durationTotal = 0;
-          let release_year_range_min = null;
-          let release_year_range_max = null;
-          let playlistTracks = [];
-          let totalPlaylistsQuried = res.length;
-          let totalTracksQueried = 0;
-  
-          
-          
-          for (let i = 0; i < res.length; i++) {
-            let addPlaylistSongs = res[i].data;
-  
-            if (res[i].data !== null) {
-              playlistTracks.push(addPlaylistSongs);
-              
-  
-              for (let y = 0; y < res[i].data.length; y++) {
-                let invididualTrack = res[i].data[y];
-                if (res[i].data[y] !== null) {
-                  allTracks.push(invididualTrack);
-                  totalTracksQueried++;
-                  popularityTotal += invididualTrack.track.popularity;
-                  durationTotal += invididualTrack.track.duration_ms;
-                  // loops through and extracts release year
-                  // checks if the min/max values are smaller/larger and appends if true
-                  if (invididualTrack.track.album.release_date !== undefined) {
-                    let stringReleaseYear = null;
-                    if (invididualTrack.track.album.release_date !== null) {
-                      stringReleaseYear = invididualTrack.track.album.release_date.substring(0, 4)
-                      if (release_year_range_max === null || release_year_range_min === null){
-                        release_year_range_max = stringReleaseYear;
-                        release_year_range_min = stringReleaseYear;
-                      }
-                      if (release_year_range_min > stringReleaseYear) {
-                        release_year_range_min = stringReleaseYear
-                      }
-                      if (release_year_range_max < stringReleaseYear) {
-                        release_year_range_max = stringReleaseYear
-                      }
-                    }
-                  }
-  
-                  // loops through artists array and adds them to the aristSet Set (unique vals only)
-                  for (let b = 0; b < invididualTrack.track.artists.length; b++) {
-                    artistSet.add(invididualTrack.track.artists[b].name);
-                    
-                    pieArray.push(invididualTrack.track.artists[b].name)
-                  }
-                } else {
-                  console.log('null track => ', res[i].data[y]);
-                }
-                
-              }
-            } else {
-              console.warn('null track => ', res.items[i])
-            } 
-          }
-
-          function compressArrayLocal(original) {
- 
-            let compressed = [];
-            let compressedObjectGlobal = {};
-            let arrayCopy = original.slice(0);
-           
-            for (let i = 0; i < original.length; i++) {
-           
-              let myCount = 0;	
-              for (let w = 0; w < arrayCopy.length; w++) {
-                if (original[i] === arrayCopy[w]) {
-                  myCount++;
-                  delete arrayCopy[w];
-                }
-              }
-              let getColour = gradient([
-                '#17A467', '#47CA51', '#88DA73'
-              ], original.length)
-
-              if (myCount > 0) {
-                if (original[i] !== null) {
-                  
-                  let a = {
-                    'key': original[i],
-                    'artist': original[i],
-                    'id': original[i],
-                    'TracksBy': myCount,
-                    'artistColor': getColour[i]
-                  }
-                  compressed.push(a);
-                  const pushToObj = {
-                    [original[i]]: {
-                      'id': original[i],
-                      'label': original[i],
-                      'value': myCount,
-                      'color': getColour[i]
-                    }
-                  }
-                  const oldObj = compressedObjectGlobal;
-                  const compressedObject = Object.assign(oldObj, pushToObj);
-                  compressedObjectGlobal = compressedObject;
-                }
-              }
-            }
-            return {'array': compressed, 'obj': compressedObjectGlobal};
-          };
-
-          let filteredArtistData = compressArrayLocal(pieArray);
-          popularityAverage = popularityTotal / allTracks.length;
-          let convertedDuration = convertDurationToString(durationTotal).timeString;
-
+        console.log('res => ', res)
+        if (res.data === null) {
           this.setState({
-            tracks: allTracks,
-            tracks_queried_length: totalTracksQueried,
-            playlists_queried: totalPlaylistsQuried,
-            artists_queried: artistSet,
-            artists_queried_bar: filteredArtistData.array,
-            average_popularity_of_queried_tracks: popularityAverage,
-            release_year_range_min: release_year_range_min,
-            release_year_range_max: release_year_range_max,
-            tracks_loading: false,
-            durationTotal_of_queried_tracks: convertedDuration
+            dontRunPlaylists: true
+          })
+        } else {
+
+        
+          for (let i = 0; i < res.data[0].length; i++) {
+            totalTracks += res.data[0][i].tracks.total;
+          }
+          this.setState({
+            playlists: res.data[1],
+            playlist_loading: false,
+            playlists_total: res.data[2],
+            total_tracks: totalTracks
           });
-        })
+    
+          // pass in all playlist data as variable
+          // get first 50 tracks the first 50 playlists (capped to avoid overloading Spotify API)
+          let og_res = res;
+
+          // returns about 2000k songs - more than enough to play with
+          Promise.all(getFirstFiftyPlaylistTracks(og_res.data[0])).then(res => {
+            let allTracks = [];
+            let artistSet = new Set();
+            let pieArray = [];
+            let popularityAverage = 0;
+            let popularityTotal = 0;
+            let durationTotal = 0;
+            let release_year_range_min = null;
+            let release_year_range_max = null;
+            let playlistTracks = [];
+            let totalPlaylistsQuried = res.length;
+            let totalTracksQueried = 0;
+    
+            
+            
+            for (let i = 0; i < res.length; i++) {
+              let addPlaylistSongs = res[i].data;
+    
+              if (res[i].data !== null) {
+                playlistTracks.push(addPlaylistSongs);
+                
+    
+                for (let y = 0; y < res[i].data.length; y++) {
+                  let invididualTrack = res[i].data[y];
+                  if (res[i].data[y] !== null) {
+                    allTracks.push(invididualTrack);
+                    totalTracksQueried++;
+                    popularityTotal += invididualTrack.track.popularity;
+                    durationTotal += invididualTrack.track.duration_ms;
+                    // loops through and extracts release year
+                    // checks if the min/max values are smaller/larger and appends if true
+                    if (invididualTrack.track.album.release_date !== undefined) {
+                      let stringReleaseYear = null;
+                      if (invididualTrack.track.album.release_date !== null) {
+                        stringReleaseYear = invididualTrack.track.album.release_date.substring(0, 4)
+                        if (release_year_range_max === null || release_year_range_min === null){
+                          release_year_range_max = stringReleaseYear;
+                          release_year_range_min = stringReleaseYear;
+                        }
+                        if (release_year_range_min > stringReleaseYear) {
+                          release_year_range_min = stringReleaseYear
+                        }
+                        if (release_year_range_max < stringReleaseYear) {
+                          release_year_range_max = stringReleaseYear
+                        }
+                      }
+                    }
+    
+                    // loops through artists array and adds them to the aristSet Set (unique vals only)
+                    for (let b = 0; b < invididualTrack.track.artists.length; b++) {
+                      artistSet.add(invididualTrack.track.artists[b].name);
+                      
+                      pieArray.push(invididualTrack.track.artists[b].name)
+                    }
+                  } else {
+                    console.log('null track => ', res[i].data[y]);
+                  }
+                  
+                }
+              } else {
+                console.warn('null track => ', res.items[i])
+              } 
+            }
+          
+
+            function compressArrayLocal(original) {
+  
+              let compressed = [];
+              let compressedObjectGlobal = {};
+              let arrayCopy = original.slice(0);
+            
+              for (let i = 0; i < original.length; i++) {
+            
+                let myCount = 0;	
+                for (let w = 0; w < arrayCopy.length; w++) {
+                  if (original[i] === arrayCopy[w]) {
+                    myCount++;
+                    delete arrayCopy[w];
+                  }
+                }
+                let getColour = gradient([
+                  '#17A467', '#47CA51', '#88DA73'
+                ], original.length)
+
+                if (myCount > 0) {
+                  if (original[i] !== null) {
+                    
+                    let a = {
+                      'key': original[i],
+                      'artist': original[i],
+                      'id': original[i],
+                      'TracksBy': myCount,
+                      'artistColor': getColour[i]
+                    }
+                    compressed.push(a);
+                    const pushToObj = {
+                      [original[i]]: {
+                        'id': original[i],
+                        'label': original[i],
+                        'value': myCount,
+                        'color': getColour[i]
+                      }
+                    }
+                    const oldObj = compressedObjectGlobal;
+                    const compressedObject = Object.assign(oldObj, pushToObj);
+                    compressedObjectGlobal = compressedObject;
+                  }
+                }
+              }
+              return {'array': compressed, 'obj': compressedObjectGlobal};
+            };
+
+            let filteredArtistData = compressArrayLocal(pieArray);
+            popularityAverage = popularityTotal / allTracks.length;
+            let convertedDuration = convertDurationToString(durationTotal).timeString;
+
+            this.setState({
+              tracks: allTracks,
+              tracks_queried_length: totalTracksQueried,
+              playlists_queried: totalPlaylistsQuried,
+              artists_queried: artistSet,
+              artists_queried_bar: filteredArtistData.array,
+              average_popularity_of_queried_tracks: popularityAverage,
+              release_year_range_min: release_year_range_min,
+              release_year_range_max: release_year_range_max,
+              tracks_loading: false,
+              durationTotal_of_queried_tracks: convertedDuration
+            });
+          });
+        }
       });
     } 
   }
@@ -381,14 +392,30 @@ class App extends Component {
 
   render() {
 
+    if (this.state.dontRunPlaylists === true) {
+      return (
+        <div className="app no_user">
+          <div className="absolute-background"/>
+          <div className="app-container error-container">
+            <div className="error-child">
+              <h1>no playlist data</h1>
+              <p>please add some more playlists on spotify to see your stats</p>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     if (this.state.loggedIn === false) {
       return (
         <div className="app no_user">
           <div className="absolute-background"/>
-          <div className="app-container">
-            <h1>no user data</h1>
-            {/* redirect back to login page */}
-            <a href="/login"><button>Please Login</button></a>
+          <div className="app-container error-container">
+            <div className="error-child">
+              <h1>no user data</h1>
+              {/* redirect back to login page */}
+              <a href="/login"><button>Please Login</button></a>
+            </div>
           </div>
         </div>
       )
